@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compil
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Virtual Machine", "Virtual Machine\Virtual Machine.vcxproj", "{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IDE", "IDE\IDE.vcxproj", "{95AA07EA-3B1B-44A3-B783-6ACC9C76C016}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IDE", "..\..\Qt\Qt5.3.2\Tools\QtCreator\bin\IVY\IVY.vcxproj", "{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Debug|Win32.Build.0 = Debug|Win32
 		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Release|Win32.ActiveCfg = Release|Win32
 		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Release|Win32.Build.0 = Release|Win32
-		{95AA07EA-3B1B-44A3-B783-6ACC9C76C016}.Debug|Win32.ActiveCfg = Debug|Win32
-		{95AA07EA-3B1B-44A3-B783-6ACC9C76C016}.Debug|Win32.Build.0 = Debug|Win32
-		{95AA07EA-3B1B-44A3-B783-6ACC9C76C016}.Release|Win32.ActiveCfg = Release|Win32
-		{95AA07EA-3B1B-44A3-B783-6ACC9C76C016}.Release|Win32.Build.0 = Release|Win32
+		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Debug|Win32.Build.0 = Debug|Win32
+		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Release|Win32.ActiveCfg = Release|Win32
+		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
