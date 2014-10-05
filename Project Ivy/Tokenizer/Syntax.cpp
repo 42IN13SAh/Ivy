@@ -1,5 +1,10 @@
 #include "Syntax.h"
 
+Syntax::Syntax()
+{
+
+}
+
 Syntax::Syntax(int id, std::string regexPattern, TokenType tokenType)
 {
 	this->id = id;
@@ -8,6 +13,12 @@ Syntax::Syntax(int id, std::string regexPattern, TokenType tokenType)
 	this->shouldPush = false;
 }
 
+Syntax::~Syntax()
+{
+
+}
+
+// Possibly irrelevant method.
 void Syntax::setShouldPush(bool shouldPush)
 {
 	this->shouldPush = shouldPush;
@@ -43,8 +54,3 @@ bool Syntax::getShouldPush()
 	return shouldPush;
 }
 
-
-
-Syntax::~Syntax()
-{
-}

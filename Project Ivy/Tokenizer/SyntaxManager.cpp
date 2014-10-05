@@ -1,24 +1,17 @@
 #include "SyntaxManager.h"
 #include <iostream>
 
-int main()
-{
-	SyntaxManager* syntaxManager = new SyntaxManager();
-	return 0;
-}
-
-void SyntaxManager::init()
-{
-	Tokenizer* tokenizer = new Tokenizer(); 
-}
-
 SyntaxManager::SyntaxManager()
 {
-	this->init();
+	syntaxMap = new std::map<int, Syntax>();
 }
-
 
 SyntaxManager::~SyntaxManager()
 {
-	
+	delete syntaxMap;
+}
+
+void SyntaxManager::jsonToSyntaxMap()
+{
+
 }

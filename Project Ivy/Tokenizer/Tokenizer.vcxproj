@@ -86,6 +86,7 @@
     <ClInclude Include="TokenType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="SyntaxManager.cpp" />
     <ClCompile Include="Token.cpp" />
