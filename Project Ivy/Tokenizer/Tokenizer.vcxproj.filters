@@ -44,5 +44,8 @@
     <ClInclude Include="SyntaxManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TokenType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

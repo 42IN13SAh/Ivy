@@ -83,6 +83,7 @@
     <ClInclude Include="SyntaxManager.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="Tokenizer.h" />
+    <ClInclude Include="TokenType.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Syntax.cpp" />

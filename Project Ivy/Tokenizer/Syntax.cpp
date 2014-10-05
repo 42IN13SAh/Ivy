@@ -1,7 +1,5 @@
 #include "Syntax.h"
 
-enum TokenType{ VARIABLE };
-
 Syntax::Syntax(int id, std::string regexPattern, TokenType tokenType)
 {
 	this->id = id;

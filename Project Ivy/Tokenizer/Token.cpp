@@ -1,7 +1,5 @@
 #include "Token.h"
 
-enum TokenType{ VARIABLE };
-
 Token::Token(int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner)
 {
 	this->lineNumber = lineNumber;
