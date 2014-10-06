@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tokenizer", "Tokenizer\Tokenizer.vcxproj", "{040BD7E0-B737-4952-82ED-42D66CDDF8EB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{9D073726-40E4-4BFF-B9E6-6D722D480E7A}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Virtual Machine", "Virtual Machine\Virtual Machine.vcxproj", "{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IDE", "IDE\IVY.vcxproj", "{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{7CCA6B3E-688B-4B1F-BD09-49240F49D53B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Virtual Machine", "Virtual Machine\Virtual Machine.vcxproj", "{46DF0710-36B1-496F-BCB0-C9C4C965CD5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +21,18 @@ Global
 		{040BD7E0-B737-4952-82ED-42D66CDDF8EB}.Debug|Win32.Build.0 = Debug|Win32
 		{040BD7E0-B737-4952-82ED-42D66CDDF8EB}.Release|Win32.ActiveCfg = Release|Win32
 		{040BD7E0-B737-4952-82ED-42D66CDDF8EB}.Release|Win32.Build.0 = Release|Win32
-		{9D073726-40E4-4BFF-B9E6-6D722D480E7A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{9D073726-40E4-4BFF-B9E6-6D722D480E7A}.Debug|Win32.Build.0 = Debug|Win32
-		{9D073726-40E4-4BFF-B9E6-6D722D480E7A}.Release|Win32.ActiveCfg = Release|Win32
-		{9D073726-40E4-4BFF-B9E6-6D722D480E7A}.Release|Win32.Build.0 = Release|Win32
-		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Debug|Win32.ActiveCfg = Debug|Win32
-		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Debug|Win32.Build.0 = Debug|Win32
-		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Release|Win32.ActiveCfg = Release|Win32
-		{453E7F8B-19C2-4889-85E7-BB3D4612F9EF}.Release|Win32.Build.0 = Release|Win32
 		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Debug|Win32.Build.0 = Debug|Win32
 		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Release|Win32.ActiveCfg = Release|Win32
 		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Release|Win32.Build.0 = Release|Win32
+		{7CCA6B3E-688B-4B1F-BD09-49240F49D53B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7CCA6B3E-688B-4B1F-BD09-49240F49D53B}.Debug|Win32.Build.0 = Debug|Win32
+		{7CCA6B3E-688B-4B1F-BD09-49240F49D53B}.Release|Win32.ActiveCfg = Release|Win32
+		{7CCA6B3E-688B-4B1F-BD09-49240F49D53B}.Release|Win32.Build.0 = Release|Win32
+		{46DF0710-36B1-496F-BCB0-C9C4C965CD5B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{46DF0710-36B1-496F-BCB0-C9C4C965CD5B}.Debug|Win32.Build.0 = Debug|Win32
+		{46DF0710-36B1-496F-BCB0-C9C4C965CD5B}.Release|Win32.ActiveCfg = Release|Win32
+		{46DF0710-36B1-496F-BCB0-C9C4C965CD5B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
