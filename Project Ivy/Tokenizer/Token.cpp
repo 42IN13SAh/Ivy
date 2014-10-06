@@ -17,7 +17,7 @@ Token::Token(int lineNumber, int linePosition, int level, std::string descriptio
 }
 
 // Destructor
-// Check dem memory leaks!!!
+// Likely to have memory leaks.
 Token::~Token()
 {
 	delete partner;
