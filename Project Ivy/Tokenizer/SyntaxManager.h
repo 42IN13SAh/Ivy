@@ -1,22 +1,22 @@
 #pragma once
-
-#include <map>
+#include <unordered_map>
 #include <vector>
-
+#include "Jzon.h"
 #include "Syntax.h"
-
+#include "TokenType.h"
 class SyntaxManager
 {
 public:
 	SyntaxManager();
 	virtual ~SyntaxManager();
-
 	void jsonToSyntaxMap();
-	void fillFullSyntaxVector();
-	std::vector<Syntax> getFollowupVector(int syntaxId);
+	void fillSyntaxVector();
+	std::vector<Syntax*> getFollowupVector(int syntaxId);
 
 private:
-	std::map<int, Syntax> *syntaxMap;
-	std::vector<Syntax> *fullSyntaxVector;
+	std::unordered_map<int, Syntax*> syntaxMap;
+	std::vector<Syntax*> syntaxVector;
+	std::unordered_map<std::string, TokenType> tokenDictionary;
+	void initTokenDictionary();
 };
 

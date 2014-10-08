@@ -1,44 +1,93 @@
 #include "SyntaxManager.h"
 #include <iostream>
-
 SyntaxManager::SyntaxManager()
 {
-	syntaxMap = new std::map<int, Syntax>();
-	fullSyntaxVector = new std::vector<Syntax>();
+	initTokenDictionary();
 }
 
 SyntaxManager::~SyntaxManager()
 {
-	delete syntaxMap;
-	delete fullSyntaxVector;
+
 }
 
 void SyntaxManager::jsonToSyntaxMap()
 {
-	// Load file.
-
-	// Code...
-
-	fillFullSyntaxVector();
+	Jzon::Array rootNode;
+	Jzon::FileReader::ReadFile("Tokens.json", rootNode);
+	for (int i = 0; i < rootNode.GetCount(); i++){
+		Jzon::Object object = rootNode.Get(i).AsObject();
+		int id = object.Get("id").ToInt();
+		std::string regexPattern = "^(" + object.Get("regexPattern").ToString() + ")";
+		std::string tokenType = object.Get("tokenType").ToString();
+		Jzon::Array jsonPartners = object.Get("partners").AsArray();
+		std::vector<int> partners;
+		for (int i = 0; i < jsonPartners.GetCount(); i++)
+		{
+			partners.push_back(jsonPartners.Get(i).ToInt());
+		}
+		Jzon::Array jsonPossibleFollowUps = object.Get("possibleFollowUps").AsArray();
+		std::vector<int> possibleFollowUps;
+		for (int i = 0; i < jsonPossibleFollowUps.GetCount(); i++)
+		{
+			possibleFollowUps.push_back(jsonPossibleFollowUps.Get(i).ToInt());
+		}
+		bool shouldPush = object.Get("shouldPush").ToBool();
+		syntaxMap[id] = new Syntax(id, regexPattern, tokenDictionary[tokenType], partners,
+			possibleFollowUps, shouldPush);
+	}
+	fillSyntaxVector();
 }
 
-void SyntaxManager::fillFullSyntaxVector()
+void SyntaxManager::fillSyntaxVector()
 {
-	for (auto &iter : *syntaxMap)
+	for (auto &iter : syntaxMap)
 	{
-		fullSyntaxVector->push_back(iter.second);
+		syntaxVector.push_back(iter.second);
 	}
 }
 
-std::vector<Syntax> SyntaxManager::getFollowupVector(int syntaxId)
+std::vector<Syntax*> SyntaxManager::getFollowupVector(int syntaxId)
 {
+	//Comments shouldn't be inserted inside the syntaxMap, because they need to be checked in the 
+	//tokenize method. 
 	if (syntaxId != -1)
 	{
-		std::vector<Syntax> collection = syntaxMap->find(syntaxId)->second.getPossibleFollowUps();
-
+		std::vector<Syntax*> collection = syntaxMap.find(syntaxId)->second->getPossibleFollowUps(syntaxMap);
 		if (collection.size() != 0)
 			return collection;
 	}
-	
-	return *fullSyntaxVector;
+	return syntaxVector;
+}
+
+void SyntaxManager::initTokenDictionary()
+{
+	tokenDictionary["IF"] = If;
+	tokenDictionary["ELSE"] = Else;
+	tokenDictionary["ELSEIF"] = ElseIf;
+	tokenDictionary["WHILE"] = While;
+	tokenDictionary["DO"] = Do;
+	tokenDictionary["FOR"] = For;
+	tokenDictionary["FOREACH"] = ForEach;
+	tokenDictionary["BRACKET"] = Bracket;
+	tokenDictionary["STATEMENTOPERATOR"] = StatementOperator;
+	tokenDictionary["ASSIGNMENTOPERATOR"] = AssignmentOperator;
+	tokenDictionary["MATHOPERATOR"] = MathOperator;
+	tokenDictionary["UNDEFINED"] = Undefined;
+	tokenDictionary["LINEEND"] = LineEnd;
+	tokenDictionary["FUNCTION"] = Function;
+	tokenDictionary["FUNCTIONNAME"] = FunctionName;
+	tokenDictionary["VAR"] =  Var;
+	tokenDictionary["VARNAME"] = VarName;
+	tokenDictionary["RETURN"] = Return;
+	tokenDictionary["COMMENT"] = Comment;
+	tokenDictionary["PARAMETEROPERATOR"] = ParameterOperator;
+	tokenDictionary["NUMBER"] = Number;
+	tokenDictionary["STRING"] = String;
+	tokenDictionary["BOOLEAN"] = Boolean;
+}
+
+int main(){
+	SyntaxManager t;
+	t.jsonToSyntaxMap();
+	return 0;
 }

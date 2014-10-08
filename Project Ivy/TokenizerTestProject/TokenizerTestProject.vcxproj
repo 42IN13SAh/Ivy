@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5BB2A599-5987-4085-AD4C-7127894941B6}</ProjectGuid>
+    <ProjectGuid>{76F47C14-E7B2-47BD-8723-5B61320399BE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TokenizerTestProject</RootNamespace>
   </PropertyGroup>
@@ -90,7 +90,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TokenizerTest.cpp" />
+    <ClCompile Include="unittest1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tokenizer\Tokenizer.vcxproj">

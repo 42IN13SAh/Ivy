@@ -2,7 +2,7 @@
 #include <functional> 
 #include <cctype>
 #include <locale>
-
+#include <regex>
 #include "Tokenizer.h"
 
 Tokenizer::Tokenizer()
@@ -34,10 +34,13 @@ void Tokenizer::tokenize(std::string *input, int size)
 		{
 			bool hasMatch = false;
 
-			for (Syntax &syntax : syntaxManager->getFollowupVector(previousSyntaxId))
+			for (Syntax* syntax : syntaxManager->getFollowupVector(previousSyntaxId))
 			{
 				// Check with regex and create a token.
+				std::regex check = std::regex(syntax->getRegexPattern());
+				if (std::regex_match(unprocessedInput, check)){
 
+				}
 				// Create token
 				// Set previous syntax id
 				// Set match status

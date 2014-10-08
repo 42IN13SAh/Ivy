@@ -30,10 +30,7 @@
     <ClCompile Include="SyntaxManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Jzon.cpp">
+    <ClCompile Include="..\..\..\..\jsonReader\jsonReader\Jzon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,8 +50,11 @@
     <ClInclude Include="TokenType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Jzon.h">
+    <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tokens.json" />
   </ItemGroup>
 </Project>
