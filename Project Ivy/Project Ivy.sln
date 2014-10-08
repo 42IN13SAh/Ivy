@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tokenizer", "Tokenizer\Tokenizer.vcxproj", "{040BD7E0-B737-4952-82ED-42D66CDDF8EB}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IDE", "IDE\IVY.vcxproj", "{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compiler.vcxproj", "{CA162487-27CF-465D-80FD-723BA35DD3C7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Virtual Machine", "Virtual Machine\Virtual Machine.vcxproj", "{0A8F5AA0-9055-4740-89CF-92AF7F472149}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TokenizerTestProject", "TokenizerTestProject\TokenizerTestProject.vcxproj", "{5BB2A599-5987-4085-AD4C-7127894941B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		{040BD7E0-B737-4952-82ED-42D66CDDF8EB}.Debug|Win32.Build.0 = Debug|Win32
 		{040BD7E0-B737-4952-82ED-42D66CDDF8EB}.Release|Win32.ActiveCfg = Release|Win32
 		{040BD7E0-B737-4952-82ED-42D66CDDF8EB}.Release|Win32.Build.0 = Release|Win32
-		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Debug|Win32.Build.0 = Debug|Win32
-		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Release|Win32.ActiveCfg = Release|Win32
-		{3C982DE0-A8C6-377C-B77B-BBD257DA14C6}.Release|Win32.Build.0 = Release|Win32
 		{CA162487-27CF-465D-80FD-723BA35DD3C7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{CA162487-27CF-465D-80FD-723BA35DD3C7}.Debug|Win32.Build.0 = Debug|Win32
 		{CA162487-27CF-465D-80FD-723BA35DD3C7}.Release|Win32.ActiveCfg = Release|Win32
@@ -33,6 +29,10 @@ Global
 		{0A8F5AA0-9055-4740-89CF-92AF7F472149}.Debug|Win32.Build.0 = Debug|Win32
 		{0A8F5AA0-9055-4740-89CF-92AF7F472149}.Release|Win32.ActiveCfg = Release|Win32
 		{0A8F5AA0-9055-4740-89CF-92AF7F472149}.Release|Win32.Build.0 = Release|Win32
+		{5BB2A599-5987-4085-AD4C-7127894941B6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5BB2A599-5987-4085-AD4C-7127894941B6}.Debug|Win32.Build.0 = Debug|Win32
+		{5BB2A599-5987-4085-AD4C-7127894941B6}.Release|Win32.ActiveCfg = Release|Win32
+		{5BB2A599-5987-4085-AD4C-7127894941B6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
