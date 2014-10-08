@@ -1,14 +1,22 @@
 #pragma once
-#include "Tokenizer.h"
+
+#include <map>
+#include <vector>
+
+#include "Syntax.h"
+
 class SyntaxManager
 {
 public:
 	SyntaxManager();
 	virtual ~SyntaxManager();
 
-	void init();
+	void jsonToSyntaxMap();
+	void fillFullSyntaxVector();
+	std::vector<Syntax> getFollowupVector(int syntaxId);
 
 private:
-	Tokenizer* tokenizer;
+	std::map<int, Syntax> *syntaxMap;
+	std::vector<Syntax> *fullSyntaxVector;
 };
 

@@ -6,6 +6,7 @@
 class Syntax
 {
 public:
+	Syntax();
 	Syntax(int id, std::string regexPattern, TokenType tokenType);
 	virtual ~Syntax();
 

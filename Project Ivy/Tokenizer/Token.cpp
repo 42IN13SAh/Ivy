@@ -1,5 +1,11 @@
 #include "Token.h"
 
+// Constructors
+Token::Token()
+{
+
+}
+
 Token::Token(int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner)
 {
 	this->lineNumber = lineNumber;
@@ -10,6 +16,14 @@ Token::Token(int lineNumber, int linePosition, int level, std::string descriptio
 	this->partner = partner;
 }
 
+// Destructor
+// Likely to have memory leaks.
+Token::~Token()
+{
+	delete partner;
+}
+
+// Public methods
 int Token::getLineNumber()
 {
 	return lineNumber;
@@ -40,7 +54,32 @@ Token* Token::getPartner()
 	return partner;
 }
 
-Token::~Token()
+void Token::setLineNumber(int lineNumber)
 {
-	delete[] partner;
+	this->lineNumber = lineNumber;
+}
+
+void Token::setLinePosition(int linePosition)
+{
+	this->linePosition = linePosition;
+}
+
+void Token::setLevel(int level)
+{
+	this->level = level;
+}
+
+void Token::setDescription(std::string description)
+{
+	this->description = description;
+}
+
+void Token::setTokenType(TokenType tokenType)
+{
+	this->tokenType = tokenType;
+}
+
+void Token::setPartner(Token *partner)
+{
+	this->partner = partner;
 }
