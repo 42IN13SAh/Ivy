@@ -16,11 +16,6 @@ public:
 	TokenType getTokenType();
 	Token* getPartner();
 	int getSyntaxID();
-	void setLineNumber(int lineNumber);
-	void setLinePosition(int linePosition);
-	void setLevel(int level);
-	void setDescription(std::string description);
-	void setTokenType(TokenType tokenType);
 	void setPartner(Token *partner);
 
 private:

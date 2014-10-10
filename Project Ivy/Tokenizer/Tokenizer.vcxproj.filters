@@ -30,7 +30,7 @@
     <ClCompile Include="SyntaxManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\jsonReader\jsonReader\Jzon.cpp">
+    <ClCompile Include="Jzon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -35,28 +35,26 @@ void SyntaxManager::jsonToSyntaxMap()
 		syntaxMap[id] = new Syntax(id, regexPattern, tokenDictionary[tokenType], partners,
 			possibleFollowUps, shouldPush);
 	}
-	fillSyntaxVector();
+	fillSyntaxList();
 }
 
-void SyntaxManager::fillSyntaxVector()
+void SyntaxManager::fillSyntaxList()
 {
 	for (auto &iter : syntaxMap)
 	{
-		syntaxVector.push_back(iter.second);
+		syntaxList.push_back(iter.second);
 	}
 }
 
 std::vector<Syntax*> SyntaxManager::getFollowupVector(int syntaxId)
 {
-	//Comments shouldn't be inserted inside the syntaxMap, because they need to be checked in the 
-	//tokenize method. 
 	if (syntaxId != -1)
 	{
 		std::vector<Syntax*> collection = syntaxMap.find(syntaxId)->second->getPossibleFollowUps(syntaxMap);
 		if (collection.size() != 0)
 			return collection;
 	}
-	return syntaxVector;
+	return syntaxList;
 }
 
 

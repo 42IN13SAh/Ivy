@@ -55,36 +55,11 @@ Token* Token::getPartner()
 	return partner;
 }
 
-void Token::setLineNumber(int lineNumber)
-{
-	this->lineNumber = lineNumber;
-}
-
-void Token::setLinePosition(int linePosition)
-{
-	this->linePosition = linePosition;
-}
-
-void Token::setLevel(int level)
-{
-	this->level = level;
-}
-
-void Token::setDescription(std::string description)
-{
-	this->description = description;
-}
-
-void Token::setTokenType(TokenType tokenType)
-{
-	this->tokenType = tokenType;
+int Token::getSyntaxID(){
+	return syntaxID;
 }
 
 void Token::setPartner(Token *partner)
 {
 	this->partner = partner;
-}
-
-int Token::getSyntaxID(){
-	return syntaxID;
 }
