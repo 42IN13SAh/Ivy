@@ -6,8 +6,9 @@ Token::Token()
 
 }
 
-Token::Token(int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner)
+Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner)
 {
+	this->syntaxID = syntaxID;
 	this->lineNumber = lineNumber;
 	this->linePosition = linePosition;
 	this->level = level;
@@ -82,4 +83,8 @@ void Token::setTokenType(TokenType tokenType)
 void Token::setPartner(Token *partner)
 {
 	this->partner = partner;
+}
+
+int Token::getSyntaxID(){
+	return syntaxID;
 }

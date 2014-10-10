@@ -12,6 +12,7 @@ public:
 	void jsonToSyntaxMap();
 	void fillSyntaxVector();
 	std::vector<Syntax*> getFollowupVector(int syntaxId);
+	std::unordered_map<int, Syntax*> getSyntaxMap();
 
 private:
 	std::unordered_map<int, Syntax*> syntaxMap;

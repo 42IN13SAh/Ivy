@@ -59,6 +59,12 @@ std::vector<Syntax*> SyntaxManager::getFollowupVector(int syntaxId)
 	return syntaxVector;
 }
 
+
+std::unordered_map<int, Syntax*> SyntaxManager::getSyntaxMap()
+{
+	return syntaxMap;
+}
+
 void SyntaxManager::initTokenDictionary()
 {
 	tokenDictionary["IF"] = If;
@@ -84,10 +90,4 @@ void SyntaxManager::initTokenDictionary()
 	tokenDictionary["NUMBER"] = Number;
 	tokenDictionary["STRING"] = String;
 	tokenDictionary["BOOLEAN"] = Boolean;
-}
-
-int main(){
-	SyntaxManager t;
-	t.jsonToSyntaxMap();
-	return 0;
 }

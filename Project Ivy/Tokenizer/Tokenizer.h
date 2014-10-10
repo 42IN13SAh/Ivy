@@ -21,7 +21,7 @@ public:
 	static inline std::string &trim(std::string &s);
 
 private:
-	std::stack<Token> *partnerStack;
-	std::list<Token> *tokenList;
-	SyntaxManager *syntaxManager;
+	std::stack<Token*> partnerStack;
+	std::list<Token*> tokenList;
+	SyntaxManager syntaxManager;
 };

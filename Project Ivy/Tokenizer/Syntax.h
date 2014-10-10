@@ -13,7 +13,7 @@ public:
 
 	int getID();
 	std::string getRegexPattern();
-	std::vector<Syntax> getPartners();
+	std::vector<Syntax*> getPartners(std::unordered_map<int, Syntax*> syntaxMap);
 	std::vector<Syntax*> getPossibleFollowUps(std::unordered_map<int, Syntax*> syntaxMap);
 	TokenType getTokenType();
 	bool getShouldPush();
@@ -21,7 +21,7 @@ public:
 private:
 	int id;
 	std::string regexPattern;
-	std::vector<Syntax> partners;
+	std::vector<Syntax*> partners;
 	std::vector<Syntax*> possibleFollowUps;
 	std::vector<int> partnerIds;
 	std::vector<int> possibleFollowUpIds;

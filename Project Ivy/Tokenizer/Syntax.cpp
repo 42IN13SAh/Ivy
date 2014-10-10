@@ -32,14 +32,19 @@ std::string Syntax::getRegexPattern()
 	return regexPattern;
 }
 
-std::vector<Syntax> Syntax::getPartners()
+std::vector<Syntax*> Syntax::getPartners(std::unordered_map<int, Syntax*> syntaxMap)
 {
+	if (partners.size() == 0){
+		for (int i = 0; i < partnerIds.size(); i++){
+			partners.push_back(syntaxMap[partnerIds[i]]);
+		}
+	}
 	return partners;
 }
 
 std::vector<Syntax*> Syntax::getPossibleFollowUps(std::unordered_map<int, Syntax*> syntaxMap)
 {
-	if (possibleFollowUps.size() <= 0){
+	if (possibleFollowUps.size() == 0){
 		for (int i = 0; i < possibleFollowUpIds.size(); i++)
 		{
 			possibleFollowUps.push_back(syntaxMap[possibleFollowUpIds[i]]);
