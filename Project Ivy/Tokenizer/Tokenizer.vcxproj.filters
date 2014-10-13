@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Custom Exception">
+      <UniqueIdentifier>{ff251fba-b787-4e0e-bfb9-ec8ec4bed82d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Custom Exception">
+      <UniqueIdentifier>{54d70d33-7880-45d7-9d0b-bc4f543b5f86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -30,11 +36,11 @@
     <ClCompile Include="SyntaxManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Jzon.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BadSyntaxException.cpp">
+      <Filter>Source Files\Custom Exception</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +59,14 @@
     <ClInclude Include="TokenType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Jzon.h">
+    <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BadSyntaxException.h">
+      <Filter>Header Files\Custom Exception</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tokens.json" />
   </ItemGroup>
 </Project>

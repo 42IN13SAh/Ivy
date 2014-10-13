@@ -17,7 +17,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -79,7 +79,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Jzon.h" />
+    <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h" />
+    <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="SyntaxManager.h" />
     <ClInclude Include="Token.h" />
@@ -87,12 +88,15 @@
     <ClInclude Include="TokenType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BadSyntaxException.cpp" />
     <ClCompile Include="Jzon.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="SyntaxManager.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tokens.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
