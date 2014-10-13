@@ -3,7 +3,9 @@
 #include <cctype>
 #include <locale>
 #include <regex>
+#include <iostream>
 #include "Tokenizer.h"
+#include "BadSyntaxException.h"
 
 Tokenizer::Tokenizer()
 {
@@ -25,34 +27,40 @@ void Tokenizer::tokenize(std::string *input, int size)
 	int lineNumber = 0;
 	int syntaxId = -1;
 	int level = 0;
-	while (++lineNumber <= size){
-		int linePosition = 0;
-		std::string unprocessedInput = trim(*input);
-		while (unprocessedInput != ""){
-			bool hasMatch = false;
-			for (Syntax* syntax : syntaxManager.getFollowupVector(syntaxId)){
-				std::smatch result;
-				if (std::regex_search(unprocessedInput, result, std::regex(syntax->getRegexPattern()))){
-					hasMatch = true;
-					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), nullptr);
-					checkIfTokenIsVariableNameOrFunctionName(token);
-					tokenList.push_back(token);
-					tokenPartnerCheck(syntax, token, level);
-					linePosition += result[0].length();
-					unprocessedInput = trim(unprocessedInput.erase(0, result[0].length()));
-					syntaxId = syntax->getID();
-					break;
+	try{
+		while (++lineNumber <= size){
+			int linePosition = 0;
+			std::string unprocessedInput = trim(*input);
+			while (unprocessedInput != ""){
+				bool hasMatch = false;
+				for (Syntax* syntax : syntaxManager.getFollowupVector(syntaxId)){
+					std::smatch result;
+					if (std::regex_search(unprocessedInput, result, std::regex(syntax->getRegexPattern()))){
+						hasMatch = true;
+						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), nullptr);
+						checkIfTokenIsVariableNameOrFunctionNameIfTrueAddToList(token);
+						tokenList.push_back(token);
+						tokenPartnerCheck(syntax, token, level);
+						linePosition += result[0].length();
+						unprocessedInput = trim(unprocessedInput.erase(0, result[0].length()));
+						syntaxId = syntax->getID();
+						break;
+					}
+				}
+				if (!hasMatch){
+					Syntax* syntax = syntaxManager.getSyntaxMap()[syntaxId];
+					throw BadSyntaxException(syntax->getRegexPattern(), lineNumber, linePosition);
 				}
 			}
-			if (!hasMatch){
-				//raise syntax error
-			}
+			input++;
 		}
-		input++;
+	}
+	catch (BadSyntaxException& e){
+		std::cout << e.what();
 	}
 }
 
-void Tokenizer::checkIfTokenIsVariableNameOrFunctionName(Token* token)
+void Tokenizer::checkIfTokenIsVariableNameOrFunctionNameIfTrueAddToList(Token* token)
 {
 	if (token->getTokenType() == FunctionName){
 		functionNames.push_back(token->getDescription());
@@ -101,6 +109,6 @@ std::string &Tokenizer::trim(std::string &s) {
 
 int main(){
 	Tokenizer tok;
-	tok.tokenize(new std::string("var x = 5;function x(); if(x = 3)"), 1);
+	tok.tokenize(new std::string("var x = 3; function x(); if(x=5)"), 1);
 	return 0;
 }

@@ -9,8 +9,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compiler", "Compiler\Compil
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Virtual Machine", "Virtual Machine\Virtual Machine.vcxproj", "{0A8F5AA0-9055-4740-89CF-92AF7F472149}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TokenizerTestProject", "TokenizerTestProject\TokenizerTestProject.vcxproj", "{77388C49-E8B5-4BA7-AB1B-C734F40E7960}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -29,10 +27,6 @@ Global
 		{0A8F5AA0-9055-4740-89CF-92AF7F472149}.Debug|Win32.Build.0 = Debug|Win32
 		{0A8F5AA0-9055-4740-89CF-92AF7F472149}.Release|Win32.ActiveCfg = Release|Win32
 		{0A8F5AA0-9055-4740-89CF-92AF7F472149}.Release|Win32.Build.0 = Release|Win32
-		{77388C49-E8B5-4BA7-AB1B-C734F40E7960}.Debug|Win32.ActiveCfg = Debug|Win32
-		{77388C49-E8B5-4BA7-AB1B-C734F40E7960}.Debug|Win32.Build.0 = Debug|Win32
-		{77388C49-E8B5-4BA7-AB1B-C734F40E7960}.Release|Win32.ActiveCfg = Release|Win32
-		{77388C49-E8B5-4BA7-AB1B-C734F40E7960}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
