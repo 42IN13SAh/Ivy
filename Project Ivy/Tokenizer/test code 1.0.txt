@@ -1,0 +1,63 @@
+var x = 10;
+var y = 2;
+var _testString = "Hallo henk";
+
+y = x + 2;
+y = x - 3.3;
+y = x / 3;
+y = x * 10;
+y = x % 2;
+
+y += x;
+y -= x;
+y *= x;
+y /= x;
+
+y++;
+y--;
+++y;
+--y;
+
+function testFunction(temp)
+{
+	if (temp is true)
+	{
+		return none;
+	}
+	else if (temp is not false)
+	{
+		return 3;
+	}
+	else if (y > x)
+	{
+		return true;
+	}
+	else
+	{
+		if (x <= y or (x < y and x >= y) or not _testFunction2())
+		{
+			return "Hallo";
+		}	
+		else 
+		{
+			return x + y;
+		}
+	}
+}
+
+function _testFunction2()
+{	
+	while(y is not 5)
+	{
+		y--;
+	}
+}
+
+function testFunction3(a, b, _c)
+{
+	for (var i = 10; i > a; i--)
+	{
+		b = b - _c;
+	}
+	return a + b * _c;
+}

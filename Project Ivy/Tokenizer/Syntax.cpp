@@ -1,10 +1,5 @@
 #include "Syntax.h"
 
-Syntax::Syntax()
-{
-
-}
-
 Syntax::Syntax(int id, std::string regexPattern, TokenType tokenType, std::vector<int> partnerIds,
 	std::vector<int> possibleFollowUpIds, bool shouldPush)
 {

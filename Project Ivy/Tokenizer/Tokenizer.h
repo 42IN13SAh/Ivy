@@ -10,17 +10,13 @@ class Tokenizer
 public:
 	Tokenizer(void);
 	virtual ~Tokenizer(void);
-	void tokenize(std::string* input, int size);
+	void tokenize(const char* input);
 	std::list<Token*> getTokenList();
-	static inline std::string &ltrim(std::string &s);
-	static inline std::string &rtrim(std::string &s);
-	static inline std::string &trim(std::string &s);
 private:
+	const char* trim(const char* str, int& lineposition);
 	std::stack<Token*> partnerStack;
 	std::list<Token*> tokenList;
 	SyntaxManager syntaxManager;
-	std::vector<std::string> variableNames;
-	std::vector<std::string> functionNames;
-	void checkIfTokenIsVariableNameOrFunctionNameIfTrueAddToList(Token* token);
-	void tokenPartnerCheck(Syntax* syntax, Token* token, int level);
+	bool validateKeyWordIfGoodAddToList(Token* token);
+	void tokenPartnerCheck(Syntax* syntax, Token* token, int& level);
 };

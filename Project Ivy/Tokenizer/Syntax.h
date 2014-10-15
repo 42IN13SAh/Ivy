@@ -6,11 +6,9 @@
 class Syntax
 {
 public:
-	Syntax();
 	Syntax(int id, std::string regexPattern, TokenType tokenType, std::vector<int> partnerIds,
 		std::vector<int> possibleFollowUpIds, bool shouldPush);
 	virtual ~Syntax();
-
 	int getID();
 	std::string getRegexPattern();
 	std::vector<Syntax*> getPartners(std::unordered_map<int, Syntax*> syntaxMap);
