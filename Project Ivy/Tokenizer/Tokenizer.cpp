@@ -1,6 +1,11 @@
+#include <algorithm> 
+#include <functional> 
+#include <cctype>
+#include <locale>
 #include <regex>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 #include "Tokenizer.h"
 #include "BadSyntaxException.h"
 Tokenizer::Tokenizer()
@@ -18,23 +23,23 @@ std::list<Token*> Tokenizer::getTokenList()
 	return tokenList;
 }
 
-void Tokenizer::tokenize(const char* input)
+void Tokenizer::tokenize(std::string* input, int size)
 {
-	int lineNumber = 1;
+	int lineNumber = 0;
 	int syntaxId = -1;
 	int level = 0;
-	const char* unprocessedInput = input;
 	try{
-		while (*unprocessedInput != '\0'){
+		while (++lineNumber <= size){
 			int linePosition = 1;
-			unprocessedInput = trim(unprocessedInput, linePosition);
-			while (*unprocessedInput != '\n' && *unprocessedInput != '\0'){
+			const char* unprocessedInput = trim(input->c_str(), linePosition);
+			while (*unprocessedInput != '\0'){
 				bool hasMatch = false;
 				for (Syntax* syntax : syntaxManager.getFollowupVector(syntaxId)){
 					std::cmatch result;
-					if (std::regex_search(unprocessedInput, result, std::regex(syntax->getRegexPattern()))){
+					if (std::regex_search(unprocessedInput, result, syntax->getRegexPattern())){
 						hasMatch = true;
 						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), nullptr);
+						std::cout << '\n';
 						if (token->getTokenType() == Name){
 							if (syntaxManager.hasKeyWord(token->getDescription())){
 								throw BadSyntaxException(lineNumber, linePosition);
@@ -54,10 +59,7 @@ void Tokenizer::tokenize(const char* input)
 					throw BadSyntaxException(lineNumber, linePosition);
 				}
 			}
-			if (*unprocessedInput != '\0'){
-				unprocessedInput++;
-				lineNumber++;
-			}
+			input++;
 		}
 	}
 	catch (BadSyntaxException& e){
@@ -67,11 +69,12 @@ void Tokenizer::tokenize(const char* input)
 
 void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level)
 {
+	std::unordered_map<int, Syntax*> map = syntaxManager.getSyntaxMap();
 	if (syntax->getShouldPush()){
 		partnerStack.push(token);
 		level++;
 	}
-	if (syntax->getPartners(syntaxManager.getSyntaxMap()).size() > 0){
+	if (syntax->getPartners(map).size() > 0){
 		Token* stackToken = partnerStack.top();
 		partnerStack.pop();
 		if (token->getTokenType() == TokenType::ClosingBracket){
@@ -80,7 +83,7 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level)
 				partnerStack.pop();
 			}
 		}
-		for (Syntax* partner : syntax->getPartners(syntaxManager.getSyntaxMap())){
+		for (Syntax* partner : syntax->getPartners(map)){
 			if (stackToken->getSyntaxID() == partner->getID()){
 				stackToken->setPartner(token);
 				token->setPartner(stackToken);
@@ -121,17 +124,15 @@ const char* Tokenizer::trim(const char* str, int& lineposition)
 
 int main(){
 	Tokenizer tok;
-	std::ifstream file("test code 1.0.txt", std::ios::in | std::ios::binary| std::ios::ate);
-	const char* input = "";
-	if (file.is_open()){
-		file.seekg(0, std::ios::end);
-		int size = file.tellg();
-		char* temp = new char[size];
-		file.seekg(std::ios::beg);
-		file.read(temp, size);
-		input = temp;
-		file.close();
+	std::string line;
+	std::vector<std::string> lines;
+	std::ifstream file;
+	file.open("test code 1.0.txt");
+	while (std::getline(file, line)){
+		lines.push_back(line);
 	}
-	tok.tokenize("var x = 10");
+	file.close();
+	tok.tokenize(&lines[0], lines.size());
+	std::getchar();
 	return 0;
 }

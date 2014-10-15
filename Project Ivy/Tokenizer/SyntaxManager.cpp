@@ -47,7 +47,7 @@ void SyntaxManager::jsonToSyntaxMap()
 			if (object.Has("reservedKeyWord") && object.Get("reservedKeyWord").ToBool()){
 				reservedKeyWords.push_back(object.Get("regexPattern").ToString());
 			}
-			syntaxMap[id] = new Syntax(id, regexPattern, tokenDictionary[tokenType], partners,
+			syntaxMap[id] = new Syntax(id, std::regex(regexPattern), tokenDictionary[tokenType], partners,
 				possibleFollowUps, shouldPush);
 		}
 		fillSyntaxList();

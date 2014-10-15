@@ -52,12 +52,3 @@ function _testFunction2()
 		y--;
 	}
 }
-
-function testFunction3(a, b, _c)
-{
-	for (var i = 10; i > a; i--)
-	{
-		b = b - _c;
-	}
-	return a + b * _c;
-}

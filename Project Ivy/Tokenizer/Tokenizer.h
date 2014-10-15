@@ -10,6 +10,7 @@ class Tokenizer
 public:
 	Tokenizer(void);
 	virtual ~Tokenizer(void);
+	void tokenize(std::string* input, int size);
 	void tokenize(const char* input);
 	std::list<Token*> getTokenList();
 private:
