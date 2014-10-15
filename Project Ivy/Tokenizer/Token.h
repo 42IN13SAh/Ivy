@@ -5,8 +5,6 @@
 class Token
 {
 public:
-
-	Token();
 	Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner);
 	virtual ~Token();
 	int getLineNumber();

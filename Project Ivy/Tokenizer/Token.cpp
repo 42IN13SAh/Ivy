@@ -1,11 +1,5 @@
 #include "Token.h"
 
-// Constructors
-Token::Token()
-{
-
-}
-
 Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner)
 {
 	this->syntaxID = syntaxID;

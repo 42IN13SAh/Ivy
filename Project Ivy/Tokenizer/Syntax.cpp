@@ -1,11 +1,6 @@
 #include "Syntax.h"
 
-Syntax::Syntax()
-{
-
-}
-
-Syntax::Syntax(int id, std::string regexPattern, TokenType tokenType, std::vector<int> partnerIds,
+Syntax::Syntax(int id, std::regex regexPattern, TokenType tokenType, std::vector<int> partnerIds,
 	std::vector<int> possibleFollowUpIds, bool shouldPush)
 {
 	this->id = id;
@@ -27,7 +22,7 @@ int Syntax::getID()
 	return id;
 }
 
-std::string Syntax::getRegexPattern()
+std::regex Syntax::getRegexPattern()
 {
 	return regexPattern;
 }
