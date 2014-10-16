@@ -11,6 +11,16 @@ SyntaxManager::~SyntaxManager()
 
 }
 
+bool SyntaxManager::hasKeyWord(std::string keyWord)
+{
+	for (int i = 0; i < reservedKeyWords.size(); i++){
+		if (reservedKeyWords[i] == keyWord){
+			return true;
+		}
+	}
+	return false;
+}
+
 void SyntaxManager::jsonToSyntaxMap()
 {
 	try{
@@ -34,7 +44,10 @@ void SyntaxManager::jsonToSyntaxMap()
 				possibleFollowUps.push_back(jsonPossibleFollowUps.Get(i).ToInt());
 			}
 			bool shouldPush = object.Get("shouldPush").ToBool();
-			syntaxMap[id] = new Syntax(id, regexPattern, tokenDictionary[tokenType], partners,
+			if (object.Has("reservedKeyWord") && object.Get("reservedKeyWord").ToBool()){
+				reservedKeyWords.push_back(object.Get("regexPattern").ToString());
+			}
+			syntaxMap[id] = new Syntax(id, std::regex(regexPattern), tokenDictionary[tokenType], partners,
 				possibleFollowUps, shouldPush);
 		}
 		fillSyntaxList();
@@ -78,20 +91,24 @@ void SyntaxManager::initTokenDictionary()
 	tokenDictionary["DO"] = TokenType::Do;
 	tokenDictionary["FOR"] = TokenType::For;
 	tokenDictionary["FOREACH"] = TokenType::ForEach;
-	tokenDictionary["BRACKET"] = TokenType::Bracket;
 	tokenDictionary["STATEMENTOPERATOR"] = TokenType::StatementOperator;
 	tokenDictionary["ASSIGNMENTOPERATOR"] = TokenType::AssignmentOperator;
 	tokenDictionary["MATHOPERATOR"] = TokenType::MathOperator;
 	tokenDictionary["UNDEFINED"] = TokenType::Undefined;
 	tokenDictionary["LINEEND"] = TokenType::LineEnd;
 	tokenDictionary["FUNCTION"] = TokenType::Function;
-	tokenDictionary["FUNCTIONNAME"] = TokenType::FunctionName;
+	tokenDictionary["NAME"] = TokenType::Name;
 	tokenDictionary["VAR"] = TokenType::Var;
-	tokenDictionary["VARNAME"] = TokenType::VarName;
 	tokenDictionary["RETURN"] = TokenType::Return;
 	tokenDictionary["COMMENT"] = TokenType::Comment;
 	tokenDictionary["PARAMETEROPERATOR"] = TokenType::ParameterOperator;
 	tokenDictionary["NUMBER"] = TokenType::Number;
 	tokenDictionary["STRING"] = TokenType::String;
 	tokenDictionary["BOOLEAN"] = TokenType::Boolean;
+	tokenDictionary["OPENPARENTHIS"] = TokenType::OpenParenthesis;
+	tokenDictionary["CLOSINGPARENTHIS"] = TokenType::ClosingParenthesis;
+	tokenDictionary["OPENBRACKET"] = TokenType::OpenBracket;
+	tokenDictionary["CLOSINGBRACKET"] = TokenType::ClosingBracket;
+	tokenDictionary["OPENSQUAREBRACKET"] = TokenType::OpenSquareBracket;
+	tokenDictionary["CLOSINGSQUAREBRACKET"] = TokenType::ClosingSquareBracket;
 }

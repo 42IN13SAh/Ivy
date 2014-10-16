@@ -4,9 +4,10 @@
 #include <locale>
 #include <regex>
 #include <iostream>
+#include <fstream>
+#include <chrono>
 #include "Tokenizer.h"
 #include "BadSyntaxException.h"
-
 Tokenizer::Tokenizer()
 {
 	syntaxManager.jsonToSyntaxMap();
@@ -22,34 +23,40 @@ std::list<Token*> Tokenizer::getTokenList()
 	return tokenList;
 }
 
-void Tokenizer::tokenize(std::string *input, int size)
+void Tokenizer::tokenize(std::string* input, int size)
 {
 	int lineNumber = 0;
 	int syntaxId = -1;
 	int level = 0;
 	try{
 		while (++lineNumber <= size){
-			int linePosition = 0;
-			std::string unprocessedInput = trim(*input);
-			while (unprocessedInput != ""){
+			int linePosition = 1;
+			const char* unprocessedInput = trim(input->c_str(), linePosition);
+			while (*unprocessedInput != '\0'){
 				bool hasMatch = false;
 				for (Syntax* syntax : syntaxManager.getFollowupVector(syntaxId)){
-					std::smatch result;
-					if (std::regex_search(unprocessedInput, result, std::regex(syntax->getRegexPattern()))){
+					std::cmatch result;
+					if (std::regex_search(unprocessedInput, result, syntax->getRegexPattern())){
 						hasMatch = true;
 						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), nullptr);
-						checkIfTokenIsVariableNameOrFunctionNameIfTrueAddToList(token);
+						std::cout << '\n';
+						if (token->getTokenType() == Name){
+							if (syntaxManager.hasKeyWord(token->getDescription())){
+								throw BadSyntaxException(lineNumber, linePosition);
+							}
+						}
 						tokenList.push_back(token);
 						tokenPartnerCheck(syntax, token, level);
 						linePosition += result[0].length();
-						unprocessedInput = trim(unprocessedInput.erase(0, result[0].length()));
+						unprocessedInput += result[0].length();
+						unprocessedInput = trim(unprocessedInput, linePosition);
 						syntaxId = syntax->getID();
 						break;
 					}
 				}
 				if (!hasMatch){
 					Syntax* syntax = syntaxManager.getSyntaxMap()[syntaxId];
-					throw BadSyntaxException(syntax->getRegexPattern(), lineNumber, linePosition);
+					throw BadSyntaxException(lineNumber, linePosition);
 				}
 			}
 			input++;
@@ -60,55 +67,72 @@ void Tokenizer::tokenize(std::string *input, int size)
 	}
 }
 
-void Tokenizer::checkIfTokenIsVariableNameOrFunctionNameIfTrueAddToList(Token* token)
+void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level)
 {
-	if (token->getTokenType() == FunctionName){
-		functionNames.push_back(token->getDescription());
-	}
-	if (token->getTokenType() == VarName){
-		variableNames.push_back(token->getDescription());
-	}
-}
-
-void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int level)
-{
+	std::unordered_map<int, Syntax*> map = syntaxManager.getSyntaxMap();
 	if (syntax->getShouldPush()){
 		partnerStack.push(token);
 		level++;
 	}
-	if (syntax->getPartners(syntaxManager.getSyntaxMap()).size() > 0){
+	if (syntax->getPartners(map).size() > 0){
 		Token* stackToken = partnerStack.top();
 		partnerStack.pop();
-		for (Syntax* partner : syntax->getPartners(syntaxManager.getSyntaxMap())){
+		if (token->getTokenType() == TokenType::ClosingBracket){
+			while (stackToken->getTokenType() == TokenType::If){
+				stackToken = partnerStack.top();
+				partnerStack.pop();
+			}
+		}
+		for (Syntax* partner : syntax->getPartners(map)){
 			if (stackToken->getSyntaxID() == partner->getID()){
 				stackToken->setPartner(token);
 				token->setPartner(stackToken);
+				break;
 			}
 		}
 		level--;
 	}
 }
-// Temporaty trimming code. Will be replaced by the Boost library
-// trim from start
-std::string &Tokenizer::ltrim(std::string &s) {
-	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-	return s;
-}
 
-// trim from end
-std::string &Tokenizer::rtrim(std::string &s) {
-	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
-	return s;
+const char* Tokenizer::trim(const char* str, int& lineposition)
+{
+	const char* end;
+	while (*str == ' ' || *str == '\t'){
+		if (*str == '\t'){
+			lineposition += 4;
+		}
+		else{
+			lineposition++;
+		}
+		str++;
+	}
+	if (*str == 0){
+		return str;
+	}
+	end = str + strlen(str);
+	while (end > str && *end == ' ' || *end == '\t'){
+		if (*str == '\t'){
+			lineposition += 4;
+		}
+		else{
+			lineposition++;
+		}
+		end--;
+	}
+	return str;
 }
-
-// trim from both ends
-std::string &Tokenizer::trim(std::string &s) {
-	return ltrim(rtrim(s));
-}
-
 
 int main(){
 	Tokenizer tok;
-	tok.tokenize(new std::string("var x = 3; function x(); if(x=5)"), 1);
+	std::string line;
+	std::vector<std::string> lines;
+	std::ifstream file;
+	file.open("test code 1.0.txt");
+	while (std::getline(file, line)){
+		lines.push_back(line);
+	}
+	file.close();
+	tok.tokenize(&lines[0], lines.size());
+	std::getchar();
 	return 0;
 }
