@@ -12,10 +12,9 @@ Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::str
 }
 
 // Destructor
-// Likely to have memory leaks.
 Token::~Token()
 {
-	delete partner;
+	
 }
 
 // Public methods

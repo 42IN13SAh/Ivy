@@ -19,5 +19,5 @@ private:
 	std::list<Token*> tokenList;
 	SyntaxManager syntaxManager;
 	bool validateKeyWordIfGoodAddToList(Token* token);
-	void tokenPartnerCheck(Syntax* syntax, Token* token, int& level);
+	void tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int& linenumber, int& lineposition);
 };
