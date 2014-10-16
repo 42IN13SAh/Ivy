@@ -1,6 +1,6 @@
 #include "Syntax.h"
 
-Syntax::Syntax(int id, std::regex regexPattern, TokenType tokenType, std::vector<int> partnerIds,
+Syntax::Syntax(int id, boost::regex regexPattern, TokenType tokenType, std::vector<int> partnerIds,
 	std::vector<int> possibleFollowUpIds, bool shouldPush)
 {
 	this->id = id;
@@ -22,12 +22,12 @@ int Syntax::getID()
 	return id;
 }
 
-std::regex Syntax::getRegexPattern()
+const boost::regex Syntax::getRegexPattern()
 {
 	return regexPattern;
 }
 
-std::vector<Syntax*> Syntax::getPartners(std::unordered_map<int, Syntax*> syntaxMap)
+std::vector<Syntax*> Syntax::getPartners(std::map<int, Syntax*> syntaxMap)
 {
 	if (partners.size() == 0){
 		for (int i = 0; i < partnerIds.size(); i++){
@@ -37,7 +37,7 @@ std::vector<Syntax*> Syntax::getPartners(std::unordered_map<int, Syntax*> syntax
 	return partners;
 }
 
-std::vector<Syntax*> Syntax::getPossibleFollowUps(std::unordered_map<int, Syntax*> syntaxMap)
+std::vector<Syntax*> Syntax::getPossibleFollowUps(std::map<int, Syntax*> syntaxMap)
 {
 	if (possibleFollowUps.size() == 0){
 		for (int i = 0; i < possibleFollowUpIds.size(); i++)

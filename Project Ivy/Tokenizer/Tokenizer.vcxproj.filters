@@ -68,6 +68,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tokens.json" />
+    <None Include="..\..\..\..\..\Desktop\tokens.json" />
   </ItemGroup>
 </Project>

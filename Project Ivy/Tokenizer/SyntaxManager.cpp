@@ -25,11 +25,11 @@ void SyntaxManager::jsonToSyntaxMap()
 {
 	try{
 		Jzon::Array rootNode;
-		Jzon::FileReader::ReadFile("Tokens.json", rootNode);
+		Jzon::FileReader::ReadFile("tokens.json", rootNode);
 		for (int i = 0; i < rootNode.GetCount(); i++){
 			Jzon::Object object = rootNode.Get(i).AsObject();
 			int id = object.Get("id").ToInt();
-			std::string regexPattern = "^(" + object.Get("regexPattern").ToString() + ")";
+			std::string regexPattern = object.Get("regexPattern").ToString();
 			std::string tokenType = object.Get("tokenType").ToString();
 			Jzon::Array jsonPartners = object.Get("partners").AsArray();
 			std::vector<int> partners;
@@ -47,7 +47,7 @@ void SyntaxManager::jsonToSyntaxMap()
 			if (object.Has("reservedKeyWord") && object.Get("reservedKeyWord").ToBool()){
 				reservedKeyWords.push_back(object.Get("regexPattern").ToString());
 			}
-			syntaxMap[id] = new Syntax(id, std::regex(regexPattern), tokenDictionary[tokenType], partners,
+			syntaxMap[id] = new Syntax(id, boost::regex(regexPattern), tokenDictionary[tokenType], partners,
 				possibleFollowUps, shouldPush);
 		}
 		fillSyntaxList();
@@ -77,7 +77,7 @@ std::vector<Syntax*> SyntaxManager::getFollowupVector(int syntaxId)
 }
 
 
-std::unordered_map<int, Syntax*> SyntaxManager::getSyntaxMap()
+std::map<int, Syntax*> SyntaxManager::getSyntaxMap()
 {
 	return syntaxMap;
 }
@@ -105,8 +105,8 @@ void SyntaxManager::initTokenDictionary()
 	tokenDictionary["NUMBER"] = TokenType::Number;
 	tokenDictionary["STRING"] = TokenType::String;
 	tokenDictionary["BOOLEAN"] = TokenType::Boolean;
-	tokenDictionary["OPENPARENTHIS"] = TokenType::OpenParenthesis;
-	tokenDictionary["CLOSINGPARENTHIS"] = TokenType::ClosingParenthesis;
+	tokenDictionary["OPENPARENTHESIS"] = TokenType::OpenParenthesis;
+	tokenDictionary["CLOSINGPARENTHESIS"] = TokenType::ClosingParenthesis;
 	tokenDictionary["OPENBRACKET"] = TokenType::OpenBracket;
 	tokenDictionary["CLOSINGBRACKET"] = TokenType::ClosingBracket;
 	tokenDictionary["OPENSQUAREBRACKET"] = TokenType::OpenSquareBracket;
