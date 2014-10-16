@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
-#include <regex>
 #include <vector>
-#include <unordered_map>
 #include <boost\regex.hpp>
 #include "TokenType.h"
 class Syntax
@@ -13,10 +11,12 @@ public:
 	virtual ~Syntax();
 	int getID();
 	const boost::regex getRegexPattern();
-	std::vector<Syntax*> getPartners(std::map<int, Syntax*> syntaxMap);
-	std::vector<Syntax*> getPossibleFollowUps(std::map<int, Syntax*> syntaxMap);
+	const std::vector<Syntax*> getPartners();
+	const std::vector<Syntax*> getPossibleFollowUps();
 	TokenType getTokenType();
 	bool getShouldPush();
+	void initPartners(std::map<int, Syntax*>& syntaxMap);
+	void initFollowUps(std::map<int, Syntax*>& syntaxMap);
 
 private:
 	int id;
@@ -28,4 +28,16 @@ private:
 	TokenType tokenType;
 	bool shouldPush;
 };
+
+
+
+
+
+
+
+
+
+
+
+
 

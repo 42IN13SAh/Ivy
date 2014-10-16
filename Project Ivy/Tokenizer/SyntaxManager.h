@@ -1,9 +1,9 @@
 #pragma once
-#include <unordered_map>
 #include <vector>
 #include "Jzon.h"
 #include "Syntax.h"
 #include "TokenType.h"
+
 class SyntaxManager
 {
 public:
@@ -11,8 +11,8 @@ public:
 	virtual ~SyntaxManager();
 	void jsonToSyntaxMap();
 	void fillSyntaxList();
-	std::vector<Syntax*> getFollowupVector(int syntaxId);
-	std::map<int, Syntax*> getSyntaxMap();
+	std::vector<Syntax*> getFollowupVector(int& syntaxId);
+	std::map<int, Syntax*>* getSyntaxMap();
 	bool hasKeyWord(std::string keyWord);
 private:
 	std::vector<std::string> reservedKeyWords;

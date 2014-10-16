@@ -14,7 +14,6 @@ Syntax::Syntax(int id, boost::regex regexPattern, TokenType tokenType, std::vect
 
 Syntax::~Syntax()
 {
-
 }
 
 int Syntax::getID()
@@ -27,24 +26,13 @@ const boost::regex Syntax::getRegexPattern()
 	return regexPattern;
 }
 
-std::vector<Syntax*> Syntax::getPartners(std::map<int, Syntax*> syntaxMap)
+const std::vector<Syntax*> Syntax::getPartners()
 {
-	if (partners.size() == 0){
-		for (int i = 0; i < partnerIds.size(); i++){
-			partners.push_back(syntaxMap[partnerIds[i]]);
-		}
-	}
 	return partners;
 }
 
-std::vector<Syntax*> Syntax::getPossibleFollowUps(std::map<int, Syntax*> syntaxMap)
+const std::vector<Syntax*> Syntax::getPossibleFollowUps()
 {
-	if (possibleFollowUps.size() == 0){
-		for (int i = 0; i < possibleFollowUpIds.size(); i++)
-		{
-			possibleFollowUps.push_back(syntaxMap[possibleFollowUpIds[i]]);
-		}
-	}
 	return possibleFollowUps;
 }
 
@@ -58,3 +46,17 @@ bool Syntax::getShouldPush()
 	return shouldPush;
 }
 
+void Syntax::initFollowUps(std::map<int, Syntax*>& syntaxMap)
+{
+	for (int i = 0; i < possibleFollowUpIds.size(); i++)
+	{
+		possibleFollowUps.push_back(syntaxMap[possibleFollowUpIds[i]]);
+	}
+}
+
+void Syntax::initPartners(std::map<int, Syntax*>& syntaxMap)
+{
+	for (int i = 0; i < partnerIds.size(); i++){
+		partners.push_back(syntaxMap[partnerIds[i]]);
+	}
+}

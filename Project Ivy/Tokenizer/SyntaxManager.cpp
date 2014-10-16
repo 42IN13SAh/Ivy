@@ -8,7 +8,9 @@ SyntaxManager::SyntaxManager()
 
 SyntaxManager::~SyntaxManager()
 {
-
+	for each(auto iter in syntaxMap){
+		delete iter.second;
+	}
 }
 
 bool SyntaxManager::hasKeyWord(std::string keyWord)
@@ -61,15 +63,17 @@ void SyntaxManager::fillSyntaxList()
 {
 	for (auto &iter : syntaxMap)
 	{
+		iter.second->initPartners(syntaxMap);
+		iter.second->initFollowUps(syntaxMap);
 		syntaxList.push_back(iter.second);
 	}
 }
 
-std::vector<Syntax*> SyntaxManager::getFollowupVector(int syntaxId)
+std::vector<Syntax*> SyntaxManager::getFollowupVector(int& syntaxId)
 {
 	if (syntaxId != -1)
 	{
-		std::vector<Syntax*> collection = syntaxMap.find(syntaxId)->second->getPossibleFollowUps(syntaxMap);
+		std::vector<Syntax*> collection = syntaxMap.find(syntaxId)->second->getPossibleFollowUps();
 		if (collection.size() != 0)
 			return collection;
 	}
@@ -77,9 +81,9 @@ std::vector<Syntax*> SyntaxManager::getFollowupVector(int syntaxId)
 }
 
 
-std::map<int, Syntax*> SyntaxManager::getSyntaxMap()
+std::map<int, Syntax*>* SyntaxManager::getSyntaxMap()
 {
-	return syntaxMap;
+	return &syntaxMap;
 }
 
 void SyntaxManager::initTokenDictionary()
