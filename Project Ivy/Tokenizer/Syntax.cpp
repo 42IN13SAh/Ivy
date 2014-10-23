@@ -48,7 +48,7 @@ bool Syntax::getShouldPush()
 
 void Syntax::initFollowUps(std::map<int, Syntax*>& syntaxMap)
 {
-	for (int i = 0; i < possibleFollowUpIds.size(); i++)
+	for (size_t i = 0; i < possibleFollowUpIds.size(); i++)
 	{
 		possibleFollowUps.push_back(syntaxMap[possibleFollowUpIds[i]]);
 	}
@@ -56,7 +56,7 @@ void Syntax::initFollowUps(std::map<int, Syntax*>& syntaxMap)
 
 void Syntax::initPartners(std::map<int, Syntax*>& syntaxMap)
 {
-	for (int i = 0; i < partnerIds.size(); i++){
+	for (size_t i = 0; i < partnerIds.size(); i++){
 		partners.push_back(syntaxMap[partnerIds[i]]);
 	}
 }
