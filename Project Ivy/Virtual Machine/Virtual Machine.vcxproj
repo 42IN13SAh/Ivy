@@ -64,6 +64,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Compiler\VirtualMachine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Compiler\VirtualMachine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

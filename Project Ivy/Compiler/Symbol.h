@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <boost/any.hpp>
 
 using namespace std;
 
@@ -11,6 +12,6 @@ public:
 
 private:
 	string name;
-	//boost::any value;
+	boost::any value;
 };
 
