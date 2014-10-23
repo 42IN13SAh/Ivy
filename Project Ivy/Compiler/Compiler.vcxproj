@@ -64,6 +64,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
+    <ClInclude Include="AddCompilerToken.h" />
+    <ClInclude Include="Compiler.h" />
+    <ClInclude Include="CompilerToken.h" />
+    <ClInclude Include="CompilerTokenFactory.h" />
+    <ClInclude Include="DoNothingAction.h" />
+    <ClInclude Include="FunctionCompilerToken.h" />
+    <ClInclude Include="IfCompilerToken.h" />
+    <ClInclude Include="Symbol.h" />
+    <ClInclude Include="SymbolTable.h" />
+    <ClInclude Include="WhileCompilerToken.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="AddCompilerToken.cpp" />
+    <ClCompile Include="Compiler.cpp" />
+    <ClCompile Include="CompilerToken.cpp" />
+    <ClCompile Include="CompilerTokenFactory.cpp" />
+    <ClCompile Include="DoNothingAction.cpp" />
+    <ClCompile Include="FunctionCompilerToken.cpp" />
+    <ClCompile Include="IfCompilerToken.cpp" />
+    <ClCompile Include="Symbol.cpp" />
+    <ClCompile Include="SymbolTable.cpp" />
+    <ClCompile Include="WhileCompilerToken.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
