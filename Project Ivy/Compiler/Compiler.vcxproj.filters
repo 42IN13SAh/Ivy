@@ -13,5 +13,87 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\CompilerTokens">
+      <UniqueIdentifier>{7c2bab4f-ca6c-47df-a762-0bd48eea0e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actions">
+      <UniqueIdentifier>{00dbccf4-2588-450a-8100-6f58fbcedc89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actions">
+      <UniqueIdentifier>{e2629d64-df19-419d-a624-142653d8d52b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CompilerTokens">
+      <UniqueIdentifier>{c65855fa-14dc-4d41-bbae-867414dc5fb9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Compiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerTokenFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="DoNothingAction.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="AddCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="IfCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="WhileCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Compiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompilerTokenFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="DoNothingAction.cpp">
+      <Filter>Source Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="AddCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="CompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="IfCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="WhileCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
