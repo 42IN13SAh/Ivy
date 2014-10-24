@@ -58,7 +58,7 @@
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
     <ClInclude Include="SymbolTable.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

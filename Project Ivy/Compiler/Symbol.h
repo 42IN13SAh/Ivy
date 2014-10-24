@@ -7,8 +7,12 @@ using namespace std;
 class Symbol
 {
 public:
-	Symbol();
+	Symbol(string name, boost::any value);
+	Symbol(string name);
 	~Symbol();
+
+	string getName();
+	void setValue(boost::any value);
 
 private:
 	string name;
