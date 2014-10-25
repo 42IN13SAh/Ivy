@@ -8,5 +8,6 @@ class DoNothingAction
 public:
 	DoNothingAction();
 	~DoNothingAction();
+	Action *getNextAction(VirtualMachine *vm);
 };
 

@@ -1,15 +1,17 @@
 #pragma once
 #include <boost/any.hpp>
 
+class VirtualMachine;
+
 class CompilerToken
 {
 public:
 	CompilerToken();
 	~CompilerToken();
-	bool execute();
+	virtual bool execute(VirtualMachine *vm);
 	boost::any getResult();	
 
-private:
+protected:
 	boost::any left;
 	boost::any right;
 	boost::any result;

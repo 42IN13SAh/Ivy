@@ -1,5 +1,5 @@
 #include "Action.h"
-
+#include "VirtualMachine.h"
 
 Action::Action()
 {
@@ -10,9 +10,9 @@ Action::~Action()
 {
 }
 
-Action* Action::getNextAction()
+Action* Action::getNextAction(VirtualMachine *vm)
 {
-	if (compilerToken.execute())
+	if (compilerToken.execute(vm))
 	{
 		return nextAction;
 	}
