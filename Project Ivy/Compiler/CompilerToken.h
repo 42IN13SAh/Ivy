@@ -1,11 +1,12 @@
 #pragma once
 #include <boost/any.hpp>
+
 class CompilerToken
 {
 public:
 	CompilerToken();
 	~CompilerToken();
-	void execute();
+	bool execute();
 	boost::any getResult();	
 
 private:
