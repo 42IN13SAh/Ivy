@@ -65,7 +65,14 @@ void OperatorCompilerToken::performOperation(boost::any leftValue, boost::any ri
 	switch (operatorType)
 	{
 		case ADD:
-			result = boost::any_cast<int>(leftValue) + boost::any_cast<int>(rightValue);
+			if (leftValue.type() == typeid(string))
+			{
+				result = boost::any_cast<string>(leftValue) + boost::any_cast<string>(rightValue);
+			}
+			else
+			{
+				result = boost::any_cast<int>(leftValue) + boost::any_cast<int>(rightValue);
+			}
 			break;
 
 		case SUBSTRACT:
