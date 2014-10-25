@@ -58,7 +58,10 @@
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
     <ClInclude Include="SymbolTable.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AssignCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +96,9 @@
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="WhileCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
   </ItemGroup>

@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Program Files\Boost;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -67,6 +67,7 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="AddCompilerToken.h" />
+    <ClInclude Include="AssignCompilerToken.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerToken.h" />
     <ClInclude Include="CompilerTokenFactory.h" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="AddCompilerToken.cpp" />
+    <ClCompile Include="AssignCompilerToken.cpp" />
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="CompilerToken.cpp" />
     <ClCompile Include="CompilerTokenFactory.cpp" />

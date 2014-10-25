@@ -12,9 +12,13 @@ public:
 	SymbolTable();
 	~SymbolTable();
 
+	void addSymbolToTable(string name, boost::any value);
+	void addSymbolToTableWithoutValue(string name);
+	void updateExistingSymbol(string name, boost::any value);
+
 private:
 	int level;
 	string functionName;
-	vector<Symbol> symbols;
+	vector<Symbol*> symbols;
 };
 
