@@ -2,15 +2,17 @@
 
 #include "CompilerToken.h"
 
+class VirtualMachine;
+
 class Action
 {
 public:
 	Action();
 	~Action();
 
-	Action *getNextAction();
+	virtual Action *getNextAction(VirtualMachine *vm);
 
-private:
+protected:
 	Action *nextAction;
 	Action *onFalseAction;
 	CompilerToken compilerToken;

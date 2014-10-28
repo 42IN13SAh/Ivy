@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/any.hpp>
-#include "Action.h"
-#include "SymbolTable.h"
+#include "../Compiler/Action.h"
+#include "../Compiler/SymbolTable.h"
 #include <string>
 #include <vector>
 
