@@ -1,5 +1,5 @@
 #include "AssignCompilerToken.h"
-#include "VirtualMachine.h"
+#include "../Virtual Machine/VirtualMachine.h"
 
 AssignCompilerToken::AssignCompilerToken()
 {

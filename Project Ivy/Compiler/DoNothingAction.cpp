@@ -1,5 +1,5 @@
 #include "DoNothingAction.h"
-#include "VirtualMachine.h"
+#include "../Virtual Machine/VirtualMachine.h"
 
 DoNothingAction::DoNothingAction()
 {

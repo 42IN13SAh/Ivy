@@ -1,5 +1,5 @@
 #include "OperatorCompilerToken.h"
-#include "VirtualMachine.h"
+#include "../Virtual Machine/VirtualMachine.h"
 
 OperatorCompilerToken::OperatorCompilerToken()
 {
@@ -43,11 +43,7 @@ bool OperatorCompilerToken::execute(VirtualMachine *vm)
 	}
 
 	//Add may be used by strings and ints, the rest only by ints
-	if (operatorType == ADD && leftValue.type() == typeid(string) && rightValue.type() == typeid(string))
-	{
-		performOperation(leftValue, rightValue);
-	}
-	else if (leftValue.type() == typeid(int) && rightValue.type() == typeid(int))
+	if ((leftValue.type() == typeid(int) && rightValue.type() == typeid(int)) || (operatorType == ADD && leftValue.type() == typeid(string) && rightValue.type() == typeid(string)))
 	{
 		performOperation(leftValue, rightValue);
 	}
