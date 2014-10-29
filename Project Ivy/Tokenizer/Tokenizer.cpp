@@ -12,6 +12,7 @@
 #include <boost\algorithm\string\trim.hpp>
 #include "Tokenizer.h"
 #include "BadSyntaxException.h"
+
 Tokenizer::Tokenizer()
 {
 	syntaxManager.jsonToSyntaxMap();
