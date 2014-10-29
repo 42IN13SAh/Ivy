@@ -1,6 +1,5 @@
 #include "VirtualMachine.h"
 
-
 VirtualMachine::VirtualMachine()
 {
 }
@@ -18,7 +17,7 @@ void VirtualMachine::run(Action *firstAction)
 	{
 		try
 		{
-			action = action->getNextAction();
+			action = action->getNextAction(this);
 			//TODO: set the current scope and symboltable
 		}
 		catch (exception e)
