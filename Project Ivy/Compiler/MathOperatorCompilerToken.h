@@ -1,12 +1,12 @@
 #pragma once
 #include "CompilerToken.h"
 
-class OperatorCompilerToken :
+class MathOperatorCompilerToken :
 	public CompilerToken
 {
 public:
-	OperatorCompilerToken();
-	virtual ~OperatorCompilerToken();
+	MathOperatorCompilerToken();
+	virtual ~MathOperatorCompilerToken();
 	bool execute(VirtualMachine *vm);
 
 	enum OperatorType { ADD, SUBSTRACT, MODULO, MULTIPLY, DIVIDE };
