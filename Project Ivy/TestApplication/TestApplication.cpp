@@ -1,8 +1,8 @@
 #include <fstream>
 
-#include "Tokenizer.h"
-#include "Compiler.h"
-#include "VirtualMachine.h"
+#include "..\Tokenizer\Tokenizer.h"
+#include "..\Compiler\Compiler.h"
+#include "..\Virtual Machine\VirtualMachine.h"
 #include "Jzon.h"
 
 int main(){
