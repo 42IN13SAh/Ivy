@@ -1,6 +1,6 @@
 #include "Token.h"
 
-Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, Token* partner)
+Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, ParentType parentType, Token* partner)
 {
 	this->syntaxID = syntaxID;
 	this->lineNumber = lineNumber;
@@ -8,6 +8,7 @@ Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::str
 	this->level = level;
 	this->description = description;
 	this->tokenType = tokenType;
+	this->parentType = parentType;
 	this->partner = partner;
 }
 
@@ -41,6 +42,10 @@ std::string Token::getDescription()
 TokenType Token::getTokenType()
 {
 	return tokenType;
+}
+
+ParentType Token::getParentType() {
+	return parentType;
 }
 
 Token* Token::getPartner()

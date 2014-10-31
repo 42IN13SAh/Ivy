@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <vector>
 
 #include "CompilerToken.h"
 
@@ -14,7 +13,6 @@ public:
 	~FunctionCompilerToken();
 
 private:
-	//vector<boost::any> data;
 	string functionName;
 };
 

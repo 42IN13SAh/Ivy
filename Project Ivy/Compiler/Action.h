@@ -10,11 +10,13 @@ public:
 	Action();
 	~Action();
 
-	virtual Action *getNextAction(VirtualMachine *vm);
+	void setNextAction(Action*);
+	void setFalseAction(Action*);
+	Action* getNextAction();
 
 protected:
-	Action *nextAction;
-	Action *onFalseAction;
+	Action* nextAction;
+	Action* onFalseAction;
 	CompilerToken compilerToken;
 };
 

@@ -4,6 +4,7 @@
 SyntaxManager::SyntaxManager()
 {
 	initTokenDictionary();
+	initParentDictionary();
 }
 
 SyntaxManager::~SyntaxManager()
@@ -33,6 +34,7 @@ void SyntaxManager::jsonToSyntaxMap()
 			int id = object.Get("id").ToInt();
 			std::string regexPattern = object.Get("regexPattern").ToString();
 			std::string tokenType = object.Get("tokenType").ToString();
+			std::string parentType = (object.Has("parentType")) ? object.Get("parentType").ToString() : "NULL";
 			Jzon::Array jsonPartners = object.Get("partners").AsArray();
 			std::vector<int> partners;
 			for (int i = 0; i < jsonPartners.GetCount(); i++)
@@ -49,7 +51,7 @@ void SyntaxManager::jsonToSyntaxMap()
 			if (object.Has("reservedKeyWord") && object.Get("reservedKeyWord").ToBool()){
 				reservedKeyWords.push_back(object.Get("regexPattern").ToString());
 			}
-			syntaxMap[id] = new Syntax(id, boost::regex(regexPattern), tokenDictionary[tokenType], partners,
+			syntaxMap[id] = new Syntax(id, boost::regex(regexPattern), tokenDictionary[tokenType], parentDictionary[parentType], partners,
 				possibleFollowUps, shouldPush);
 		}
 		fillSyntaxList();
@@ -121,7 +123,7 @@ void SyntaxManager::initTokenDictionary()
 	tokenDictionary["MODULOOPERATOR"] = TokenType::ModuloOperator;
 	tokenDictionary["UNDEFINED"] = TokenType::Undefined;
 	tokenDictionary["LINEEND"] = TokenType::LineEnd;
-	tokenDictionary["FUNCTION"] = TokenType::Funtion;
+	tokenDictionary["FUNCTION"] = TokenType::Function;
 	tokenDictionary["VAR"] = TokenType::Var;
 	tokenDictionary["RETURN"] = TokenType::Return;
 	tokenDictionary["COMMENT"] = TokenType::Comment;
@@ -131,4 +133,11 @@ void SyntaxManager::initTokenDictionary()
 	tokenDictionary["BOOLEANTRUE"] = TokenType::BooleanTrue;
 	tokenDictionary["BOOLEANFALSE"] = TokenType::BooleanFalse;
 	tokenDictionary["NAME"] = TokenType::Name;
+}
+
+void SyntaxManager::initParentDictionary() {
+	parentDictionary["MATHOPERATOR"] = ParentType::MathOperator;
+	parentDictionary["SUBCONDITIONOPERATOR"] = ParentType::SubConditionOperator;
+	parentDictionary["CONDITIONOPERATOR"] = ParentType::ConditionOperator;
+	parentDictionary["NULL"] = ParentType::Null;
 }
