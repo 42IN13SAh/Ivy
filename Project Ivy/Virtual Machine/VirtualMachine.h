@@ -5,6 +5,12 @@
 #include <string>
 #include <vector>
 
+class AssignCompilerToken;
+class ConditionCompilerToken;
+class FunctionCompilerToken;
+class ReturnValueCompilerToken;
+class SubConditionCompilerToken;
+
 class VirtualMachine
 {
 public:
@@ -18,5 +24,11 @@ public:
 private:
 	vector<SymbolTable> symbolTables;
 	SymbolTable currentSymbolTable;
+
+	Action* executeAction(AssignCompilerToken compilerToken);
+	Action* executeAction(ConditionCompilerToken compilerToken);
+	Action* executeAction(FunctionCompilerToken compilerToken);
+	Action* executeAction(ReturnValueCompilerToken compilerToken);
+	Action* executeAction(SubConditionCompilerToken compilerToken);
 };
 

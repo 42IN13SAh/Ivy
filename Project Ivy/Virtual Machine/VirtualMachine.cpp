@@ -1,9 +1,13 @@
 #include "VirtualMachine.h"
+#include "../Compiler/AssignCompilerToken.h"
+#include "../Compiler/ConditionCompilerToken.h"
+#include "../Compiler/FunctionCompilerToken.h"
+#include "../Compiler/ReturnValueCompilerToken.h"
+#include "../Compiler/SubConditionCompilerToken.h"
 
 VirtualMachine::VirtualMachine()
 {
 }
-
 
 VirtualMachine::~VirtualMachine()
 {
@@ -17,8 +21,10 @@ void VirtualMachine::run(Action *firstAction)
 	{
 		try
 		{
-			action = action->getNextAction();
-			//TODO: set the current scope and symboltable
+			//TODO: set the currentsymboltable from the information from the current action
+			//TODO: donothingaction
+
+			//action = executeAction(action->getCompilerToken());
 		}
 		catch (exception e)
 		{
@@ -36,6 +42,37 @@ void VirtualMachine::updateVariable(string name, boost::any value)
 {
 	currentSymbolTable.updateExistingSymbol(name, value);
 }
+
+Action* VirtualMachine::executeAction(AssignCompilerToken compilerToken)
+{
+	//TODO: write this method
+	return nullptr;
+}
+
+Action* VirtualMachine::executeAction(ConditionCompilerToken compilerToken)
+{
+	//TODO: write this method
+	return nullptr;
+}
+
+Action* VirtualMachine::executeAction(FunctionCompilerToken compilerToken)
+{
+	//TODO: write this method
+	return nullptr;
+}
+
+Action* VirtualMachine::executeAction(SubConditionCompilerToken compilerToken)
+{
+	//TODO: write this method
+	return nullptr;
+}
+
+Action* VirtualMachine::executeAction(ReturnValueCompilerToken compilerToken)
+{
+	//TODO: write this methods
+	return nullptr;
+}
+
 //
 //bool MathOperatorCompilerToken::execute(VirtualMachine *vm)
 //{

@@ -52,7 +52,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
