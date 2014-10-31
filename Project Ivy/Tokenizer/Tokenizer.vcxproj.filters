@@ -66,6 +66,9 @@
     <ClInclude Include="BadSyntaxException.h">
       <Filter>Header Files\Custom Exception</Filter>
     </ClInclude>
+    <ClInclude Include="ParentTokenType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tokens.json" />

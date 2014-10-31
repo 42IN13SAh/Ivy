@@ -9,9 +9,3 @@ enum TokenType
 	MultiplyThenAssignOperator, MinusThenAssignOperator, DivideThenAssignOperator, MinusOperator,DivideOperator, MultiplyOperator, 
 	ModuloOperator, Undefined, LineEnd, Function, Var, Return, Comment, ParameterOperator, Number, String, BooleanTrue, BooleanFalse, Name 
 };
-
-enum ParentType {
-	MathOperator, SubConditionOperator, ConditionOperator, Null
-};
-
-

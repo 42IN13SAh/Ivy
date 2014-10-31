@@ -17,7 +17,7 @@ int main(){
 	file.close();
 	tok.tokenize(&lines[0], lines.size());
 
-	Compiler comp;
+	Compiler *comp = new Compiler(tok.getTokenList());
 	//Execute compiler related tasks below
 
 	
