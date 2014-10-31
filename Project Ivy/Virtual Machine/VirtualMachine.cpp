@@ -27,10 +27,6 @@ void VirtualMachine::run(Action *firstAction)
 	}
 }
 
-void VirtualMachine::addVariable(string name, boost::any value)
-{
-	currentSymbolTable.addSymbolToTable(name, value);
-}
 
 void VirtualMachine::updateVariable(string name, boost::any value)
 {
