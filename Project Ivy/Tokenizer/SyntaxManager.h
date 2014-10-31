@@ -3,6 +3,7 @@
 #include "Jzon.h"
 #include "Syntax.h"
 #include "TokenType.h"
+#include "ParentTokenType.h"
 
 class SyntaxManager
 {

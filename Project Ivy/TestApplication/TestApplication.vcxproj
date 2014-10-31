@@ -11,23 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{040BD7E0-B737-4952-82ED-42D66CDDF8EB}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Tokenizer</RootNamespace>
+    <ProjectGuid>{37480992-89A1-4A62-B1F6-EE121E2AC9E5}</ProjectGuid>
+    <RootNamespace>TestApplication</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -39,68 +38,53 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\C++ Boost\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;E:\Applications\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\C++ Boost\boost_1_56_0\stage\lib;C:\boost_1_56_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\C++ Boost\boost_1_56_0\stage\lib;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0\stage\lib;E:\Applications\boost_1_56_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\C++ Boost\boost_1_56_0;C:\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\C++ Boost\boost_1_56_0\stage\lib;C:\boost_1_56_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-    <Text Include="test code 1.0.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h" />
-    <ClInclude Include="BadSyntaxException.h" />
-    <ClInclude Include="ParentTokenType.h" />
-    <ClInclude Include="Syntax.h" />
-    <ClInclude Include="SyntaxManager.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="Tokenizer.h" />
-    <ClInclude Include="TokenType.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BadSyntaxException.cpp" />
     <ClCompile Include="Jzon.cpp" />
-    <ClCompile Include="Syntax.cpp" />
-    <ClCompile Include="SyntaxManager.cpp" />
-    <ClCompile Include="Token.cpp" />
-    <ClCompile Include="Tokenizer.cpp" />
+    <ClCompile Include="TestApplication.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Jzon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Compiler\Compiler.vcxproj">
+      <Project>{ca162487-27cf-465d-80fd-723ba35dd3c7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Tokenizer\Tokenizer.vcxproj">
+      <Project>{040bd7e0-b737-4952-82ed-42d66cddf8eb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Virtual Machine\Virtual Machine.vcxproj">
+      <Project>{0a8f5aa0-9055-4740-89cf-92af7f472149}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test code 1.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tokens.json" />

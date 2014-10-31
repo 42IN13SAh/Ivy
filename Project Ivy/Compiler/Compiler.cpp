@@ -14,6 +14,7 @@ Compiler::~Compiler()
 {
 }
 
+
 void Compiler::compile() {
 	// Init all vars on level 0
 	while (tokenIter != tokenList.end()) {
@@ -116,6 +117,14 @@ void Compiler::compileWhile()
 	lastAction = onFalse;
 }
 
+void Compiler::compileIf() {
+
+}
+
+void Compiler::compileIfElse() {
+
+}
+
 // Return must be RValueCompToken
 ReturnValueCompilerToken* Compiler::compileReturnValue() {
 	bool hasBracketAtStart = (getCurrentToken()->getTokenType() == OpenParenthesis);
@@ -165,3 +174,4 @@ Token* Compiler::getNextToken() { tokenIter = tokenList.erase(tokenIter); return
 Token* Compiler::peekNextToken() { return *tokenIter+1; }
 void Compiler::eraseCurrentToken() { tokenIter = tokenList.erase(tokenIter); }
 void Compiler::resetTokenIter() { tokenIter = tokenList.begin(); }
+

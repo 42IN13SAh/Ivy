@@ -8,6 +8,5 @@ class CompilerToken
 public:
 	CompilerToken();
 	~CompilerToken();
-	virtual bool execute(VirtualMachine *vm);
 };
 
