@@ -19,6 +19,8 @@ private:
 	std::map<int, Syntax*> syntaxMap;
 	std::vector<Syntax*> syntaxList;
 	std::map<std::string, TokenType> tokenDictionary;
+	std::map<std::string, ParentType> parentDictionary;
 	void initTokenDictionary();
+	void initParentDictionary();
 };
 

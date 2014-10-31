@@ -1,21 +1,21 @@
-#include "OperatorCompilerToken.h"
+#include "MathOperatorCompilerToken.h"
 #include "../Virtual Machine/VirtualMachine.h"
 
-OperatorCompilerToken::OperatorCompilerToken()
+MathOperatorCompilerToken::MathOperatorCompilerToken()
 {
 }
 
 
-OperatorCompilerToken::~OperatorCompilerToken()
+MathOperatorCompilerToken::~MathOperatorCompilerToken()
 {
 }
 
-void OperatorCompilerToken::setOperatorType(OperatorType operatorType)
+void MathOperatorCompilerToken::setOperatorType(OperatorType operatorType)
 {
 	this->operatorType = operatorType;
 }
 
-bool OperatorCompilerToken::execute(VirtualMachine *vm)
+bool MathOperatorCompilerToken::execute(VirtualMachine *vm)
 {
 	boost::any leftValue;
 	boost::any rightValue;
@@ -56,7 +56,7 @@ bool OperatorCompilerToken::execute(VirtualMachine *vm)
 	return true;
 }
 
-void OperatorCompilerToken::performOperation(boost::any leftValue, boost::any rightValue)
+void MathOperatorCompilerToken::performOperation(boost::any leftValue, boost::any rightValue)
 {
 	switch (operatorType)
 	{
