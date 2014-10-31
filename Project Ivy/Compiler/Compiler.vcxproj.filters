@@ -48,20 +48,20 @@
     <ClInclude Include="FunctionCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
-    <ClInclude Include="IfCompilerToken.h">
-      <Filter>Header Files\CompilerTokens</Filter>
-    </ClInclude>
-    <ClInclude Include="WhileCompilerToken.h">
-      <Filter>Header Files\CompilerTokens</Filter>
-    </ClInclude>
     <ClInclude Include="SymbolTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssignCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
-    <ClInclude Include="OperatorCompilerToken.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ConditionCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="SubConditionCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="MathOperatorCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,17 +89,17 @@
     <ClCompile Include="FunctionCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
-    <ClCompile Include="IfCompilerToken.cpp">
-      <Filter>Source Files\CompilerTokens</Filter>
-    </ClCompile>
-    <ClCompile Include="WhileCompilerToken.cpp">
-      <Filter>Source Files\CompilerTokens</Filter>
-    </ClCompile>
     <ClCompile Include="AssignCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
-    <ClCompile Include="OperatorCompilerToken.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ConditionCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="SubConditionCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="MathOperatorCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
