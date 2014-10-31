@@ -131,22 +131,22 @@ const char* Tokenizer::trim(const char* str, int& lineposition)
 }
 
 //Uncomment to run tokenizer and test him, remeber to put properties to .exe instead of static .lib and include boost::regex1.56!!!
-int main(){
-	Tokenizer tok;
-	std::string line;
-	std::vector<std::string> lines;
-	std::ifstream file;
-	file.open("test code 1.0.txt");
-	while (std::getline(file, line)){
-		lines.push_back(line);
-	}
-	file.close();
-	auto start_time = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < 100; i++){
-		tok.tokenize(&lines[0], lines.size());
-	}
-	auto end_time = std::chrono::high_resolution_clock::now();
-	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
-	std::getchar();
-	return 0;
-}
+//int main(){
+//	Tokenizer tok;
+//	std::string line;
+//	std::vector<std::string> lines;
+//	std::ifstream file;
+//	file.open("test code 1.0.txt");
+//	while (std::getline(file, line)){
+//		lines.push_back(line);
+//	}
+//	file.close();
+//	auto start_time = std::chrono::high_resolution_clock::now();
+//	for (int i = 0; i < 100; i++){
+//		tok.tokenize(&lines[0], lines.size());
+//	}
+//	auto end_time = std::chrono::high_resolution_clock::now();
+//	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+//	std::getchar();
+//	return 0;
+//}

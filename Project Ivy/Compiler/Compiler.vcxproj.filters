@@ -60,9 +60,6 @@
     <ClInclude Include="SubConditionCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
-    <ClInclude Include="MathOperatorCompilerToken.h">
-      <Filter>Header Files\CompilerTokens</Filter>
-    </ClInclude>
     <ClInclude Include="ReturnValueCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="SubConditionCompilerToken.cpp">
-      <Filter>Source Files\CompilerTokens</Filter>
-    </ClCompile>
-    <ClCompile Include="MathOperatorCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="ReturnValueCompilerToken.cpp">
