@@ -3,6 +3,7 @@
 #include <vector>
 #include <boost\regex.hpp>
 #include "TokenType.h"
+#include "ParentTokenType.h"
 class Syntax
 {
 public:

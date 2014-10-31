@@ -12,6 +12,7 @@
 #include <boost\algorithm\string\trim.hpp>
 #include "Tokenizer.h"
 #include "BadSyntaxException.h"
+
 Tokenizer::Tokenizer()
 {
 	syntaxManager.jsonToSyntaxMap();
@@ -131,7 +132,7 @@ const char* Tokenizer::trim(const char* str, int& lineposition)
 }
 
 //Uncomment to run tokenizer and test him, remeber to put properties to .exe instead of static .lib and include boost::regex1.56!!!
-int main(){
+/*int main(){
 	Tokenizer tok;
 	std::string line;
 	std::vector<std::string> lines;
@@ -149,4 +150,4 @@ int main(){
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 	std::getchar();
 	return 0;
-}
+}*/

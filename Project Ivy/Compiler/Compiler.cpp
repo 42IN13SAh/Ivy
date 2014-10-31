@@ -14,6 +14,7 @@ Compiler::~Compiler()
 {
 }
 
+
 void Compiler::compile() {
 	// Init all vars on level 0
 	compileFirstVars();

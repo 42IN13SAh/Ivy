@@ -37,11 +37,11 @@
     <ClCompile Include="SyntaxManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Jzon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BadSyntaxException.cpp">
       <Filter>Source Files\Custom Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Jzon.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="BadSyntaxException.h">
       <Filter>Header Files\Custom Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="ParentTokenType.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
