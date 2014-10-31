@@ -74,6 +74,7 @@
     <ClInclude Include="DoNothingAction.h" />
     <ClInclude Include="FunctionCompilerToken.h" />
     <ClInclude Include="MathOperatorCompilerToken.h" />
+    <ClInclude Include="ReturnValueCompilerToken.h" />
     <ClInclude Include="SubConditionCompilerToken.h" />
     <ClInclude Include="Symbol.h" />
     <ClInclude Include="SymbolTable.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="DoNothingAction.cpp" />
     <ClCompile Include="FunctionCompilerToken.cpp" />
     <ClCompile Include="MathOperatorCompilerToken.cpp" />
+    <ClCompile Include="ReturnValueCompilerToken.cpp" />
     <ClCompile Include="SubConditionCompilerToken.cpp" />
     <ClCompile Include="Symbol.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
