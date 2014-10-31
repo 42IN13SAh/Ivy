@@ -33,9 +33,6 @@
     <ClInclude Include="Symbol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CompilerTokenFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Action.h">
       <Filter>Header Files\Actions</Filter>
     </ClInclude>
@@ -60,9 +57,6 @@
     <ClInclude Include="SubConditionCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
-    <ClInclude Include="MathOperatorCompilerToken.h">
-      <Filter>Header Files\CompilerTokens</Filter>
-    </ClInclude>
     <ClInclude Include="ReturnValueCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
@@ -75,9 +69,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Symbol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CompilerTokenFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Action.cpp">
@@ -99,9 +90,6 @@
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="SubConditionCompilerToken.cpp">
-      <Filter>Source Files\CompilerTokens</Filter>
-    </ClCompile>
-    <ClCompile Include="MathOperatorCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="ReturnValueCompilerToken.cpp">

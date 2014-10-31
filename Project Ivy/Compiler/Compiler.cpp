@@ -17,16 +17,6 @@ Compiler::~Compiler()
 
 void Compiler::compile() {
 	// Init all vars on level 0
-	compileFirstVars();
-	// Compile all functions
-	while (tokenIter != tokenList.end()) {
-		if (getCurrentToken()->getLevel == 0 && getCurrentToken()->getTokenType() == Function) {
-			compileFunction();
-		}
-	}
-}
-
-void Compiler::compileFirstVars() {
 	while (tokenIter != tokenList.end()) {
 		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == Var)
 			compileStatement();
@@ -35,12 +25,19 @@ void Compiler::compileFirstVars() {
 	}
 
 	resetTokenIter();
+	// Compile all functions
+	while (tokenIter != tokenList.end()) {
+		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == Function)
+			compileFunction();
+		else
+			tokenIter++;
+	}
 }
 
 void Compiler::compileFunction() {
 	// Compile function arguments and name
 
-	// compileMultiStatement
+	// compileCodeBlock
 	compileCodeBlock();
 }
 
@@ -120,11 +117,21 @@ void Compiler::compileWhile()
 	lastAction = onFalse;
 }
 
+void Compiler::compileIf() {
+
+}
+
+void Compiler::compileIfElse() {
+
+}
+
 // Return must be RValueCompToken
-CompilerToken* Compiler::compileReturnValue() {
+ReturnValueCompilerToken* Compiler::compileReturnValue() {
 	bool hasBracketAtStart = (getCurrentToken()->getTokenType() == OpenParenthesis);
 	TokenType endTypes[] = {LineEnd /*, All condition operators */};
 	int endSize = 1;
+
+	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
 
 	while (find(endTypes, endTypes+endSize,getCurrentToken()->getTokenType()) != endTypes+endSize) {
 		switch (getCurrentToken()->getTokenType()) {
@@ -134,6 +141,7 @@ CompilerToken* Compiler::compileReturnValue() {
 				// give rvalue a sum, this = left value
 			} else {
 				// set rvalue result, expecting end of rvalue
+				rt->setSingleResult(getCurrentToken()->getDescription());
 			}
 			break;
 		case Name:
@@ -155,7 +163,7 @@ CompilerToken* Compiler::compileReturnValue() {
 			break;
 		}
 
-		getNextToken();
+		eraseCurrentToken();
 	}
 
 	return nullptr;
@@ -167,8 +175,3 @@ Token* Compiler::peekNextToken() { return *tokenIter+1; }
 void Compiler::eraseCurrentToken() { tokenIter = tokenList.erase(tokenIter); }
 void Compiler::resetTokenIter() { tokenIter = tokenList.begin(); }
 
-//Temporal main function for testing:
-int main(){
-
-	return 0;
-}

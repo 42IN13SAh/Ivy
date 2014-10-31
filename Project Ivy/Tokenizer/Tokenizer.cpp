@@ -132,6 +132,7 @@ const char* Tokenizer::trim(const char* str, int& lineposition)
 }
 
 //Uncomment to run tokenizer and test him, remeber to put properties to .exe instead of static .lib and include boost::regex1.56!!!
+
 /*int main(){
 	Tokenizer tok;
 	std::string line;

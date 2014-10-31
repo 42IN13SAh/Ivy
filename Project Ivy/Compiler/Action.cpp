@@ -1,5 +1,5 @@
 #include "Action.h"
-#include "VirtualMachine.h"
+#include "../Virtual Machine/VirtualMachine.h"
 
 Action::Action()
 {

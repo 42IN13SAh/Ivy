@@ -4,6 +4,7 @@
 #include "SymbolTable.h"
 #include "Action.h"
 #include "DoNothingAction.h"
+#include "ReturnValueCompilerToken.h"
 
 #include "../Tokenizer/Token.h"
 
@@ -33,9 +34,7 @@ private:
 	void compileWhile();
 	void compileIf();
 	void compileIfElse();
-	CompilerToken* compileReturnValue(); // Return must be RValueCompToken
-
-	void compileFirstVars();
+	ReturnValueCompilerToken* compileReturnValue(); // Return must be RValueCompToken
 
 	Token* getCurrentToken();
 	Token* getNextToken();

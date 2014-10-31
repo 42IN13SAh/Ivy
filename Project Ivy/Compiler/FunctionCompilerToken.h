@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
-
+#include <vector>
 #include "CompilerToken.h"
+#include "ReturnValueCompilerToken.h"
 
 using namespace std;
 
@@ -13,6 +14,8 @@ public:
 	~FunctionCompilerToken();
 
 private:
-	string functionName;
+	string name;
+	vector<ReturnValueCompilerToken*> arguments;
+	ReturnValueCompilerToken* returnValue;
 };
 
