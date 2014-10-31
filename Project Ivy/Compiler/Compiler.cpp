@@ -6,7 +6,7 @@ Compiler::Compiler(list<Token*> tokenList)
 	this->tokenList = tokenList;
 	this->firstAction = new DoNothingAction();
 	this->lastAction = firstAction;
-
+	this->symbolTable = new SymbolTable();
 	resetTokenIter();
 }
 
@@ -59,7 +59,7 @@ void Compiler::compileCodeBlock() {
 				break;
 		}
 		if (last == lastAction)
-			eraseCurrentToken();
+			getNextToken();
 	}
 }
 
@@ -68,15 +68,28 @@ void Compiler::compileStatement() {
 	Action* statement = new Action();
 	switch (getCurrentToken()->getTokenType()) {
 	case Var:
-		// Create var, and assignment if '=' is inside the line
-		// Options: Number, String, Sum (math operators), String + String, ConditionLine (Boolean), None (undefined type)
-		// ^ using Var name or Func name ^
+	{
+		std::string name = getNextToken()->getDescription();
+		if (getNextToken()->getTokenType() == AssignmentOperator){
+			AssignCompilerToken* act = new AssignCompilerToken(name, compileReturnValue());
+			statement->setCompilerToken(act);
+		}
+		else{
+			statement = nullptr;
+		}
+		symbolTable->addSymbolToTable(name);
 		break;
+	}
 	case Name:
 		// Check next token, if '(' make function call
 		// else
 		// Check if variable name already exists, create assignment if '='|'+='|'-='|'\='|'*=' is next in line
 		// Do other if ++|-- is next inline, see inc|dec operators, return -> up or down -> assign value
+		if (peekNextToken()->getTokenType() == OpenParenthesis){
+
+		}else{
+
+		}
 		break;
 	case Return:
 		// Check next:
@@ -89,9 +102,11 @@ void Compiler::compileStatement() {
 		// Check if next Name token exists in vars, get var value -> count up or down -> assign -> return
 		break;
 	}
-	lastAction->setNextAction(statement);
-	statement->setNextAction(new DoNothingAction());
-	lastAction = statement->getNextAction();
+	if (statement != nullptr){
+		lastAction->setNextAction(statement);
+		statement->setNextAction(new DoNothingAction());
+		lastAction = statement->getNextAction();
+	}
 }
 
 void Compiler::compileWhile()
@@ -130,48 +145,61 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 	bool hasBracketAtStart = (getCurrentToken()->getTokenType() == OpenParenthesis);
 	TokenType endTypes[] = {LineEnd /*, All condition operators */};
 	int endSize = 1;
-
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
-
 	while (find(endTypes, endTypes+endSize,getCurrentToken()->getTokenType()) != endTypes+endSize) {
-		switch (getCurrentToken()->getTokenType()) {
-		case Number:
-		case String:
-			if (peekNextToken()->getParentType() == MathOperator) {
-				// give rvalue a sum, this = left value
-			} else {
-				// set rvalue result, expecting end of rvalue
-				rt->setSingleResult(getCurrentToken()->getDescription());
-			}
-			break;
-		case Name:
-			// Function or Var, check if exists first
+		if (getCurrentToken()->getTokenType() == Name) {
 			if (peekNextToken()->getTokenType() == OpenParenthesis) {
-				// Function
-				// Get function arg nr and execute compileRValue for each argument
+				rt->addValueToVector(compileFunctionCall());
 			} else {
-				// Var
-				// Get var value and set it in the right spot, see Number and String (make function for this behaviour)
+				rt->addValueToVector(new VarCompilerToken(getCurrentToken()->getDescription()));
 			}
-			break;
-		/*case MathOperators:
-			break;*/
-		case OpenParenthesis:
-			break;
-		case ClosingParenthesis:
-			// Possible end of RValue
-			break;
+		} else if (getCurrentToken()->getParentType() == MathOperator || getCurrentToken()->getTokenType() == OpenParenthesis || getCurrentToken()->getTokenType() == ClosingParenthesis) {
+			switch (getCurrentToken()->getTokenType()) {
+				case OpenParenthesis: case AddOperator: case MinusOperator:
+					rt->pushOperatorToStack(getCurrentToken()->getTokenType());
+					break;
+				case MultiplyOperator: case DivideOperator: case ModuloOperator:
+				{
+					TokenType tmp = rt->peekOperatorStack();
+					if (tmp == MultiplyOperator || tmp == DivideOperator || tmp == ModuloOperator) {
+						rt->addValueToVector(tmp);
+						rt->popOperatorStack();
+					}
+					rt->pushOperatorToStack(getCurrentToken()->getTokenType());
+					break;
+				}
+				case ClosingParenthesis:
+					while (rt->peekOperatorStack() != OpenParenthesis) {
+						rt->addValueToVector(rt->peekOperatorStack());
+						rt->popOperatorStack();
+					}
+					rt->popOperatorStack();
+					break;
+			}
+		} else {
+			rt->addValueToVector(getCurrentToken()->getDescription());
 		}
-
-		eraseCurrentToken();
+		getNextToken();
 	}
-
-	return nullptr;
+	rt->completeRPNVector();
+	return rt;
 }
 
+FunctionCompilerToken* Compiler::compileFunctionCall() {
+	FunctionCompilerToken* fct = new FunctionCompilerToken(getCurrentToken()->getDescription());
+	getNextToken();
+	Token* start = getCurrentToken()->getPartner();
+	getNextToken();
+	while (getCurrentToken()->getPartner() == start && getCurrentToken()->getTokenType() != ClosingParenthesis) {
+		fct->addArgument(compileReturnValue());
+		getNextToken();
+	}
+	return fct;
+}
+
+
 Token* Compiler::getCurrentToken() { return *tokenIter; }
-Token* Compiler::getNextToken() { tokenIter = tokenList.erase(tokenIter); return *tokenIter; }
+Token* Compiler::getNextToken() { return *++tokenIter; }
 Token* Compiler::peekNextToken() { return *tokenIter+1; }
-void Compiler::eraseCurrentToken() { tokenIter = tokenList.erase(tokenIter); }
 void Compiler::resetTokenIter() { tokenIter = tokenList.begin(); }
 

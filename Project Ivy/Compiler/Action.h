@@ -14,9 +14,10 @@ public:
 	void setFalseAction(Action*);
 	Action* getNextAction();
 
-protected:
+	void setCompilerToken(CompilerToken*);
+private:
 	Action* nextAction;
 	Action* onFalseAction;
-	CompilerToken compilerToken;
+	CompilerToken* compilerToken;
 };
 

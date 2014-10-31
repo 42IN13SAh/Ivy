@@ -10,5 +10,25 @@ ReturnValueCompilerToken::~ReturnValueCompilerToken()
 {
 }
 
-void ReturnValueCompilerToken::setSingleResult(boost::any r) { result = r; }
-boost::any ReturnValueCompilerToken::getSingleResult() { return result; }
+void ReturnValueCompilerToken::addValueToVector(boost::any value) { 
+	rpnVector.push_back(value);
+}
+
+void ReturnValueCompilerToken::pushOperatorToStack(TokenType op) { 
+	operatorStack.push(op);
+}
+
+TokenType ReturnValueCompilerToken::peekOperatorStack() {
+	return operatorStack.top();
+}
+
+void ReturnValueCompilerToken::popOperatorStack() {
+	operatorStack.pop();
+}
+
+void ReturnValueCompilerToken::completeRPNVector() {
+	while (!operatorStack.empty()) {
+		addValueToVector(operatorStack.top());
+		operatorStack.pop();
+	}
+}

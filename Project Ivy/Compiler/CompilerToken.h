@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/any.hpp>
 
 class VirtualMachine;
 
