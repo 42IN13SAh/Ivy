@@ -11,7 +11,7 @@ Compiler::~Compiler()
 }
 
 //Temproal main function for testing:
-int main(){
+/*int main(){
 
 	return 0;
-}
+}*/

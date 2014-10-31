@@ -11,8 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CBBA00C0-B9B0-443D-8B49-88A30B64C42B}</ProjectGuid>
-    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{37480992-89A1-4A62-B1F6-EE121E2AC9E5}</ProjectGuid>
     <RootNamespace>TestApplication</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -20,14 +19,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -39,58 +38,56 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>E:\GitHub repository\Ivy\Project Ivy\Virtual Machine;E:\GitHub repository\Ivy\Project Ivy\Compiler;E:\Applications\boost_1_56_0;E:\GitHub repository\Ivy\Project Ivy\Tokenizer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Applications\boost_1_56_0;E:\GitHub repository\Ivy\Project Ivy\Tokenizer;E:\GitHub repository\Ivy\Project Ivy\Compiler;E:\GitHub repository\Ivy\Project Ivy\Virtual Machine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>E:\Applications\boost_1_56_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <ClCompile Include="Jzon.cpp" />
+    <ClCompile Include="TestApplication.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Jzon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Compiler\Compiler.vcxproj">
+      <Project>{ca162487-27cf-465d-80fd-723ba35dd3c7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Tokenizer\Tokenizer.vcxproj">
+      <Project>{040bd7e0-b737-4952-82ed-42d66cddf8eb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Virtual Machine\Virtual Machine.vcxproj">
+      <Project>{0a8f5aa0-9055-4740-89cf-92af7f472149}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Text Include="test code 1.0.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TestApplication.cpp">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\GitHub repository\Ivy\Project Ivy\Compiler;E:\GitHub repository\Ivy\Project Ivy\Virtual Machine;E:\GitHub repository\Ivy\Project Ivy\Tokenizer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
+    <None Include="Tokens.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

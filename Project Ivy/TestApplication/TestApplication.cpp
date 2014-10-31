@@ -1,16 +1,14 @@
-// TestApplication.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
-#include "Tokenizer.h"
 #include <fstream>
 
+#include "Tokenizer.h"
+#include "Compiler.h"
+#include "VirtualMachine.h"
+#include "Jzon.h"
 
-int _tmain(int argc, _TCHAR* argv[])
-{
+int main(){
 	Tokenizer tok;
 	std::string line;
-	std::vector<std::string> lines;
+	std::vector<string> lines;
 	std::ifstream file;
 	file.open("test code 1.0.txt");
 	while (std::getline(file, line)){
@@ -19,7 +17,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	file.close();
 	tok.tokenize(&lines[0], lines.size());
 
+	Compiler comp;
+	//Execute compiler related tasks below
+
+	
+	
+	VirtualMachine vm;
+	//Execute VM related tasks below
+
+
 
 	return 0;
 }
-

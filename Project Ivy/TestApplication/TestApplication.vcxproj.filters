@@ -15,25 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-    <Text Include="test code 1.0.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Jzon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Jzon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test code 1.0.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tokens.json" />
   </ItemGroup>
 </Project>

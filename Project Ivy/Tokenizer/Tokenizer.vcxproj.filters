@@ -37,11 +37,11 @@
     <ClCompile Include="SyntaxManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Jzon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BadSyntaxException.cpp">
       <Filter>Source Files\Custom Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Jzon.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
