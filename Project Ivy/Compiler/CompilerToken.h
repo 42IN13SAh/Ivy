@@ -6,6 +6,6 @@ class CompilerToken
 {
 public:
 	CompilerToken();
-	~CompilerToken();
+	virtual ~CompilerToken();
 };
 

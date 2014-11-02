@@ -61,7 +61,7 @@
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
     <ClInclude Include="VarCompilerToken.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +99,7 @@
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="VarCompilerToken.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

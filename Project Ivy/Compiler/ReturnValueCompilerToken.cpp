@@ -5,7 +5,6 @@ ReturnValueCompilerToken::ReturnValueCompilerToken()
 {
 }
 
-
 ReturnValueCompilerToken::~ReturnValueCompilerToken()
 {
 }
