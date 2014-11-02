@@ -9,7 +9,7 @@ class ReturnValueCompilerToken : public CompilerToken
 {
 public:
 	ReturnValueCompilerToken();
-	~ReturnValueCompilerToken();
+	virtual ~ReturnValueCompilerToken();
 
 	void addValueToVector(boost::any);
 	void pushOperatorToStack(TokenType);

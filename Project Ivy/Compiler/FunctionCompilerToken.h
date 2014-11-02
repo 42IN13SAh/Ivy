@@ -11,7 +11,7 @@ class FunctionCompilerToken :
 {
 public:
 	FunctionCompilerToken(std::string);
-	~FunctionCompilerToken();
+	virtual ~FunctionCompilerToken();
 
 	void setName(string);
 	void addArgument(ReturnValueCompilerToken*);

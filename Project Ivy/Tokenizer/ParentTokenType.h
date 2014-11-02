@@ -1,5 +1,5 @@
 #pragma once
 
-enum ParentType {
+enum class ParentType {
 	MathOperator, SubConditionOperator, ConditionOperator, Null
 };

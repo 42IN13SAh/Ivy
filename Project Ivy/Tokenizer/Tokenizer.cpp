@@ -48,7 +48,7 @@ void Tokenizer::tokenize(std::string* input, int size)
 					if (boost::regex_search(unprocessedInput, result, syntax->getRegexPattern(), boost::match_continuous)){
 						hasMatch = true;
 						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
-						if (token->getTokenType() == Name){
+						if (token->getTokenType() == TokenType::Name){
 							if (syntaxManager.hasKeyWord(token->getDescription())){
 								throw BadSyntaxException(lineNumber, linePosition);
 							}

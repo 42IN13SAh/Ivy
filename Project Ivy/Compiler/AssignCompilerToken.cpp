@@ -1,5 +1,6 @@
 #include "AssignCompilerToken.h"
 #include "../Virtual Machine/VirtualMachine.h"
+#include <iostream>
 
 AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerToken* value)
 {
@@ -9,6 +10,7 @@ AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerTo
 
 AssignCompilerToken::~AssignCompilerToken()
 {
+	//delete value;
 }
 
 std::string AssignCompilerToken::getName() {
