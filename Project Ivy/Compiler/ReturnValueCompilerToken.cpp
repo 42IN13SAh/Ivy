@@ -26,7 +26,7 @@ TokenType ReturnValueCompilerToken::peekOperatorStack() {
 }
 
 void ReturnValueCompilerToken::popOperatorStack() {
-	operatorStack.pop();
+	if(!operatorStack.empty()) operatorStack.pop();
 }
 
 void ReturnValueCompilerToken::completeRPNVector() {

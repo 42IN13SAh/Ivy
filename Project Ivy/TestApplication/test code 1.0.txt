@@ -1,7 +1,7 @@
 var x = 10;
 var y = x + 5;
 
-#var y = 2;
+
 var _testString = "Hallo henk";
 
 y = x + 2;
@@ -10,10 +10,7 @@ y = x / 3;
 y = x * 10;
 y = x % 2;
 
-y += x;
-y -= x;
-y *= x;
-y /= x;
+
 
 y++;
 y--;
@@ -55,4 +52,4 @@ function _testFunction2()
 	{
 		y--;
 	}
-}#
+}

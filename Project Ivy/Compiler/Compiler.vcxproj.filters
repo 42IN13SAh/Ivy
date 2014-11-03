@@ -63,6 +63,9 @@
     <ClInclude Include="VarCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
+    <ClInclude Include="FunctionSymbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Compiler.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="VarCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionSymbol.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

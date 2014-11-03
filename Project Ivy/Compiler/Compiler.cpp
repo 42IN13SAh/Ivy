@@ -39,7 +39,7 @@ void Compiler::compile() {
 
 void Compiler::compileFunction() {
 	// Compile function arguments and name
-	Action* function = new Action();
+	Action* function = new Action(); // startFunction
 	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
 	Token* start = getNextToken();
 	while (getCurrentToken()->getPartner() != start) {
@@ -52,7 +52,8 @@ void Compiler::compileFunction() {
 	function->setCompilerToken(fct);
 	function->setNextAction(new DoNothingAction());
 	// compileCodeBlock
-	compileCodeBlock();
+	compileCodeBlock(); // lastAction = endFunction
+	symbolTable->addFunctionSymbol(new FunctionSymbol(fct->getName(), fct->getArgumentNames().size(), function, lastAction));
 }
 
 void Compiler::compileCodeBlock() {
@@ -213,6 +214,8 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 				rt->addValueToVector(v);
 			}
 		} else if (getCurrentToken()->getTokenType() == TokenType::IncreaseOperator || getCurrentToken()->getTokenType() == TokenType::DecreaseOperator) {
+			// Token is undefined or something, it doesnt say null on the token but the token has invalid fields
+			// bad_memory_alloc
 			VarCompilerToken* v = new VarCompilerToken(peekNextToken()->getDescription());
 			v->setBackOperator(getCurrentToken()->getTokenType());
 			rt->addValueToVector(v);
@@ -233,7 +236,8 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 					break;
 				}
 			case TokenType::ClosingParenthesis:
-				while (rt->peekOperatorStack() != TokenType::OpenParenthesis) {
+				// Inf loop on temp is true
+				while (rt->peekOperatorStack() != TokenType::OpenParenthesis && rt->peekOperatorStack() != TokenType::Null) {
 						rt->addValueToVector(rt->peekOperatorStack());
 						rt->popOperatorStack();
 					}
