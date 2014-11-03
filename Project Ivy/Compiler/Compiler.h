@@ -1,29 +1,34 @@
 #pragma once
 #include <vector>
 #include <list>
+#include <stack>
 #include "SymbolTable.h"
 #include "Action.h"
 #include "DoNothingAction.h"
 #include "ReturnValueCompilerToken.h"
+#include "FunctionCompilerToken.h"
+#include "VarCompilerToken.h"
+#include "AssignCompilerToken.h"
+#include "ConditionCompilerToken.h"
+#include "SubConditionCompilerToken.h"
 
 #include "../Tokenizer/Token.h"
 
-using namespace std;
 class Compiler
 {
 public:
-	Compiler(list<Token*>);
+	Compiler(std::list<Token*>);
 	~Compiler();
 
 	void compile();
+	Action* getFirstAction();
 
 private:
-	list<Token*> tokenList;
+	std::list<Token*> tokenList;
 
 	Action* firstAction;
 	Action* lastAction;
-	vector<SymbolTable> symbolTables;
-
+	SymbolTable* symbolTable;
 	std::list<Token*>::iterator tokenIter;
 	//Token* currentToken;
 
@@ -33,8 +38,12 @@ private:
 	void compileStatement();
 	void compileWhile();
 	void compileIf();
-	void compileIfElse();
+	Action* compileElse();
 	ReturnValueCompilerToken* compileReturnValue(); // Return must be RValueCompToken
+	ConditionCompilerToken* compileCondition();
+	SubConditionCompilerToken* compileSubCondition();
+	FunctionCompilerToken* compileFunctionCall();
+
 
 	Token* getCurrentToken();
 	Token* getNextToken();

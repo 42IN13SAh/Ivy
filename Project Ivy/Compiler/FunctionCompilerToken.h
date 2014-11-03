@@ -10,12 +10,19 @@ class FunctionCompilerToken :
 	public CompilerToken
 {
 public:
-	FunctionCompilerToken();
-	~FunctionCompilerToken();
+	FunctionCompilerToken(std::string);
+	virtual ~FunctionCompilerToken();
+
+	void setName(string);
+	void addArgument(ReturnValueCompilerToken*);
+	void addArgumentName(string);
+	
+	string getName();
+	vector<ReturnValueCompilerToken*> getArguments();
+	vector<string> getArgumentNames();
 
 private:
 	string name;
 	vector<ReturnValueCompilerToken*> arguments;
-	ReturnValueCompilerToken* returnValue;
+	vector<string> argumentNames;
 };
-

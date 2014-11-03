@@ -3,18 +3,18 @@
 #include "CompilerToken.h"
 #include "ReturnValueCompilerToken.h"
 
-using namespace std;
-
 class AssignCompilerToken :
 	public CompilerToken
 {
 public:
-	AssignCompilerToken();
+	AssignCompilerToken(std::string, ReturnValueCompilerToken*);
 	virtual ~AssignCompilerToken();
-	bool execute(VirtualMachine *vm);
+
+	std::string getName();
+	ReturnValueCompilerToken* getReturnValue();
 
 private:
-	string name;
+	std::string name;
 	ReturnValueCompilerToken* value;
 };
 

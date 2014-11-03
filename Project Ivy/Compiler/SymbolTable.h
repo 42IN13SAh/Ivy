@@ -4,7 +4,6 @@
 
 #include "Symbol.h"
 
-using namespace std;
 
 class SymbolTable
 {
@@ -12,13 +11,15 @@ public:
 	SymbolTable();
 	~SymbolTable();
 
-	void addSymbolToTable(string name, boost::any value);
-	void addSymbolToTableWithoutValue(string name);
-	void updateExistingSymbol(string name, boost::any value);
+	void addSymbolToTable(std::string name);
+	void updateExistingSymbol(std::string name, boost::any value);
+
+	bool hasSymbol(std::string);
+
+	int getLevel();
 
 private:
 	int level;
-	string functionName;
-	vector<Symbol*> symbols;
+	std::vector<Symbol*> symbols;
 };
 

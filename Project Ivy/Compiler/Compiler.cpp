@@ -6,19 +6,22 @@ Compiler::Compiler(list<Token*> tokenList)
 	this->tokenList = tokenList;
 	this->firstAction = new DoNothingAction();
 	this->lastAction = firstAction;
-
+	this->symbolTable = new SymbolTable();
 	resetTokenIter();
 }
 
 Compiler::~Compiler()
 {
+	//delete firstAction;
+	//delete lastAction;
+	//delete symbolTable;
 }
 
 
 void Compiler::compile() {
 	// Init all vars on level 0
 	while (tokenIter != tokenList.end()) {
-		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == Var)
+		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == TokenType::Var)
 			compileStatement();
 		else
 			tokenIter++;
@@ -27,7 +30,7 @@ void Compiler::compile() {
 	resetTokenIter();
 	// Compile all functions
 	while (tokenIter != tokenList.end()) {
-		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == Function)
+		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == TokenType::Function)
 			compileFunction();
 		else
 			tokenIter++;
@@ -36,22 +39,31 @@ void Compiler::compile() {
 
 void Compiler::compileFunction() {
 	// Compile function arguments and name
-
+	Action* function = new Action();
+	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
+	Token* start = getNextToken();
+	while (getCurrentToken()->getPartner() != start) {
+		if (getCurrentToken()->getTokenType() == TokenType::Name) {
+			fct->addArgumentName(getCurrentToken()->getDescription());
+		}
+		getNextToken();
+	}
+	getNextToken();
+	function->setCompilerToken(fct);
+	function->setNextAction(new DoNothingAction());
 	// compileCodeBlock
 	compileCodeBlock();
 }
 
 void Compiler::compileCodeBlock() {
-	//Token* startToken = getCurrentToken();
-
 	// Check if token is If or While, else compileStatement
-	while (getCurrentToken()->getTokenType() != ClosingBracket) {
+	while (getCurrentToken()->getTokenType() != TokenType::ClosingBracket) {
 		Action* last = lastAction;
 		switch (getCurrentToken()->getTokenType()) {
-			case WhileStatement:
+		case TokenType::WhileStatement:
 				compileWhile();
 				break;
-			case IfStatement:
+		case TokenType::IfStatement:
 				compileIf();
 				break;
 			default:
@@ -59,7 +71,7 @@ void Compiler::compileCodeBlock() {
 				break;
 		}
 		if (last == lastAction)
-			eraseCurrentToken();
+			getNextToken();
 	}
 }
 
@@ -67,31 +79,60 @@ void Compiler::compileStatement() {
 	// Check start until lineend Token
 	Action* statement = new Action();
 	switch (getCurrentToken()->getTokenType()) {
-	case Var:
-		// Create var, and assignment if '=' is inside the line
-		// Options: Number, String, Sum (math operators), String + String, ConditionLine (Boolean), None (undefined type)
-		// ^ using Var name or Func name ^
-		break;
-	case Name:
-		// Check next token, if '(' make function call
-		// else
-		// Check if variable name already exists, create assignment if '='|'+='|'-='|'\='|'*=' is next in line
-		// Do other if ++|-- is next inline, see inc|dec operators, return -> up or down -> assign value
-		break;
-	case Return:
-		// Check next:
-		// Open '(' Create Condition line, ? can it be a condition without '(' ?
-		// Var name or Func name
-		// See options Var token
-		break;
-	case IncreaseOperator:
-	case DecreaseOperator:
-		// Check if next Name token exists in vars, get var value -> count up or down -> assign -> return
+	case TokenType::Var:
+	{
+		// Set scope for variable/action
+		std::string name = getNextToken()->getDescription();
+		if (getNextToken()->getTokenType() == TokenType::AssignmentOperator){
+			statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
+		} else {
+			statement = nullptr;
+		}
+		symbolTable->addSymbolToTable(name);
 		break;
 	}
-	lastAction->setNextAction(statement);
-	statement->setNextAction(new DoNothingAction());
-	lastAction = statement->getNextAction();
+	case TokenType::Name:
+	{
+		// Check if variable name already exists, create assignment if '='|'+='|'-='|'\='|'*=' is next in line
+		std::string name = getNextToken()->getDescription();
+		if (symbolTable->hasSymbol(name)) {
+			if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis){
+				statement->setCompilerToken(compileFunctionCall());
+			}
+			else {
+				switch (peekNextToken()->getTokenType()) {
+				case TokenType::AssignmentOperator:
+						statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
+						break;
+				case TokenType::AddThenAssignOperator:
+						break;
+				case TokenType::MinusThenAssignOperator:
+						break;
+				case TokenType::DivideThenAssignOperator:
+						break;
+				case TokenType::MultiplyThenAssignOperator:
+						break;
+				case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+						statement->setCompilerToken(compileReturnValue());
+						break;
+				}
+			}
+		}
+		break;
+	}
+	case TokenType::Return:
+		getNextToken();
+		statement->setCompilerToken(compileReturnValue());
+		break;
+	case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+		statement->setCompilerToken(compileReturnValue());
+		break;
+	}
+	if (statement != nullptr && statement->getCompilerToken() != nullptr){
+		lastAction->setNextAction(statement);
+		statement->setNextAction(new DoNothingAction());
+		lastAction = statement->getNextAction();
+	}
 }
 
 void Compiler::compileWhile()
@@ -99,6 +140,7 @@ void Compiler::compileWhile()
 	Action* begin = lastAction;
 	Action* condition = new Action();
 	// Compile condition
+	condition->setCompilerToken(compileCondition());
 	lastAction->setNextAction(condition);
 
 	DoNothingAction* onTrue = new DoNothingAction();
@@ -118,60 +160,138 @@ void Compiler::compileWhile()
 }
 
 void Compiler::compileIf() {
+	Token* start = getCurrentToken();
+	
+	Action* ifAction = new Action();
+	Action* end = new DoNothingAction();
+	getNextToken();
 
+	ifAction->setCompilerToken(compileCondition());
+	ifAction->setNextAction(new DoNothingAction());
+	lastAction = ifAction->getNextAction();
+
+	compileCodeBlock();
+
+	if (start->getPartner()->getTokenType() == TokenType::ElseStatement)
+		ifAction->setFalseAction(compileElse());
+
+	lastAction->setNextAction(end);
+	lastAction = end;
 }
 
-void Compiler::compileIfElse() {
-
+Action* Compiler::compileElse() {
+	DoNothingAction* elseAction = new DoNothingAction();
+	
+	compileCodeBlock();
+	
+	return elseAction;
 }
 
 // Return must be RValueCompToken
 ReturnValueCompilerToken* Compiler::compileReturnValue() {
-	bool hasBracketAtStart = (getCurrentToken()->getTokenType() == OpenParenthesis);
-	TokenType endTypes[] = {LineEnd /*, All condition operators */};
+	bool hasBracketAtStart = (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis);
+	TokenType endTypes[] = { TokenType::LineEnd /*, All condition operators */ };
 	int endSize = 1;
-
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
-
 	while (find(endTypes, endTypes+endSize,getCurrentToken()->getTokenType()) != endTypes+endSize) {
-		switch (getCurrentToken()->getTokenType()) {
-		case Number:
-		case String:
-			if (peekNextToken()->getParentType() == MathOperator) {
-				// give rvalue a sum, this = left value
+		if (getCurrentToken()->getTokenType() == TokenType::Name) {
+			if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis) {
+				rt->addValueToVector(compileFunctionCall());
 			} else {
-				// set rvalue result, expecting end of rvalue
-				rt->setSingleResult(getCurrentToken()->getDescription());
+				VarCompilerToken* v = new VarCompilerToken(getCurrentToken()->getDescription());
+				if (peekNextToken()->getTokenType() == TokenType::IncreaseOperator || peekNextToken()->getTokenType() == TokenType::DecreaseOperator)
+					v->setBackOperator(peekNextToken()->getTokenType());
+				rt->addValueToVector(v);
 			}
-			break;
-		case Name:
-			// Function or Var, check if exists first
-			if (peekNextToken()->getTokenType() == OpenParenthesis) {
-				// Function
-				// Get function arg nr and execute compileRValue for each argument
-			} else {
-				// Var
-				// Get var value and set it in the right spot, see Number and String (make function for this behaviour)
+		} else if (getCurrentToken()->getTokenType() == TokenType::IncreaseOperator || getCurrentToken()->getTokenType() == TokenType::DecreaseOperator) {
+			VarCompilerToken* v = new VarCompilerToken(peekNextToken()->getDescription());
+			v->setBackOperator(getCurrentToken()->getTokenType());
+			rt->addValueToVector(v);
+			getNextToken();
+		} else if (getCurrentToken()->getParentType() == ParentType::MathOperator || getCurrentToken()->getTokenType() == TokenType::OpenParenthesis || getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis) {
+			switch (getCurrentToken()->getTokenType()) {
+			case TokenType::OpenParenthesis: case TokenType::AddOperator: case TokenType::MinusOperator:
+					rt->pushOperatorToStack(getCurrentToken()->getTokenType());
+					break;
+			case TokenType::MultiplyOperator: case TokenType::DivideOperator: case TokenType::ModuloOperator:
+				{
+					TokenType tmp = rt->peekOperatorStack();
+					if (tmp == TokenType::MultiplyOperator || tmp == TokenType::DivideOperator || tmp == TokenType::ModuloOperator) {
+						rt->addValueToVector(tmp);
+						rt->popOperatorStack();
+					}
+					rt->pushOperatorToStack(getCurrentToken()->getTokenType());
+					break;
+				}
+			case TokenType::ClosingParenthesis:
+				while (rt->peekOperatorStack() != TokenType::OpenParenthesis) {
+						rt->addValueToVector(rt->peekOperatorStack());
+						rt->popOperatorStack();
+					}
+					rt->popOperatorStack();
+					break;
 			}
+		} else {
+			rt->addValueToVector(getCurrentToken()->getDescription());
+		}
+		getNextToken();
+	}
+	rt->completeRPNVector();
+	return rt;
+}
+
+ConditionCompilerToken* Compiler::compileCondition() {
+	Token* start = nullptr;
+	if (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis)
+		start = getCurrentToken();
+	getNextToken();
+
+	std::vector<TokenType> cOpVector;
+	std::vector<SubConditionCompilerToken*> scVector;
+
+	while (getCurrentToken()->getPartner() != start) {
+		switch (getCurrentToken()->getParentType()) {
+		case ParentType::ConditionOperator:
+			cOpVector.push_back(getCurrentToken()->getTokenType());
 			break;
-		/*case MathOperators:
-			break;*/
-		case OpenParenthesis:
-			break;
-		case ClosingParenthesis:
-			// Possible end of RValue
+		default:
+			scVector.push_back(compileSubCondition());
 			break;
 		}
 
-		eraseCurrentToken();
+		getNextToken();
 	}
-
-	return nullptr;
+	return new ConditionCompilerToken(cOpVector, scVector);
 }
 
+SubConditionCompilerToken* Compiler::compileSubCondition() {
+	SubConditionCompilerToken* sc = new SubConditionCompilerToken();
+	sc->setLeft(compileReturnValue());
+	if (getCurrentToken()->getParentType() == ParentType::SubConditionOperator) {
+		sc->setOperator(getCurrentToken()->getTokenType());
+		getNextToken();
+		sc->setRight(compileReturnValue());
+	}
+
+	return sc;
+}
+
+FunctionCompilerToken* Compiler::compileFunctionCall() {
+	FunctionCompilerToken* fct = new FunctionCompilerToken(getCurrentToken()->getDescription());
+	getNextToken();
+	Token* start = getCurrentToken()->getPartner();
+	getNextToken();
+	while (getCurrentToken()->getPartner() == start && getCurrentToken()->getTokenType() != TokenType::ClosingParenthesis) {
+		fct->addArgument(compileReturnValue());
+		getNextToken();
+	}
+	return fct;
+}
+
+
 Token* Compiler::getCurrentToken() { return *tokenIter; }
-Token* Compiler::getNextToken() { tokenIter = tokenList.erase(tokenIter); return *tokenIter; }
+Token* Compiler::getNextToken() { return *++tokenIter; }
 Token* Compiler::peekNextToken() { return *tokenIter+1; }
-void Compiler::eraseCurrentToken() { tokenIter = tokenList.erase(tokenIter); }
 void Compiler::resetTokenIter() { tokenIter = tokenList.begin(); }
 
+Action* Compiler::getFirstAction() { return firstAction; }

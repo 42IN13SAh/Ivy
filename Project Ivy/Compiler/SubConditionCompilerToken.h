@@ -1,16 +1,22 @@
 #pragma once
 #include "CompilerToken.h"
 #include "ReturnValueCompilerToken.h"
-
-enum SubConditionOperator {GreaterThen, SmallerThen, SmallerEquals, GreaterEquals, Is, Not};
+#include "../Tokenizer/TokenType.h"
 
 class SubConditionCompilerToken : public CompilerToken
 {
 public:
 	SubConditionCompilerToken();
-	~SubConditionCompilerToken();
+	virtual ~SubConditionCompilerToken();
+
+	//enum SubConditionOperator { GreaterThen, SmallerThen, SmallerEquals, GreaterEquals, Is, Not };
+
+	void setLeft(ReturnValueCompilerToken*);
+	void setRight(ReturnValueCompilerToken*);
+	void setOperator(TokenType);
+
 private:
-	SubConditionOperator scOperator;
+	TokenType scOperator;
 	ReturnValueCompilerToken* left;
 	ReturnValueCompilerToken* right;
 };

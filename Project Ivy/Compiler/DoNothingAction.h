@@ -7,7 +7,7 @@ class DoNothingAction
 {
 public:
 	DoNothingAction();
-	~DoNothingAction();
+	virtual ~DoNothingAction();
 	//Action* getNextAction(VirtualMachine* vm);
 };
 

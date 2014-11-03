@@ -60,6 +60,9 @@
     <ClInclude Include="ReturnValueCompilerToken.h">
       <Filter>Header Files\CompilerTokens</Filter>
     </ClInclude>
+    <ClInclude Include="VarCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Compiler.cpp">
@@ -93,6 +96,9 @@
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
     <ClCompile Include="ReturnValueCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="VarCompilerToken.cpp">
       <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
   </ItemGroup>

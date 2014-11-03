@@ -1,23 +1,25 @@
 #pragma once
+#include <stack>
 #include <vector>
 #include "CompilerToken.h"
 #include "boost/any.hpp"
-
-using namespace std;
-
-enum MathOperator { ADD, SUBSTRACT, MODULO, MULTIPLY, DIVIDE };
+#include "../Tokenizer/TokenType.h"
 
 class ReturnValueCompilerToken : public CompilerToken
 {
 public:
 	ReturnValueCompilerToken();
-	~ReturnValueCompilerToken();
+	virtual ~ReturnValueCompilerToken();
 
-	void setSingleResult(boost::any);
-	boost::any getSingleResult();
+	void addValueToVector(boost::any);
+	void pushOperatorToStack(TokenType);
+	TokenType peekOperatorStack();
+	void popOperatorStack();
+
+	void completeRPNVector();
 
 private:
-	//vector<MathOperatorCompilerToken*> nestedResults;
-	boost::any result;
+	std::vector<boost::any> rpnVector;
+	std::stack<TokenType> operatorStack;
 };
 

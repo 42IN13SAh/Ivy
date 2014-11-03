@@ -3,17 +3,16 @@
 #include "CompilerToken.h"
 #include "SubConditionCompilerToken.h"
 
-using namespace std;
-
-enum ConditionOperator {AND, OR};
-
 class ConditionCompilerToken : public CompilerToken
 {
 public:
-	ConditionCompilerToken();
-	~ConditionCompilerToken();
+	ConditionCompilerToken(std::vector<TokenType>, std::vector<SubConditionCompilerToken*>);
+	virtual ~ConditionCompilerToken();
+
+	enum ConditionOperator { AND, OR };
+
 private:
-	ConditionOperator cOperator;
-	vector<SubConditionCompilerToken*> subcons;
+	std::vector<TokenType> cOperatorVector;
+	std::vector<SubConditionCompilerToken*> subcons;
 };
 
