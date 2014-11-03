@@ -1,5 +1,7 @@
 var x = 10;
-var y = 2;
+var y = x + 5;
+
+#var y = 2;
 var _testString = "Hallo henk";
 
 y = x + 2;
@@ -20,6 +22,8 @@ y--;
 
 function testFunction(temp)
 {
+	var z = "String";
+
 	if (temp is true)
 	{
 		return none;
@@ -46,9 +50,9 @@ function testFunction(temp)
 }
 
 function _testFunction2()
-{	
+{
 	while(y is not 5)
 	{
 		y--;
 	}
-}
+}#

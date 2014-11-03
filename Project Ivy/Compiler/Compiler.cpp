@@ -88,7 +88,14 @@ void Compiler::compileStatement() {
 		} else {
 			statement = nullptr;
 		}
-		symbolTable->addSymbolToTable(name);
+
+		//A variable may not be declared twice with the same name
+		if (symbolTable->hasSymbol(name)) {
+			throw new exception; //TODO: better exception handling. 
+		}
+		else {
+			symbolTable->addSymbolToTable(name);
+		}
 		break;
 	}
 	case TokenType::Name:
@@ -190,10 +197,12 @@ Action* Compiler::compileElse() {
 // Return must be RValueCompToken
 ReturnValueCompilerToken* Compiler::compileReturnValue() {
 	bool hasBracketAtStart = (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis);
-	TokenType endTypes[] = { TokenType::LineEnd /*, All condition operators */ };
-	int endSize = 1;
+	//TokenType endTypes[] = { TokenType::LineEnd /*, All condition operators */ };
+	//int endSize = 1;
+
+	//TODO: ++x en x++ werken nog niet!!
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
-	while (find(endTypes, endTypes+endSize,getCurrentToken()->getTokenType()) != endTypes+endSize) {
+	while (getCurrentToken()->getTokenType() != TokenType::LineEnd) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis) {
 				rt->addValueToVector(compileFunctionCall());
@@ -210,10 +219,10 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 			getNextToken();
 		} else if (getCurrentToken()->getParentType() == ParentType::MathOperator || getCurrentToken()->getTokenType() == TokenType::OpenParenthesis || getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis) {
 			switch (getCurrentToken()->getTokenType()) {
-			case TokenType::OpenParenthesis: case TokenType::AddOperator: case TokenType::MinusOperator:
+			case TokenType::OpenParenthesis:
 					rt->pushOperatorToStack(getCurrentToken()->getTokenType());
 					break;
-			case TokenType::MultiplyOperator: case TokenType::DivideOperator: case TokenType::ModuloOperator:
+			case TokenType::MultiplyOperator: case TokenType::DivideOperator: case TokenType::ModuloOperator: case TokenType::AddOperator: case TokenType::MinusOperator:
 				{
 					TokenType tmp = rt->peekOperatorStack();
 					if (tmp == TokenType::MultiplyOperator || tmp == TokenType::DivideOperator || tmp == TokenType::ModuloOperator) {
@@ -231,7 +240,8 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 					rt->popOperatorStack();
 					break;
 			}
-		} else {
+		}
+		else if (getCurrentToken()->getTokenType() != TokenType::AssignmentOperator) {
 			rt->addValueToVector(getCurrentToken()->getDescription());
 		}
 		getNextToken();
@@ -288,10 +298,9 @@ FunctionCompilerToken* Compiler::compileFunctionCall() {
 	return fct;
 }
 
-
 Token* Compiler::getCurrentToken() { return *tokenIter; }
 Token* Compiler::getNextToken() { return *++tokenIter; }
 Token* Compiler::peekNextToken() { return *tokenIter+1; }
 void Compiler::resetTokenIter() { tokenIter = tokenList.begin(); }
-
 Action* Compiler::getFirstAction() { return firstAction; }
+SymbolTable* Compiler::getSymbolTable() { return symbolTable;  }

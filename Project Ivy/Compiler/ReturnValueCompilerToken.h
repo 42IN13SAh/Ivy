@@ -17,6 +17,7 @@ public:
 	void popOperatorStack();
 
 	void completeRPNVector();
+	std::vector<boost::any>* getrpnVector();
 
 private:
 	std::vector<boost::any> rpnVector;

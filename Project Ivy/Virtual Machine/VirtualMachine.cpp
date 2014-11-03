@@ -4,9 +4,16 @@
 #include "../Compiler/FunctionCompilerToken.h"
 #include "../Compiler/ReturnValueCompilerToken.h"
 #include "../Compiler/SubConditionCompilerToken.h"
+#include "../Compiler/VarCompilerToken.h"
+#include <string>
 
 VirtualMachine::VirtualMachine()
 {
+}
+
+VirtualMachine::VirtualMachine(SymbolTable* symbolTable)
+{
+	this->currentSymbolTable = symbolTable;
 }
 
 VirtualMachine::~VirtualMachine()
@@ -24,11 +31,21 @@ void VirtualMachine::run(Action *firstAction)
 			//TODO: set the currentsymboltable from the information from the current action
 			//TODO: donothingaction
 
-			//action = executeAction(action->getCompilerToken());
+			CompilerToken* compilerToken = action->getCompilerToken();
+
+			if (compilerToken == nullptr) //this is DoNothingAction
+			{
+				action = action->getNextAction();
+			}
+			else if (typeid(*compilerToken) == typeid(AssignCompilerToken))
+			{
+				action = executeAction(action, (AssignCompilerToken*)action->getCompilerToken());
+			}
 		}
 		catch (exception e)
 		{
 			//TODO: runtime error handling
+			throw e;
 		}
 	}
 }
@@ -36,129 +53,174 @@ void VirtualMachine::run(Action *firstAction)
 
 void VirtualMachine::updateVariable(string name, boost::any value)
 {
-	currentSymbolTable.updateExistingSymbol(name, value);
+	currentSymbolTable->updateExistingSymbol(name, value);
 }
 
-Action* VirtualMachine::executeAction(AssignCompilerToken compilerToken)
+Action* VirtualMachine::executeAction(Action* action, AssignCompilerToken* compilerToken)
+{
+	//TODO: -=, +=, etc...
+	std::stack<double> resultStack;
+	ReturnValueCompilerToken* returnValueCompilerToken = compilerToken->getReturnValue();
+	vector<boost::any>* rpnVector = returnValueCompilerToken->getrpnVector();
+
+	for (size_t i = 0; i < rpnVector->size(); i++)
+	{
+		boost::any value = rpnVector->at(i);
+
+		if (value.type() == typeid(string))
+		{
+			resultStack.push(atof(boost::any_cast<string>(value).c_str()));
+		}
+		else if (value.type() == typeid(TokenType))
+		{
+			double b = resultStack.top();
+			resultStack.pop();
+			double a = resultStack.top();
+			resultStack.pop();
+
+			switch (boost::any_cast<TokenType>(value))
+			{
+			case TokenType::AddOperator:
+				resultStack.push(a + b);
+				break;
+			case TokenType::MinusOperator:
+				resultStack.push(a - b);
+				break;
+			case TokenType::DivideOperator:
+				resultStack.push(a / b);
+				break;
+			case TokenType::MultiplyOperator:
+				resultStack.push(a * b);
+				break;
+			case TokenType::ModuloOperator:
+				resultStack.push((int)a % (int)b);
+				break;
+			}
+		}
+		else if (value.type() == typeid(VarCompilerToken*))
+		{
+			VarCompilerToken* varCompilerToken = boost::any_cast<VarCompilerToken*>(value);
+
+			executeAction(action, varCompilerToken);
+
+			resultStack.push(boost::any_cast<double>(varCompilerToken->getResult()));
+		}
+		else //it is a function
+		{
+			FunctionCompilerToken* functionCompilerToken = boost::any_cast<FunctionCompilerToken*>(value);
+
+			executeAction(action, functionCompilerToken);
+
+			resultStack.push(boost::any_cast<double>(functionCompilerToken->getResult()));
+		}
+	}
+
+	double result = resultStack.top();
+
+	updateVariable(compilerToken->getName(), result);
+
+	return action->getNextAction();
+}
+
+Action* VirtualMachine::executeAction(Action* action, ConditionCompilerToken* compilerToken)
 {
 	//TODO: write this method
 	return nullptr;
 }
 
-Action* VirtualMachine::executeAction(ConditionCompilerToken compilerToken)
+Action* VirtualMachine::executeAction(Action* action, FunctionCompilerToken* compilerToken)
+{
+	//TODO: write this method, if the function has a return type, do not forget to set the result! SJORS
+
+	return action->getNextAction();
+}
+
+Action* VirtualMachine::executeAction(Action* action, SubConditionCompilerToken* compilerToken)
 {
 	//TODO: write this method
 	return nullptr;
 }
 
-Action* VirtualMachine::executeAction(FunctionCompilerToken compilerToken)
-{
-	//TODO: write this method
-	return nullptr;
-}
-
-Action* VirtualMachine::executeAction(SubConditionCompilerToken compilerToken)
-{
-	//TODO: write this method
-	return nullptr;
-}
-
-Action* VirtualMachine::executeAction(ReturnValueCompilerToken compilerToken)
+Action* VirtualMachine::executeAction(Action* action, ReturnValueCompilerToken* compilerToken)
 {
 	//TODO: write this methods
 	return nullptr;
 }
 
-//
-//bool MathOperatorCompilerToken::execute(VirtualMachine *vm)
-//{
-//	boost::any leftValue;
-//	boost::any rightValue;
-//
-//	if (left.type() == typeid(CompilerToken))
-//	{
-//		CompilerToken leftCompilerToken = boost::any_cast<CompilerToken>(left);
-//		leftCompilerToken.execute(vm);
-//		leftValue = leftCompilerToken.getResult();
-//	}
-//	else
-//	{
-//		leftValue = left;
-//	}
-//
-//	if (right.type() == typeid(CompilerToken))
-//	{
-//		CompilerToken rightCompilerToken = boost::any_cast<CompilerToken>(right);
-//		rightCompilerToken.execute(vm);
-//		rightValue = rightCompilerToken.getResult();
-//	}
-//	else
-//	{
-//		rightValue = left;
-//	}
-//
-//	//Add may be used by strings and ints, the rest only by ints
-//	if ((leftValue.type() == typeid(int) && rightValue.type() == typeid(int)) || (operatorType == ADD && leftValue.type() == typeid(string) && rightValue.type() == typeid(string)))
-//	{
-//		performOperation(leftValue, rightValue);
-//	}
-//	else
-//	{
-//		//TODO: better exception handling
-//		throw new exception; //the left and rightvalue must be ints or strings and both need to be the same type. If this point is reached then that is NOT the case.
-//	}
-//
-//	return true;
-//}
-//
-//void MathOperatorCompilerToken::performOperation(boost::any leftValue, boost::any rightValue)
-//{
-//	switch (operatorType)
-//	{
-//	case ADD:
-//		if (leftValue.type() == typeid(string))
-//		{
-//			result = boost::any_cast<string>(leftValue)+boost::any_cast<string>(rightValue);
-//		}
-//		else
-//		{
-//			result = boost::any_cast<int>(leftValue)+boost::any_cast<int>(rightValue);
-//		}
-//		break;
-//
-//	case SUBSTRACT:
-//		result = boost::any_cast<int>(leftValue)-boost::any_cast<int>(rightValue);
-//		break;
-//
-//	case MULTIPLY:
-//		result = boost::any_cast<int>(leftValue)* boost::any_cast<int>(rightValue);
-//		break;
-//
-//	case MODULO:
-//		result = boost::any_cast<int>(leftValue) % boost::any_cast<int>(rightValue);
-//		break;
-//
-//	case DIVIDE:
-//		result = boost::any_cast<int>(leftValue) / boost::any_cast<int>(rightValue);
-//		break;
-//	}
-//}
+Action* VirtualMachine::executeAction(Action* action, VarCompilerToken* compilerToken)
+{
+	//TODO: use the correct symboltable with the corrosponding action
+	boost::any value = currentSymbolTable->getValue(compilerToken->getName());
 
-//bool AssignCompilerToken::execute(VirtualMachine *vm)
-//{
-//	//the left hand of an assign is always a variable name
-//	std::string name = boost::any_cast<std::string>(left);
-//
-//	if (right.type() == typeid(CompilerToken))
-//	{
-//		CompilerToken rightCompilerToken = boost::any_cast<CompilerToken>(right);
-//		rightCompilerToken.execute(vm);
-//		vm->updateVariable(name, rightCompilerToken.getResult());
-//	}
-//	else
-//	{
-//		vm->updateVariable(name, right);
-//	}
-//
-//	return true;
-//}
+	TokenType frontOperator = compilerToken->getFrontOperator();
+	TokenType backOperator = compilerToken->getBackOperator();
+
+	if (frontOperator != TokenType::Null)
+	{
+		if (frontOperator == TokenType::IncreaseOperator)
+		{
+			if (value.type() == typeid(double))
+			{
+				double result = boost::any_cast<double>(value);
+				result++;
+				updateVariable(compilerToken->getName(), result);
+				compilerToken->setResult(result);
+			}
+			else
+			{
+				throw new exception; //You can only do increase on a number. TODO: better exception handling
+			}
+		}
+		else if (frontOperator == TokenType::DecreaseOperator)
+		{
+			if (value.type() == typeid(double))
+			{
+				double result = boost::any_cast<double>(value);
+				result--;
+				updateVariable(compilerToken->getName(), result);
+				compilerToken->setResult(result);
+			}
+			else
+			{
+				throw new exception; //You can only do decrease on a number. TODO: better exception handling
+			}
+		}
+	}
+	else if (backOperator != TokenType::Null)
+	{
+		if (backOperator == TokenType::IncreaseOperator)
+		{
+			if (value.type() == typeid(double))
+			{
+				double result = boost::any_cast<double>(value);
+				compilerToken->setResult(result);
+				result++;
+				updateVariable(compilerToken->getName(), result);
+			}
+			else
+			{
+				throw new exception; //You can only do increase on a number. TODO: better exception handling
+			}
+		}
+		else if (backOperator == TokenType::DecreaseOperator)
+		{
+			if (value.type() == typeid(double))
+			{
+				double result = boost::any_cast<double>(value);
+				compilerToken->setResult(result);
+				result--;
+				updateVariable(compilerToken->getName(), result);
+			}
+			else
+			{
+				throw new exception; //You can only do decrease on a number. TODO: better exception handling
+			}
+		}
+	}
+	else
+	{
+		compilerToken->setResult(value);
+	}
+
+	return action->getNextAction();
+}

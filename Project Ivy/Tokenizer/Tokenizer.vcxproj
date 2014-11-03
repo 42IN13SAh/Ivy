@@ -82,7 +82,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="test code 1.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h" />
@@ -101,9 +100,6 @@
     <ClCompile Include="SyntaxManager.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tokens.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

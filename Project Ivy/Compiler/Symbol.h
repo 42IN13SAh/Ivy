@@ -12,6 +12,7 @@ public:
 	~Symbol();
 
 	string getName();
+	boost::any getValue();
 	void setValue(boost::any value);
 
 private:

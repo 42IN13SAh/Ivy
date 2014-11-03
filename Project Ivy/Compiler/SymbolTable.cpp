@@ -1,14 +1,19 @@
 #include "SymbolTable.h"
 
-SymbolTable::SymbolTable()
+SymbolTable::SymbolTable(int level, string functionName)
 {
+
 }
 
+SymbolTable::SymbolTable()
+{
+
+}
 
 SymbolTable::~SymbolTable()
 {
 	for each(Symbol* s in symbols) {
-		//delete s;
+		delete s;
 	}
 }
 
@@ -35,6 +40,7 @@ void SymbolTable::updateExistingSymbol(string name, boost::any value)
 		if (symbol->getName() == name)
 		{
 			symbol->setValue(value);
+			return;
 		}
 	}
 
@@ -42,11 +48,23 @@ void SymbolTable::updateExistingSymbol(string name, boost::any value)
 	throw new exception; //TODO: better exception handling
 }
 
-bool SymbolTable::hasSymbol(std::string name) {
+bool SymbolTable::hasSymbol(string name)
+{
 	for each (Symbol* symbol in symbols)
 	{
 		if (symbol->getName() == name)
 			return true;
 	}
 	return false;
+}
+
+boost::any SymbolTable::getValue(string name)
+{
+	for each (Symbol* symbol in symbols)
+	{
+		if (symbol->getName() == name)
+			return symbol->getValue();
+	}
+	
+	throw new exception; //Symbol not found. TODO: better exception handling
 }
