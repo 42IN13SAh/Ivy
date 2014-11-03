@@ -18,7 +18,11 @@ void ReturnValueCompilerToken::pushOperatorToStack(TokenType op) {
 }
 
 TokenType ReturnValueCompilerToken::peekOperatorStack() {
-	return operatorStack.top();
+	if (operatorStack.size() > 1) {
+		return operatorStack.top();
+	}
+
+	return TokenType::Null;
 }
 
 void ReturnValueCompilerToken::popOperatorStack() {
@@ -30,4 +34,8 @@ void ReturnValueCompilerToken::completeRPNVector() {
 		addValueToVector(operatorStack.top());
 		operatorStack.pop();
 	}
+}
+
+std::vector<boost::any>* ReturnValueCompilerToken::getrpnVector() {
+	return &rpnVector;
 }

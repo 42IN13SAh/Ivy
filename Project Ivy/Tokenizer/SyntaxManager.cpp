@@ -34,7 +34,10 @@ void SyntaxManager::jsonToSyntaxMap()
 			int id = object.Get("id").ToInt();
 			std::string regexPattern = object.Get("regexPattern").ToString();
 			std::string tokenType = object.Get("tokenType").ToString();
-			std::string parentType = (object.Has("parentType")) ? object.Get("parentType").ToString() : "NULL";
+			std::string parentType = "NULL";
+			if (object.Has("parentType")) {
+				parentType = object.Get("parentType").ToString();
+			}
 			Jzon::Array jsonPartners = object.Get("partners").AsArray();
 			std::vector<int> partners;
 			for (int i = 0; i < jsonPartners.GetCount(); i++)

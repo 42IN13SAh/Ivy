@@ -1,6 +1,5 @@
 #include "VarCompilerToken.h"
 
-
 VarCompilerToken::VarCompilerToken(std::string name)
 {
 	this->name = name;
@@ -20,4 +19,27 @@ void VarCompilerToken::setFrontOperator(TokenType o) {
 	this->frontOperator = o;
 }
 
+void VarCompilerToken::setResult(boost::any result)
+{
+	this->result = result;
+}
 
+std::string VarCompilerToken::getName()
+{
+	return name;
+}
+
+boost::any VarCompilerToken::getResult()
+{
+	return result;
+}
+
+TokenType VarCompilerToken::getBackOperator()
+{
+	return this->backOperator;
+}
+
+TokenType VarCompilerToken::getFrontOperator()
+{
+	return this->frontOperator;
+}

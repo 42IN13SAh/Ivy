@@ -5,9 +5,17 @@
 #include <string>
 #include <vector>
 
+class AssignCompilerToken;
+class ConditionCompilerToken;
+class FunctionCompilerToken;
+class ReturnValueCompilerToken;
+class SubConditionCompilerToken;
+class VarCompilerToken;
+
 class VirtualMachine
 {
 public:
+	VirtualMachine(SymbolTable* symbolTable); //Temporary constructor, not the right one yet!!!
 	VirtualMachine();
 	~VirtualMachine();
 
@@ -17,6 +25,13 @@ public:
 
 private:
 	vector<SymbolTable> symbolTables;
-	SymbolTable currentSymbolTable;
+	SymbolTable* currentSymbolTable;
+
+	Action* executeAction(Action* action, AssignCompilerToken* compilerToken);
+	Action* executeAction(Action* action, ConditionCompilerToken* compilerToken);
+	Action* executeAction(Action* action, FunctionCompilerToken* compilerToken);
+	Action* executeAction(Action* action, ReturnValueCompilerToken* compilerToken);
+	Action* executeAction(Action* action, SubConditionCompilerToken* compilerToken);
+	Action* executeAction(Action* action, VarCompilerToken* compilerToken);
 };
 

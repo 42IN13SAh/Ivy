@@ -22,7 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="test code 1.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tokenizer.cpp">
@@ -69,8 +68,5 @@
     <ClInclude Include="ParentTokenType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tokens.json" />
   </ItemGroup>
 </Project>

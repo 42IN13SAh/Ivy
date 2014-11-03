@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <map>
 #include <list>
 #include <stack>
 #include "SymbolTable.h"
@@ -22,6 +23,7 @@ public:
 
 	void compile();
 	Action* getFirstAction();
+	SymbolTable* getSymbolTable();
 
 private:
 	std::list<Token*> tokenList;
@@ -30,6 +32,8 @@ private:
 	Action* lastAction;
 	SymbolTable* symbolTable;
 	std::list<Token*>::iterator tokenIter;
+	std::vector<SymbolTable*> symbolTables;
+
 	//Token* currentToken;
 
 	// private functions for compiling
@@ -50,5 +54,7 @@ private:
 	Token* peekNextToken();
 	void eraseCurrentToken();
 	void resetTokenIter();
+
+	//bool addNewVariable(int level, string functionname, string name);
 };
 

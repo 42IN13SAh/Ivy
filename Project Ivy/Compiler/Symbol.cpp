@@ -24,3 +24,8 @@ void Symbol::setValue(boost::any value)
 {
 	this->value = value;
 }
+
+boost::any Symbol::getValue()
+{
+	return this->value;
+}

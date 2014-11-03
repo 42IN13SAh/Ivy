@@ -38,3 +38,11 @@ vector<ReturnValueCompilerToken*> FunctionCompilerToken::getArguments() {
 vector<string> FunctionCompilerToken::getArgumentNames() {
 	return argumentNames;
 }
+
+void FunctionCompilerToken::setResult(boost::any result) {
+	this->result = result;
+}
+
+boost::any FunctionCompilerToken::getResult() {
+	return this->result;
+}

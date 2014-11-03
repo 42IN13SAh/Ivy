@@ -52,7 +52,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,7 +82,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="test code 1.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h" />
@@ -101,9 +100,6 @@
     <ClCompile Include="SyntaxManager.cpp" />
     <ClCompile Include="Token.cpp" />
     <ClCompile Include="Tokenizer.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tokens.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

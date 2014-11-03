@@ -16,13 +16,16 @@ public:
 	void setName(string);
 	void addArgument(ReturnValueCompilerToken*);
 	void addArgumentName(string);
+	void setResult(boost::any);
 	
 	string getName();
 	vector<ReturnValueCompilerToken*> getArguments();
 	vector<string> getArgumentNames();
+	boost::any getResult();
 
 private:
 	string name;
 	vector<ReturnValueCompilerToken*> arguments;
 	vector<string> argumentNames;
+	boost::any result;
 };

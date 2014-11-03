@@ -30,16 +30,19 @@ int main(){
 
 	Compiler* comp = new Compiler(tok->getTokenList());
 	comp->compile();
+
+	VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
+	vm->run(comp->getFirstAction());
 	
 	delete comp;
 	delete tok;
+	delete vm;
 	/*auto end_time = std::chrono::high_resolution_clock::now();
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 	std::getchar();*/
 
 	//comp->getFirstAction()->getNextAction()->getCompilerToken()->toString();
 	
-	//VirtualMachine vm;
 	//Execute VM related tasks below
 
 	_CrtDumpMemoryLeaks();
