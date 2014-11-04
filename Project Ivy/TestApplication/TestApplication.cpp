@@ -33,6 +33,9 @@ int main(){
 
 	VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
 	vm->run(comp->getFirstAction());
+
+	std::string msg;
+	std::cin >> msg;
 	
 	delete comp;
 	delete tok;

@@ -68,3 +68,19 @@ boost::any SymbolTable::getValue(string name)
 	
 	throw new exception; //Symbol not found. TODO: better exception handling
 }
+
+void SymbolTable::addFunctionSymbol(FunctionSymbol* fs) {
+	if (getFunctionSymbol(fs->getName(), fs->getArgumentNr()) == nullptr) {
+		fSymbols.push_back(fs);
+	} else {
+		throw new exception; // Already exists
+	}
+}
+
+FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) {
+	for each(FunctionSymbol* fs in fSymbols) {
+		if (fs->getName() == name && fs->getArgumentNr() == argNr)
+			return fs;
+	}
+	return nullptr;
+}

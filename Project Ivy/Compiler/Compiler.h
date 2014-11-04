@@ -32,7 +32,7 @@ private:
 	Action* lastAction;
 	SymbolTable* symbolTable;
 	std::list<Token*>::iterator tokenIter;
-	std::vector<SymbolTable*> symbolTables;
+	//std::vector<SymbolTable*> symbolTables;
 
 	//Token* currentToken;
 
