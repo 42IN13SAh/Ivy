@@ -21,7 +21,7 @@ int main(){
 	file.open("test code small.txt");
 	while (std::getline(file, line)){
 		lines.push_back(line);
-		cout << line << endl;
+		std::cout << line << endl;
 	}
 	file.close();
 	//lines.push_back('\0');
