@@ -25,11 +25,11 @@ function testFunction(temp)
 	{
 		return none;
 	}
-	else if (temp is not false)
+	if (temp is not false)
 	{
 		return 3;
 	}
-	else if (y > x)
+	if (y > x)
 	{
 		return true;
 	}

@@ -19,7 +19,7 @@ public:
 	void setResult(boost::any);
 	
 	string getName();
-	vector<ReturnValueCompilerToken*> getArguments();
+	vector<ReturnValueCompilerToken*>& getArguments();
 	vector<string> getArgumentNames();
 	boost::any getResult();
 
