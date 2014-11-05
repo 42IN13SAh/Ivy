@@ -55,6 +55,8 @@ private:
 	void eraseCurrentToken();
 	void resetTokenIter();
 
+	void addInternalFunctions();
+
 	//bool addNewVariable(int level, string functionname, string name);
 };
 

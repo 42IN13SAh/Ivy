@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="test code 1.0.txt" />
+    <Text Include="test code small.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tokens.json" />

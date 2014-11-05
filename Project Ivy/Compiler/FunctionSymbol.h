@@ -5,7 +5,7 @@
 class FunctionSymbol
 {
 public:
-	FunctionSymbol(std::string, int, Action*, Action*);
+	FunctionSymbol(std::string, int, Action*, Action*, bool);
 	~FunctionSymbol();
 
 	Action* getStartAction();
@@ -14,11 +14,14 @@ public:
 	std::string getName();
 	int getArgumentNr();
 
+	bool isInternal();
+
 private:
 	Action* startAction;
 	Action* endAction;
 
 	std::string name;
 	int argNr;
+	bool internal;
 };
 

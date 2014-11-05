@@ -4,6 +4,7 @@
 #include "../Compiler/SymbolTable.h"
 #include <string>
 #include <vector>
+#include <iostream>
 
 class AssignCompilerToken;
 class ConditionCompilerToken;
@@ -24,14 +25,19 @@ public:
 	void updateVariable(string name, boost::any value);
 
 private:
-	vector<SymbolTable> symbolTables;
+	//vector<SymbolTable> symbolTables;
 	SymbolTable* currentSymbolTable;
+	Action* currentAction;
 
-	Action* executeAction(Action* action, AssignCompilerToken* compilerToken);
-	Action* executeAction(Action* action, ConditionCompilerToken* compilerToken);
-	Action* executeAction(Action* action, FunctionCompilerToken* compilerToken);
-	Action* executeAction(Action* action, ReturnValueCompilerToken* compilerToken);
-	Action* executeAction(Action* action, SubConditionCompilerToken* compilerToken);
-	Action* executeAction(Action* action, VarCompilerToken* compilerToken);
+	void executeAction(CompilerToken*);
+	void executeAction(AssignCompilerToken* compilerToken);
+	void executeAction(ConditionCompilerToken* compilerToken);
+	void executeAction(FunctionCompilerToken* compilerToken);
+	void executeAction(SubConditionCompilerToken* compilerToken);
+	void executeAction(VarCompilerToken* compilerToken);
+
+	boost::any executeReturnValue(ReturnValueCompilerToken*);
+
+	void print(boost::any);
 };
 

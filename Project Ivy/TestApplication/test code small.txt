@@ -1,0 +1,4 @@
+var x = 5 + 6 * 5;
+var y = x + 65;
+
+print(y*x+y);
