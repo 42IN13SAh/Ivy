@@ -87,6 +87,8 @@
     <ClInclude Include="..\..\..\..\jsonReader\jsonReader\Jzon.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="ParentTokenType.h" />
+    <ClInclude Include="PartnerNotFoundException.h" />
+    <ClInclude Include="ReservedKeywordException.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="SyntaxManager.h" />
     <ClInclude Include="Token.h" />
@@ -96,6 +98,8 @@
   <ItemGroup>
     <ClCompile Include="BadSyntaxException.cpp" />
     <ClCompile Include="Jzon.cpp" />
+    <ClCompile Include="PartnerNotFoundException.cpp" />
+    <ClCompile Include="ReservedKeywordException.cpp" />
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="SyntaxManager.cpp" />
     <ClCompile Include="Token.cpp" />

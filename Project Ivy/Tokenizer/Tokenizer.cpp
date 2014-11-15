@@ -12,6 +12,8 @@
 #include <boost\algorithm\string\trim.hpp>
 #include "Tokenizer.h"
 #include "BadSyntaxException.h"
+#include "PartnerNotFoundException.h"
+#include "ReservedKeywordException.h"
 
 Tokenizer::Tokenizer()
 {
@@ -32,8 +34,7 @@ std::list<Token*> Tokenizer::getTokenList()
 }
 
 void Tokenizer::tokenize(std::string* input, int size)
-{
-	
+{	
 	int lineNumber = 0;
 	int syntaxId = -1;
 	int level = 0;
@@ -50,7 +51,7 @@ void Tokenizer::tokenize(std::string* input, int size)
 						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
 						if (token->getTokenType() == TokenType::Name){
 							if (syntaxManager.hasKeyWord(token->getDescription())){
-								throw BadSyntaxException(lineNumber, linePosition);
+								throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
 							}
 						}
 						tokenList.push_back(token);
@@ -82,7 +83,7 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 	}
 	if (syntax->getPartners().size() > 0){
 		if (partnerStack.size() == 0){
-			throw BadSyntaxException(linenumber, lineposition);
+			throw PartnerNotFoundException(token->getDescription(), linenumber, lineposition);
 		}
 		Token* stackToken = partnerStack.top();
 		partnerStack.pop();
