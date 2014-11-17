@@ -13,11 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Custom Exception">
-      <UniqueIdentifier>{ff251fba-b787-4e0e-bfb9-ec8ec4bed82d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Custom Exception">
+    <Filter Include="Header Files\Custom Exceptions">
       <UniqueIdentifier>{54d70d33-7880-45d7-9d0b-bc4f543b5f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Custom Exceptions">
+      <UniqueIdentifier>{ff251fba-b787-4e0e-bfb9-ec8ec4bed82d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,10 +37,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BadSyntaxException.cpp">
-      <Filter>Source Files\Custom Exception</Filter>
+      <Filter>Source Files\Custom Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="Jzon.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PartnerNotFoundException.cpp">
+      <Filter>Source Files\Custom Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ReservedKeywordException.cpp">
+      <Filter>Source Files\Custom Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,10 +69,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BadSyntaxException.h">
-      <Filter>Header Files\Custom Exception</Filter>
+      <Filter>Header Files\Custom Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="ParentTokenType.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PartnerNotFoundException.h">
+      <Filter>Header Files\Custom Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ReservedKeywordException.h">
+      <Filter>Header Files\Custom Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
