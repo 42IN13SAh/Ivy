@@ -14,6 +14,7 @@ public:
 	~SymbolTable();
 
 	void addSymbolToTable(std::string name);
+	void addSymbolToTable(std::string name, boost::any value);
 	void updateExistingSymbol(std::string name, boost::any value);
 
 	void addFunctionSymbol(FunctionSymbol*);

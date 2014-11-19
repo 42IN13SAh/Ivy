@@ -12,17 +12,19 @@
 #include <crtdbg.h>
 
 int main(){
-	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF);
+	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
 	Tokenizer* tok = new Tokenizer();
 	std::string line;
 	std::vector<string> lines;
 	std::ifstream file;
-	file.open("test code 1.0.txt");
+	file.open("test code small.txt");
 	while (std::getline(file, line)){
 		lines.push_back(line);
+		std::cout << line << endl;
 	}
 	file.close();
+	//lines.push_back('\0');
 	
 	//Execute compiler related tasks below
 	//auto start_time = std::chrono::high_resolution_clock::now();
@@ -48,7 +50,6 @@ int main(){
 	
 	//Execute VM related tasks below
 
-	_CrtDumpMemoryLeaks();
 
 	return 0;
 }

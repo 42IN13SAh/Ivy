@@ -36,24 +36,34 @@ private:
 
 	//Token* currentToken;
 
-	// private functions for compiling
+	// main compile methods
 	void compileFunction();
 	void compileCodeBlock();
 	void compileStatement();
 	void compileWhile();
 	void compileIf();
 	Action* compileElse();
-	ReturnValueCompilerToken* compileReturnValue(); // Return must be RValueCompToken
+	// compileReturnValue cannot handle return values that should be compiled as a condition and then returned.
+	// Need to create a private (sub)function that handles this behaviour.
+	ReturnValueCompilerToken* compileReturnValue();
 	ConditionCompilerToken* compileCondition();
 	SubConditionCompilerToken* compileSubCondition();
 	FunctionCompilerToken* compileFunctionCall();
 
+	// submethods for compile methods
+	Action* compileStatementVar(Action*);
+	Action* compileStatementName(Action*);
+	void compileReturnValueName(ReturnValueCompilerToken*);
+	void compileReturnValueIncreaseDecrease(ReturnValueCompilerToken*);
+	void compileReturnValueMath(ReturnValueCompilerToken*);
 
 	Token* getCurrentToken();
 	Token* getNextToken();
 	Token* peekNextToken();
 	void eraseCurrentToken();
 	void resetTokenIter();
+
+	void addInternalFunctions();
 
 	//bool addNewVariable(int level, string functionname, string name);
 };

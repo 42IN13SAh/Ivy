@@ -31,7 +31,7 @@ string FunctionCompilerToken::getName() {
 	return name;
 }
 
-vector<ReturnValueCompilerToken*> FunctionCompilerToken::getArguments() {
+vector<ReturnValueCompilerToken*>& FunctionCompilerToken::getArguments() {
 	return arguments;
 }
 
