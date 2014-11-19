@@ -11,6 +11,8 @@ public:
 
 	enum ConditionOperator { AND, OR };
 
+	virtual ConditionCompilerToken* Get() { return this; }
+
 private:
 	std::vector<TokenType> cOperatorVector;
 	std::vector<SubConditionCompilerToken*> subcons;

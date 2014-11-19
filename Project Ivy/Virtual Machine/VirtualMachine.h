@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+//#include <math.h>
 
 class AssignCompilerToken;
 class ConditionCompilerToken;
@@ -30,13 +31,15 @@ private:
 	Action* currentAction;
 
 	void executeAction(CompilerToken*);
+	void executeAction(ReturnValueCompilerToken* compilerToken);
 	void executeAction(AssignCompilerToken* compilerToken);
-	void executeAction(ConditionCompilerToken* compilerToken);
 	void executeAction(FunctionCompilerToken* compilerToken);
-	void executeAction(SubConditionCompilerToken* compilerToken);
 	void executeAction(VarCompilerToken* compilerToken);
+	void executeAction(ConditionCompilerToken* compilerToken);
+	void executeAction(SubConditionCompilerToken* compilerToken);
 
-	boost::any executeReturnValue(ReturnValueCompilerToken*);
+	boost::any getReturnValue(ReturnValueCompilerToken*);
+	boost::any getVarValue(VarCompilerToken*);
 
 	void print(boost::any);
 };

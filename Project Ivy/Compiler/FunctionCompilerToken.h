@@ -23,6 +23,8 @@ public:
 	vector<string> getArgumentNames();
 	boost::any getResult();
 
+	virtual FunctionCompilerToken* Get() { return this; }
+
 private:
 	string name;
 	vector<ReturnValueCompilerToken*> arguments;

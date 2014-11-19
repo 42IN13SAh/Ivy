@@ -19,6 +19,8 @@ public:
 	void completeRPNVector();
 	std::vector<boost::any>* getrpnVector();
 
+	virtual ReturnValueCompilerToken* Get() { return this; }
+
 private:
 	std::vector<boost::any> rpnVector;
 	std::stack<TokenType> operatorStack;
