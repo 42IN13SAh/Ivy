@@ -18,16 +18,12 @@ int main(){
 	std::string line;
 	std::vector<string> lines;
 	std::ifstream file;
-	file.open("test code small.txt");
+	file.open("test code 1.0.txt");
 	while (std::getline(file, line)){
 		lines.push_back(line);
 		std::cout << line << endl;
 	}
 	file.close();
-	//lines.push_back('\0');
-	
-	//Execute compiler related tasks below
-	//auto start_time = std::chrono::high_resolution_clock::now();
 	tok->tokenize(&lines[0], lines.size());
 
 	Compiler* comp = new Compiler(tok->getTokenList());

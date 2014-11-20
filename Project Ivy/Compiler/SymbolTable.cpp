@@ -57,7 +57,6 @@ void SymbolTable::updateExistingSymbol(string name, boost::any value)
 			return;
 		}
 	}
-
 	//symbol was not found in the symboltable
 	throw new exception; //TODO: better exception handling
 }
@@ -79,7 +78,6 @@ boost::any SymbolTable::getValue(string name)
 		if (symbol->getName() == name)
 			return symbol->getValue();
 	}
-	
 	throw new exception; //Symbol not found. TODO: better exception handling
 }
 

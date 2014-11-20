@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\boost\include\boost-1_56;C:\Program Files\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;D:\local\boost_1_56_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\boost_1_56_0;D:\boost\include\boost-1_56;C:\Program Files\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;D:\local\boost_1_56_0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -44,16 +44,13 @@ void Compiler::compileFunction() {
 	Action* function = new Action(); // startFunction
 	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
 	Token* start = getNextToken();
-
 	while (getCurrentToken()->getPartner() != start) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			fct->addArgumentName(getCurrentToken()->getDescription());
 		}
 		getNextToken();
 	}
-
 	getNextToken();
-
 	function->setCompilerToken(fct);
 	function->setNextAction(new DoNothingAction());
 	// compileCodeBlock

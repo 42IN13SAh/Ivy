@@ -1,17 +1,12 @@
 var x = 10;
 var y = x + 5;
+var _testString = "Hallo henk";#dit is een naam#
 
-
-var _testString = "Hallo henk";
-
-y = x + 2;
+y = x + 2;#dit is een berekening#
 y = x - 3.3;
 y = x / 3;
 y = x * 10;
 y = x % 2;
-
-
-
 y++;
 y--;
 ++y;
