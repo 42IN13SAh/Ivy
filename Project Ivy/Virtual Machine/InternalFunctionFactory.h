@@ -1,39 +1,39 @@
 #pragma once
-#include "IinternalFunction.h"
+#include "IInternalFunction.h"
 #include <memory>
 #include <string>
 #include <map>
 #include <functional>
 
 // Example 
-//std::shared_ptr<IinternalFunction> instance = MyFactory::Instance()->Create("pow");
+//std::shared_ptr<IinternalFunction> instance = InternalFunctionFactory::Instance()->Create("pow");
 //instance->Execute(std::vector<boost::any>{2.0, 3.0});
 
 class Registrar {
 public:
-	Registrar(std::string className, std::function<IinternalFunction*(void)> classFactoryFunction);
+	Registrar(std::string className, std::function<IInternalFunction*(void)> classFactoryFunction);
 };
 
 #define REGISTER_CLASS(NAME, TYPE) static Registrar registrar(NAME, [](void) -> IinternalFunction * { return new TYPE();});
 
 // The factory - implements singleton pattern!
-class MyFactory
+class InternalFunctionFactory
 {
 public:
 	// Get the single instance of the factory
-	static MyFactory * Instance();
+	static InternalFunctionFactory * Instance();
 
 	// register a factory function to create an instance of className
-	void RegisterFactoryFunction(std::string name, std::function<IinternalFunction*(void)> classFactoryFunction);
+	void RegisterFactoryFunction(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction);
 
 	// create an instance of a registered class
-	std::shared_ptr<IinternalFunction> Create(std::string name);
+	std::shared_ptr<IInternalFunction> Create(std::string name);
 
 private:
 	// a private ctor
-	MyFactory(){}
+	InternalFunctionFactory(){}
 
 	// the registry of factory functions
-	std::map<std::string, std::function<IinternalFunction*(void)>> factoryFunctionRegistry;
+	std::map<std::string, std::function<IInternalFunction*(void)>> factoryFunctionRegistry;
 
 };

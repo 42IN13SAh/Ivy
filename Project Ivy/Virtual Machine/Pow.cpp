@@ -2,7 +2,7 @@
 #include <math.h>
 #include <iostream>
 #include <string>
-#include "Factory.h"
+#include "InternalFunctionFactory.h"
 
 REGISTER_CLASS("pow", Pow);
 

@@ -2,7 +2,7 @@
 #include <boost\any.hpp>
 #include <vector>
 
-class IinternalFunction
+class IInternalFunction
 {
 public:
 	virtual void Execute(std::vector<boost::any> arglist) = 0;
