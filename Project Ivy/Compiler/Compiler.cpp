@@ -106,6 +106,10 @@ void Compiler::compileCodeBlock() {
 			case TokenType::IfStatement:
 				compileIf();
 				break;
+			case TokenType::Function:
+				// TODO: better exception handling for this function in function case.
+				throw new exception;
+				break;
 			default:
 				compileStatement();
 				break;

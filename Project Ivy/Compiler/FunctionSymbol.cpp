@@ -1,4 +1,5 @@
 #include "FunctionSymbol.h"
+#include "SymbolTable.h"
 
 FunctionSymbol::FunctionSymbol(std::string name, int argNr, Action* startAction, Action* endAction, bool internal)
 {
@@ -7,6 +8,7 @@ FunctionSymbol::FunctionSymbol(std::string name, int argNr, Action* startAction,
 	this->startAction = startAction;
 	this->endAction = endAction;
 	this->internal = internal;
+	symbolTable = new SymbolTable();
 }
 
 FunctionSymbol::~FunctionSymbol()
