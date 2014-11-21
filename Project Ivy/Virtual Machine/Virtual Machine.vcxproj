@@ -11,9 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Factory.cpp" />
+    <ClCompile Include="Pow.cpp" />
     <ClCompile Include="VirtualMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Factory.h" />
+    <ClInclude Include="IinternalFunction.h" />
+    <ClInclude Include="Pow.h" />
     <ClInclude Include="VirtualMachine.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
