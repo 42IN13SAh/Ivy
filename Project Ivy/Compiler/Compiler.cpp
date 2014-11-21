@@ -4,7 +4,7 @@ Compiler::Compiler(list<Token*> tokenList) {
 	this->tokenList = tokenList;
 	this->firstAction = new DoNothingAction();
 	this->lastAction = firstAction;
-	this->symbolTable = new SymbolTable();
+	this->globalSymbolTable = new SymbolTable();
 	resetTokenIter();
 }
 
@@ -17,17 +17,22 @@ Compiler::~Compiler() {
 /// Main compile function.
 /// Adds internal functions and starts the compiling process.
 void Compiler::compile() {
+	currentSymbolTable = globalSymbolTable;
+
 	addInternalFunctions();
 
-	// Init all vars on level 0
+	// Init all vars and function names on level 0
 	while (tokenIter != tokenList.end()) {
-		if (getCurrentToken()->getLevel() == 0 && (getCurrentToken()->getTokenType() == TokenType::Var || getCurrentToken()->getTokenType() == TokenType::Name))
+		if (getCurrentToken()->getTokenType() == TokenType::Function)
+			addFunctionSignature();
+		else if (getCurrentToken()->getLevel() == 0 && (getCurrentToken()->getTokenType() == TokenType::Var || getCurrentToken()->getTokenType() == TokenType::Name))
 			compileStatement();
 		else
 			tokenIter++;
 	}
 
 	resetTokenIter();
+
 	// Compile all functions
 	while (tokenIter != tokenList.end()) {
 		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == TokenType::Function)
@@ -56,9 +61,35 @@ void Compiler::compileFunction() {
 
 	function->setCompilerToken(fct);
 	function->setNextAction(new DoNothingAction());
-	// compileCodeBlock
+
+	lastAction = function->getNextAction();
+
+	FunctionSymbol* functionSymbol = currentSymbolTable->getFunctionSymbol(fct->getName(), fct->getArgumentNames().size());
+	functionSymbol->setStartAction(function);
+
+	currentSymbolTable = functionSymbol->getSymbolTable();
 	compileCodeBlock(); // lastAction = endFunction
-	symbolTable->addFunctionSymbol(new FunctionSymbol(fct->getName(), fct->getArgumentNames().size(), function, lastAction, false));
+	currentSymbolTable = globalSymbolTable;
+
+	functionSymbol->setEndAction(lastAction);
+}
+
+void Compiler::addFunctionSignature() {
+	std::string name = getNextToken()->getDescription();
+
+	Token* start = getNextToken();
+
+	int params = 0;
+	while (getCurrentToken()->getPartner() != start) {
+		if (getCurrentToken()->getTokenType() == TokenType::Name) {
+			params++;
+		}
+		getNextToken();
+	}
+
+	getNextToken();
+
+	currentSymbolTable->addFunctionSymbol(new FunctionSymbol(name, params, nullptr, nullptr, false));
 }
 
 /// Compiles codeblocks.
@@ -74,6 +105,10 @@ void Compiler::compileCodeBlock() {
 				break;
 			case TokenType::IfStatement:
 				compileIf();
+				break;
+			case TokenType::Function:
+				// TODO: better exception handling for this function in function case.
+				throw new exception;
 				break;
 			default:
 				compileStatement();
@@ -278,10 +313,10 @@ Action* Compiler::compileStatementVar(Action* statement) {
 		statement = nullptr;
 
 	//A variable may not be declared twice with the same name
-	if (symbolTable->hasSymbol(name))
+	if (currentSymbolTable->hasSymbol(name))
 		throw new exception; //TODO: better exception handling. 
 	else
-		symbolTable->addSymbolToTable(name);
+		currentSymbolTable->addSymbolToTable(name);
 
 	return statement;
 }
@@ -294,7 +329,7 @@ Action* Compiler::compileStatementName(Action* statement) {
 
 	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis)
 		statement->setCompilerToken(compileFunctionCall());
-	else if (symbolTable->hasSymbol(name)) {
+	else if (currentSymbolTable->hasSymbol(name)) {
 		switch (peekNextToken()->getTokenType()) {
 		case TokenType::AssignmentOperator:
 			statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
@@ -377,7 +412,7 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
 	// TODO: read internal functions from a file or list
-	symbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
+	currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }
@@ -391,4 +426,4 @@ Token* Compiler::peekNextToken() {
 
 void Compiler::resetTokenIter() { tokenIter = tokenList.begin(); }
 Action* Compiler::getFirstAction() { return firstAction; }
-SymbolTable* Compiler::getSymbolTable() { return symbolTable;  }
+SymbolTable* Compiler::getSymbolTable() { return globalSymbolTable; }
