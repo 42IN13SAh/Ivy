@@ -82,29 +82,8 @@ void VirtualMachine::executeAction(AssignCompilerToken* compilerToken)
 void VirtualMachine::executeAction(FunctionCompilerToken* compilerToken)
 {
 	//TODO: if the function has a return type, do not forget to set the result
-	FunctionSymbol* fs = currentSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
-	if (fs->isInternal()) {
-		// TODO: get function from internal function list, parse arguments and execute
-		if (fs->getName() == "print") {
-			print(getReturnValue(compilerToken->getArguments()[0]));
-		}
-
-		currentAction = currentAction->getNextAction();
-	} else {
-		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
-		std::vector<std::string> argNames = fct->getArgumentNames();
-		for (int i = 0; i < argNames.size(); i++) {
-			addVariable(argNames[i], getReturnValue(compilerToken->getArguments()[i]));
-		}
-		Action* ca = fs->getStartAction();
-		while (ca != fs->getEndAction()) {
-			executeAction(ca->getCompilerToken());
-		}
-
-		currentAction = fs->getEndAction();
-
-		// TODO: remove vars from function
-	}
+	getFunctionValue(compilerToken);
+	
 }
 
 void VirtualMachine::executeAction(ConditionCompilerToken* compilerToken)
@@ -221,66 +200,138 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) {
 	return value;
 }
 
+boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken) {
+	FunctionSymbol* fs = currentSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
+	if (fs->isInternal()) {
+		// TODO: get function from internal function list, parse arguments and execute
+		if (fs->getName() == "print") {
+			print(getReturnValue(compilerToken->getArguments()[0]));
+		}
+
+		currentAction = currentAction->getNextAction();
+		// TODO: Return value from function
+	}
+	else {
+		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
+		std::vector<std::string> argNames = fct->getArgumentNames();
+		for (int i = 0; i < argNames.size(); i++) {
+			addVariable(argNames[i], getReturnValue(compilerToken->getArguments()[i]));
+		}
+		Action* ca = fs->getStartAction();
+		while (ca != fs->getEndAction()) {
+			executeAction(ca->getCompilerToken());
+			// TODO: if compilerToken == returncompilertoken set value as return value
+		}
+
+		currentAction = fs->getEndAction();
+
+		// TODO: remove vars from function
+	}
+	return nullptr;
+}
+
 boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueCompilerToken)
 {
 	//TODO: check and clean this method
-	std::stack<boost::any> resultStack;
-	vector<boost::any>* rpnVector = returnValueCompilerToken->getrpnVector();
+	std::stack<boost::any> rpn = returnValueCompilerToken->getRPN();
 
-	for (size_t i = 0; i < rpnVector->size(); i++)
-	{
-		boost::any value = rpnVector->at(i);
+	while (rpn.size() != 1) {
+		boost::any left = rpn.top();
+		rpn.pop();
+		boost::any right = rpn.top();
+		rpn.pop();
 
-		if (value.type() == typeid(string))
-		{
-			resultStack.push(atof(boost::any_cast<string>(value).c_str()));
+		if (left.type() == typeid(VarCompilerToken))
+			left = getVarValue(boost::any_cast<VarCompilerToken*>(left));
+		else if (left.type() == typeid(FunctionCompilerToken))
+			left = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(left));
+
+		if (right.type() == typeid(VarCompilerToken))
+			right = getVarValue(boost::any_cast<VarCompilerToken*>(right));
+		else if (right.type() == typeid(FunctionCompilerToken))
+			right = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(right));
+
+		TokenType op = boost::any_cast<TokenType>(rpn.top());
+		rpn.pop();
+
+		if (left.type() == typeid(std::string) || right.type() == typeid(std::string)) {
+			std::string l = (left.type() == typeid(std::string)) ? boost::any_cast<std::string>(left) : std::to_string(boost::any_cast<double>(left));
+			std::string r = (right.type() == typeid(std::string)) ? boost::any_cast<std::string>(right) : std::to_string(boost::any_cast<double>(right));
+			if (op == TokenType::AddOperator)
+				rpn.push(l + r);
+			else
+				// cannot use this operator on strings
+				throw exception(); // TODO: Better exception
 		}
-		else if (value.type() == typeid(TokenType))
-		{
-			double b = boost::any_cast<double>(resultStack.top());
-			resultStack.pop();
-			double a = boost::any_cast<double>(resultStack.top());
-			resultStack.pop();
-
-			switch (boost::any_cast<TokenType>(value))
-			{
-			case TokenType::AddOperator:
-				resultStack.push(a + b);
-				break;
-			case TokenType::MinusOperator:
-				resultStack.push(a - b);
-				break;
-			case TokenType::DivideOperator:
-				resultStack.push(a / b);
-				break;
-			case TokenType::MultiplyOperator:
-				resultStack.push(a * b);
-				break;
-			case TokenType::ModuloOperator:
-				resultStack.push((int)a % (int)b);
-				break;
+		else /* if (isdigit(left) && isdigit(right)) */ {
+			double l = boost::any_cast<double>(left);
+			double r = boost::any_cast<double>(right);
+			switch (op) {
+				case TokenType::AddOperator: rpn.push(l + r); break;
+				case TokenType::MinusOperator: rpn.push(l - r); break;
+				case TokenType::DivideOperator: rpn.push(l / r); break;
+				case TokenType::MultiplyOperator: rpn.push(l * r); break;
+				case TokenType::ModuloOperator: rpn.push((int)l % (int)r); break;
 			}
-		}
-		else if (value.type() == typeid(VarCompilerToken*))
-		{
-			VarCompilerToken* varCompilerToken = boost::any_cast<VarCompilerToken*>(value);
-
-			//executeAction(varCompilerToken);
-
-			//resultStack.push(varCompilerToken->getResult());
-			resultStack.push(getVarValue(varCompilerToken));
-		}
-		else //it is a function
-		{
-			FunctionCompilerToken* functionCompilerToken = boost::any_cast<FunctionCompilerToken*>(value);
-
-			executeAction(functionCompilerToken);
-
-			resultStack.push(functionCompilerToken->getResult());
 		}
 	}
 
-	return resultStack.top();
+	return rpn.top();
+
+	//for (size_t i = 0; i < rpnVector.size(); i++)
+	//{
+	//	boost::any value = nullptr;
+
+	//	if (value.type() == typeid(string))
+	//	{
+	//		resultStack.push(atof(boost::any_cast<string>(value).c_str()));
+	//	}
+	//	else if (value.type() == typeid(TokenType))
+	//	{
+	//		double b = boost::any_cast<double>(resultStack.top());
+	//		resultStack.pop();
+	//		double a = boost::any_cast<double>(resultStack.top());
+	//		resultStack.pop();
+
+	//		switch (boost::any_cast<TokenType>(value))
+	//		{
+	//		case TokenType::AddOperator:
+	//			resultStack.push(a + b);
+	//			break;
+	//		case TokenType::MinusOperator:
+	//			resultStack.push(a - b);
+	//			break;
+	//		case TokenType::DivideOperator:
+	//			resultStack.push(a / b);
+	//			break;
+	//		case TokenType::MultiplyOperator:
+	//			resultStack.push(a * b);
+	//			break;
+	//		case TokenType::ModuloOperator:
+	//			resultStack.push((int)a % (int)b);
+	//			break;
+	//		}
+	//	}
+	//	else if (value.type() == typeid(VarCompilerToken*))
+	//	{
+	//		VarCompilerToken* varCompilerToken = boost::any_cast<VarCompilerToken*>(value);
+
+	//		//executeAction(varCompilerToken);
+
+	//		//resultStack.push(varCompilerToken->getResult());
+	//		resultStack.push(getVarValue(varCompilerToken));
+	//	}
+	//	else //it is a function
+	//	{
+	//		FunctionCompilerToken* functionCompilerToken = boost::any_cast<FunctionCompilerToken*>(value);
+
+	//		executeAction(functionCompilerToken);
+
+	//		resultStack.push(functionCompilerToken->getResult());
+	//	}
+	//}
+
+	//return resultStack.top();
 }
 
 

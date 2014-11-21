@@ -40,6 +40,7 @@ private:
 
 	boost::any getReturnValue(ReturnValueCompilerToken*);
 	boost::any getVarValue(VarCompilerToken*);
+	boost::any getFunctionValue(FunctionCompilerToken*);
 
 	void print(boost::any);
 };
