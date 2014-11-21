@@ -1,4 +1,24 @@
-var x = 5 + 6 * 5;#commments komt 35 uit#
-var y = x + 65;
+var x = 10;
+var y = 15;
 
-print(y * x);
+function f1()
+{
+	var a = 20;
+	var b = 30;
+	var c = a + b;
+
+	function f3()
+	{
+		var zzz = 100;
+	}
+
+	f2();
+}
+
+function f2()
+{
+	var a = 15;
+	var b = 8;
+}
+
+print(x + y);

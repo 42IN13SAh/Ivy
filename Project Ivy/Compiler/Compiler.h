@@ -30,7 +30,8 @@ private:
 
 	Action* firstAction;
 	Action* lastAction;
-	SymbolTable* symbolTable;
+	SymbolTable* globalSymbolTable;
+	SymbolTable* currentSymbolTable;
 	std::list<Token*>::iterator tokenIter;
 	//std::vector<SymbolTable*> symbolTables;
 
@@ -38,6 +39,7 @@ private:
 
 	// main compile methods
 	void compileFunction();
+	void addFunctionSignature();
 	void compileCodeBlock();
 	void compileStatement();
 	void compileWhile();

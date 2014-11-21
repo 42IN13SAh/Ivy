@@ -2,6 +2,8 @@
 #include <string>
 #include "Action.h"
 
+class SymbolTable;
+
 class FunctionSymbol
 {
 public:
@@ -10,15 +12,20 @@ public:
 
 	Action* getStartAction();
 	Action* getEndAction();
+	SymbolTable* getSymbolTable();
 
 	std::string getName();
 	int getArgumentNr();
+
+	void setStartAction(Action*);
+	void setEndAction(Action*);
 
 	bool isInternal();
 
 private:
 	Action* startAction;
 	Action* endAction;
+	SymbolTable* symbolTable;
 
 	std::string name;
 	int argNr;
