@@ -36,6 +36,6 @@ void ReturnValueCompilerToken::completeRPNVector() {
 	}
 }
 
-std::stack<boost::any>& ReturnValueCompilerToken::getRPN() {
+std::queue<boost::any>& ReturnValueCompilerToken::getRPN() {
 	return rpnVector;
 }

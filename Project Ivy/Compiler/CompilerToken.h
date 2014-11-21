@@ -8,6 +8,6 @@ public:
 	CompilerToken();
 	virtual ~CompilerToken();
 
-	virtual CompilerToken* Get() { return this; }
+	//virtual CompilerToken* Get() { return this; }
 };
 

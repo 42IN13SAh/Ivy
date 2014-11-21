@@ -13,7 +13,7 @@ public:
 	std::string getName();
 	ReturnValueCompilerToken* getReturnValue();
 
-	virtual AssignCompilerToken* Get() { return this; }
+	//virtual AssignCompilerToken* Get() { return this; }
 
 private:
 	std::string name;

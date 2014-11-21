@@ -15,7 +15,7 @@ public:
 	void setRight(ReturnValueCompilerToken*);
 	void setOperator(TokenType);
 
-	virtual SubConditionCompilerToken* Get() { return this; }
+	//virtual SubConditionCompilerToken* Get() { return this; }
 
 private:
 	TokenType scOperator;

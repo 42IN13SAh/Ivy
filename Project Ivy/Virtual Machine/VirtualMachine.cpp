@@ -5,6 +5,7 @@
 #include "../Compiler/ReturnValueCompilerToken.h"
 #include "../Compiler/SubConditionCompilerToken.h"
 #include "../Compiler/VarCompilerToken.h"
+#include "../Compiler/ReturnCompilerToken.h"
 #include <string>
 
 VirtualMachine::VirtualMachine()
@@ -32,7 +33,7 @@ void VirtualMachine::run(Action *firstAction)
 			
 			CompilerToken* compilerToken = currentAction->getCompilerToken();
 			if (compilerToken != nullptr)
-				executeAction(compilerToken->Get());
+				executeAction(compilerToken);
 			else
 				currentAction = currentAction->getNextAction();
 
@@ -62,7 +63,24 @@ void VirtualMachine::updateVariable(string name, boost::any value)
 	currentSymbolTable->updateExistingSymbol(name, value);
 }
 
-void VirtualMachine::executeAction(CompilerToken* ct){ currentAction = currentAction->getNextAction(); }
+void VirtualMachine::executeAction(CompilerToken* ct){ 
+	
+	// Think of a better way to do this
+	if (typeid(*ct) == typeid(ReturnValueCompilerToken))
+		executeAction((ReturnValueCompilerToken*)ct);
+	else if (typeid(*ct) == typeid(AssignCompilerToken))
+		executeAction((AssignCompilerToken*)ct);
+	else if (typeid(*ct) == typeid(FunctionCompilerToken))
+		executeAction((FunctionCompilerToken*)ct);
+	else if (typeid(*ct) == typeid(ConditionCompilerToken))
+		executeAction((ConditionCompilerToken*)ct);
+	else if (typeid(*ct) == typeid(SubConditionCompilerToken))
+		executeAction((SubConditionCompilerToken*)ct);
+	else if (typeid(*ct) == typeid(VarCompilerToken))
+		executeAction((VarCompilerToken*)ct);
+	else
+		currentAction = currentAction->getNextAction();
+}
 
 void VirtualMachine::executeAction(ReturnValueCompilerToken* compilerToken) {
 	getReturnValue(compilerToken);
@@ -104,6 +122,8 @@ void VirtualMachine::executeAction(VarCompilerToken* compilerToken)
 	//TODO: use the correct symboltable with the corrosponding action
 	//boost::any value = currentSymbolTable->getValue(compilerToken->getName());
 	getVarValue(compilerToken);
+
+	// Old getVar function
 
 	//TokenType frontOperator = compilerToken->getFrontOperator();
 	//TokenType backOperator = compilerToken->getBackOperator();
@@ -201,6 +221,7 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) {
 }
 
 boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken) {
+	// TODO: Get vars from global symboltable and function symboltable
 	FunctionSymbol* fs = currentSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
 	if (fs->isInternal()) {
 		// TODO: get function from internal function list, parse arguments and execute
@@ -209,50 +230,62 @@ boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken
 		}
 
 		currentAction = currentAction->getNextAction();
-		// TODO: Return value from function
+		// TODO: Return returnvalue from function
 	}
 	else {
 		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
 		std::vector<std::string> argNames = fct->getArgumentNames();
 		for (int i = 0; i < argNames.size(); i++) {
+			// TODO: Add variable to function symboltable
 			addVariable(argNames[i], getReturnValue(compilerToken->getArguments()[i]));
 		}
 		Action* ca = fs->getStartAction();
+		boost::any returnValue = nullptr;
 		while (ca != fs->getEndAction()) {
-			executeAction(ca->getCompilerToken());
+			if (typeid(ca->getCompilerToken()) == typeid(ReturnCompilerToken)) {
+				returnValue = getReturnValue(((ReturnCompilerToken*)ca->getCompilerToken())->getReturnValueCompilerToken());
+				break;
+			} else
+				executeAction(ca->getCompilerToken());
 			// TODO: if compilerToken == returncompilertoken set value as return value
 		}
 
 		currentAction = fs->getEndAction();
-
+		return returnValue;
 		// TODO: remove vars from function
 	}
+	// Temp return
 	return nullptr;
 }
 
 boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueCompilerToken)
 {
 	//TODO: check and clean this method
-	std::stack<boost::any> rpn = returnValueCompilerToken->getRPN();
+	std::queue<boost::any> rpn = returnValueCompilerToken->getRPN();
 
 	while (rpn.size() != 1) {
-		boost::any left = rpn.top();
+		boost::any left = rpn.front();
 		rpn.pop();
-		boost::any right = rpn.top();
+		boost::any right = rpn.front();
 		rpn.pop();
 
-		if (left.type() == typeid(VarCompilerToken))
+		if (left.type() == typeid(VarCompilerToken*))
 			left = getVarValue(boost::any_cast<VarCompilerToken*>(left));
-		else if (left.type() == typeid(FunctionCompilerToken))
+		else if (left.type() == typeid(FunctionCompilerToken*))
 			left = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(left));
 
-		if (right.type() == typeid(VarCompilerToken))
+		if (right.type() == typeid(VarCompilerToken*))
 			right = getVarValue(boost::any_cast<VarCompilerToken*>(right));
-		else if (right.type() == typeid(FunctionCompilerToken))
+		else if (right.type() == typeid(FunctionCompilerToken*))
 			right = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(right));
 
-		TokenType op = boost::any_cast<TokenType>(rpn.top());
+		TokenType op = boost::any_cast<TokenType>(rpn.front());
 		rpn.pop();
+
+		try{
+			left = stod(boost::any_cast<std::string>(left));
+			right = stod(boost::any_cast<std::string>(right));
+		} catch (exception e) {}
 
 		if (left.type() == typeid(std::string) || right.type() == typeid(std::string)) {
 			std::string l = (left.type() == typeid(std::string)) ? boost::any_cast<std::string>(left) : std::to_string(boost::any_cast<double>(left));
@@ -276,7 +309,9 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 		}
 	}
 
-	return rpn.top();
+	return rpn.front();
+
+	// Old RPN function
 
 	//for (size_t i = 0; i < rpnVector.size(); i++)
 	//{
@@ -338,5 +373,12 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 
 void VirtualMachine::print(boost::any p)
 {
-	std::cout << std::to_string(boost::any_cast<double>(p)) << endl;
+	std::string r;
+	try {
+		r = std::to_string(boost::any_cast<double>(p));
+	}
+	catch (exception e) {
+		r = boost::any_cast<std::string>(p);
+	}
+	std::cout << r << endl;
 }

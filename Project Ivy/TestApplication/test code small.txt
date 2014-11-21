@@ -7,10 +7,7 @@ function f1()
 	var b = 30;
 	var c = a + b;
 
-	function f3()
-	{
-		var zzz = 100;
-	}
+	
 
 	f2();
 }

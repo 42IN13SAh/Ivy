@@ -135,7 +135,7 @@ void Compiler::compileStatement() {
 		case TokenType::Return:
 			getNextToken();
 
-			statement->setCompilerToken(compileReturnValue());
+			statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
 			break;
 		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
 			statement->setCompilerToken(compileReturnValue());
@@ -220,7 +220,7 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 
 	//TODO: ++x en x++ werken nog niet!!
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
-	while (getCurrentToken()->getTokenType() != TokenType::LineEnd && getCurrentToken()->getPartner() != start && getCurrentToken()->getTokenType() != TokenType::ParameterOperator) {
+	while (getCurrentToken()->getTokenType() != TokenType::LineEnd && getCurrentToken()->getParentType() != ParentType::SubConditionOperator && getCurrentToken()->getParentType() != ParentType::ConditionOperator && getCurrentToken()->getPartner() != start && getCurrentToken()->getTokenType() != TokenType::ParameterOperator && (rt->peekOperatorStack() != TokenType::OpenParenthesis && getCurrentToken()->getTokenType() != TokenType::ClosingParenthesis)) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name)
 			compileReturnValueName(rt);
 		else if (getCurrentToken()->getTokenType() == TokenType::IncreaseOperator || getCurrentToken()->getTokenType() == TokenType::DecreaseOperator)

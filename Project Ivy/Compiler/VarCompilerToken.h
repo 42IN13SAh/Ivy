@@ -14,7 +14,7 @@ public:
 	TokenType getFrontOperator();
 	TokenType getBackOperator();
 
-	virtual VarCompilerToken* Get() { return this; }
+	//virtual VarCompilerToken* Get() { return this; }
 
 private:
 	std::string name;

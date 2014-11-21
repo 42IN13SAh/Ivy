@@ -1,4 +1,5 @@
 #pragma once
+#include <queue>
 #include <stack>
 //#include <vector>
 #include "CompilerToken.h"
@@ -17,12 +18,12 @@ public:
 	void popOperatorStack();
 
 	void completeRPNVector();
-	std::stack<boost::any>& getRPN();
+	std::queue<boost::any>& getRPN();
 
-	virtual ReturnValueCompilerToken* Get() { return this; }
+	//virtual ReturnValueCompilerToken* Get() { return this; }
 
 private:
-	std::stack<boost::any> rpnVector;
+	std::queue<boost::any> rpnVector;
 	std::stack<TokenType> operatorStack;
 };
 
