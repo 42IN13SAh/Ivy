@@ -1,12 +1,14 @@
 #pragma once
 #include <vector>
 #include "CompilerToken.h"
-#include "SubConditionCompilerToken.h"
+#include "ReturnValueCompilerToken.h"
+//#include "SubConditionCompilerToken.h"
 
 class ConditionCompilerToken : public CompilerToken
 {
 public:
-	ConditionCompilerToken(std::vector<TokenType>, std::vector<SubConditionCompilerToken*>);
+	//ConditionCompilerToken(std::vector<TokenType>, std::vector<SubConditionCompilerToken*>);
+	ConditionCompilerToken(ReturnValueCompilerToken*);
 	virtual ~ConditionCompilerToken();
 
 	enum ConditionOperator { AND, OR };
@@ -14,7 +16,8 @@ public:
 	//virtual ConditionCompilerToken* Get() { return this; }
 
 private:
-	std::vector<TokenType> cOperatorVector;
-	std::vector<SubConditionCompilerToken*> subcons;
+	/*std::vector<TokenType> cOperatorVector;
+	std::vector<SubConditionCompilerToken*> subcons;*/
+	ReturnValueCompilerToken* rvct;
 };
 
