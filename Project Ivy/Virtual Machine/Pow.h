@@ -1,7 +1,7 @@
 #pragma once
-#include "IinternalFunction.h" 
+#include "IInternalFunction.h" 
 
-class Pow : public IinternalFunction
+class Pow : public IInternalFunction
 {
 public:
 	~Pow();

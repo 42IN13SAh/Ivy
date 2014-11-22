@@ -14,7 +14,7 @@ public:
 	Registrar(std::string className, std::function<IInternalFunction*(void)> classFactoryFunction);
 };
 
-#define REGISTER_CLASS(NAME, TYPE) static Registrar registrar(NAME, [](void) -> IinternalFunction * { return new TYPE();});
+#define REGISTER_CLASS(NAME, TYPE) static Registrar registrar(NAME, [](void) -> IInternalFunction * { return new TYPE();});
 
 // The factory - implements singleton pattern!
 class InternalFunctionFactory

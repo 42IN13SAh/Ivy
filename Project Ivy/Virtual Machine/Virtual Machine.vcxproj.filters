@@ -21,7 +21,7 @@
     <ClCompile Include="Pow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Factory.cpp">
+    <ClCompile Include="InternalFunctionFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="Pow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Factory.h">
+    <ClInclude Include="InternalFunctionFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
