@@ -8,8 +8,9 @@ Registrar::Registrar(std::string name, std::function<IInternalFunction*(void)> c
 
 InternalFunctionFactory * InternalFunctionFactory::Instance()
 {
-	static InternalFunctionFactory factory;
-	return &factory;
+	if (factory == nullptr)
+		factory = new InternalFunctionFactory();
+	return factory;
 }
 
 
