@@ -1,24 +1,11 @@
 var x = 10;
-var y = 15;
 
-function f1()
-{
-	var a = 20;
-	var b = 30;
-	var c = a + b;
-
-	function f3()
-	{
-		var zzz = 100;
+function z() {
+	if(x is 10) {
+		var x = 100;
+		x = 12;
+		print(x);
 	}
-
-	f2();
 }
 
-function f2()
-{
-	var a = 15;
-	var b = 8;
-}
-
-print(x + y);
+z();

@@ -1,15 +1,18 @@
 #include "ConditionCompilerToken.h"
 
-
-ConditionCompilerToken::ConditionCompilerToken(std::vector<TokenType> cOpVector, std::vector<SubConditionCompilerToken*> subcons)
-{
-	this->cOperatorVector = cOpVector;
-	this->subcons = subcons;
+ConditionCompilerToken::ConditionCompilerToken(ReturnValueCompilerToken* rvct) {
+	this->rvct = rvct;
 }
+
+//ConditionCompilerToken::ConditionCompilerToken(std::vector<TokenType> cOpVector, std::vector<SubConditionCompilerToken*> subcons)
+//{
+//	/*this->cOperatorVector = cOpVector;
+//	this->subcons = subcons;*/
+//}
 
 ConditionCompilerToken::~ConditionCompilerToken()
 {
-	for each(SubConditionCompilerToken* sc in subcons) {
-		//delete sc;
-	}
+	//for each(SubConditionCompilerToken* sc in subcons) {
+	//	//delete sc;
+	//}
 }

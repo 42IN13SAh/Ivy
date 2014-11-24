@@ -79,7 +79,8 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 {
 	if (syntax->getShouldPush()){
 		partnerStack.push(token);
-		level++;
+		if (token->getTokenType() != TokenType::IfStatement)
+			level++;
 	}
 	if (syntax->getPartners().size() > 0){
 		if (partnerStack.size() == 0){

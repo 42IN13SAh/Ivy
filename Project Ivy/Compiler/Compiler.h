@@ -12,6 +12,7 @@
 #include "AssignCompilerToken.h"
 #include "ConditionCompilerToken.h"
 #include "SubConditionCompilerToken.h"
+#include "ReturnCompilerToken.h"
 
 #include "../Tokenizer/Token.h"
 
