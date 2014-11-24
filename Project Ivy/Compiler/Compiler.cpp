@@ -154,13 +154,12 @@ void Compiler::compileStatement() {
 void Compiler::compileWhile() {
 	Action* begin = lastAction;
 	Action* condition = new Action();
-
+	getNextToken();
 	condition->setCompilerToken(compileCondition());
 	lastAction->setNextAction(condition);
 
 	DoNothingAction* onTrue = new DoNothingAction();
 	condition->setNextAction(onTrue);
-
 	compileCodeBlock();
 
 	onTrue->setNextAction(lastAction);
@@ -204,7 +203,7 @@ void Compiler::compileIf() {
 Action* Compiler::compileElse() {
 	DoNothingAction* elseAction = new DoNothingAction();
 	lastAction = elseAction;
-	
+	getNextToken();
 	compileCodeBlock();
 	
 	return elseAction;
