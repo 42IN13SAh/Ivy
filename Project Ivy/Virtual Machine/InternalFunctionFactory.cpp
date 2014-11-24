@@ -1,15 +1,17 @@
 #include "InternalFunctionFactory.h"
 
+InternalFunctionFactory* InternalFunctionFactory::factory = nullptr;
+
 Registrar::Registrar(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction)
 {
 	// register the class factory function
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction(name, classFactoryFunction);
 }
 
-InternalFunctionFactory * InternalFunctionFactory::Instance()
+InternalFunctionFactory* InternalFunctionFactory::Instance()
 {
-	if (factory == nullptr)
-		factory = new InternalFunctionFactory();
+	if (!factory)
+		factory = new InternalFunctionFactory;
 	return factory;
 }
 

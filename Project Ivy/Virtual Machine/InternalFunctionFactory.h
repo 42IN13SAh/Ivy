@@ -35,6 +35,6 @@ private:
 
 	// the registry of factory functions
 	std::map<std::string, std::function<IInternalFunction*(void)>> factoryFunctionRegistry;
-	static InternalFunctionFactory* factory;
+	static InternalFunctionFactory *factory;
 
 };
