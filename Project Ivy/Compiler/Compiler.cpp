@@ -152,17 +152,16 @@ void Compiler::compileStatement() {
 /// Compiles a while statement.
 /// Called by compileCodeBlock.
 void Compiler::compileWhile() {
-	Action* begin = lastAction;
 	Action* condition = new Action();
+	Action* begin = condition;
 	getNextToken();
 	condition->setCompilerToken(compileCondition());
 	lastAction->setNextAction(condition);
 
 	DoNothingAction* onTrue = new DoNothingAction();
 	condition->setNextAction(onTrue);
+	lastAction = onTrue;
 	compileCodeBlock();
-
-	onTrue->setNextAction(lastAction);
 	lastAction->setNextAction(begin);
 
 	DoNothingAction* onFalse = new DoNothingAction();
