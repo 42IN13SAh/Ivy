@@ -66,6 +66,9 @@
     <ClInclude Include="FunctionSymbol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReturnCompilerToken.h">
+      <Filter>Header Files\CompilerTokens</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Compiler.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="FunctionSymbol.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReturnCompilerToken.cpp">
+      <Filter>Source Files\CompilerTokens</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
