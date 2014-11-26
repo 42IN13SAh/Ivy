@@ -9,12 +9,12 @@
 //std::shared_ptr<IinternalFunction> instance = InternalFunctionFactory::Instance()->Create("pow");
 //instance->Execute(std::vector<boost::any>{2.0, 3.0});
 
-class Registrar {
+class Register {
 public:
-	Registrar(std::string className, std::function<IInternalFunction*(void)> classFactoryFunction);
+	Register(std::string className, std::function<IInternalFunction*(void)> classFactoryFunction);
 };
 
-#define REGISTER_CLASS(NAME, TYPE) static Registrar registrar(NAME, [](void) -> IInternalFunction * { return new TYPE();});
+#define REGISTER_CLASS(NAME, TYPE) static Register _register(NAME, [](void) -> IInternalFunction * { return new TYPE();});
 
 // The factory - implements singleton pattern!
 class InternalFunctionFactory
@@ -28,6 +28,7 @@ public:
 
 	// create an instance of a registered class
 	std::shared_ptr<IInternalFunction> Create(std::string name);
+	const std::map<std::string, std::function<IInternalFunction*(void)>> GetMap();
 
 private:
 	// a private ctor
