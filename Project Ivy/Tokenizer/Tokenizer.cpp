@@ -101,7 +101,9 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 				break;
 			}
 		}
-		level--;
+		if (token->getTokenType() != TokenType::ElseStatement){
+			level--;
+		}
 	}
 }
 
