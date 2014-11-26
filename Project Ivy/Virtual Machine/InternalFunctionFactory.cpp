@@ -20,6 +20,7 @@ void InternalFunctionFactory::RegisterFactoryFunction(std::string name, std::fun
 {
 	// register the class factory function 
 	factoryFunctionRegistry[name] = classFactoryFunction;
+	//factoryFunctionArgNrRegistery[name] = argNr;
 }
 
 
@@ -39,7 +40,12 @@ std::shared_ptr<IInternalFunction> InternalFunctionFactory::Create(std::string n
 		return nullptr;
 }
 
-const std::map < std::string, std::function<IInternalFunction*(void)>> InternalFunctionFactory::GetMap()
+const std::map<std::string, std::function<IInternalFunction*(void)>> InternalFunctionFactory::GetMap()
 {
 	return factoryFunctionRegistry;
 }
+
+//const std::map<std::string, int> InternalFunctionFactory::GetArgNrMap()
+//{
+//	return factoryFunctionArgNrRegistry;
+//}

@@ -322,21 +322,23 @@ Action* Compiler::compileStatementName(Action* statement) {
 	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis)
 		statement->setCompilerToken(compileFunctionCall());
 	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) {
-		switch (peekNextToken()->getTokenType()) {
-		case TokenType::AssignmentOperator:
-			statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
-			break;
-		case TokenType::AddThenAssignOperator:
-			break;
-		case TokenType::MinusThenAssignOperator:
-			break;
-		case TokenType::DivideThenAssignOperator:
-			break;
-		case TokenType::MultiplyThenAssignOperator:
-			break;
-		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-			statement->setCompilerToken(compileReturnValue());
-			break;
+		TokenType op = getNextToken()->getTokenType();
+		getNextToken();
+		switch (op) {
+			case TokenType::AssignmentOperator:
+				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
+				break;
+			case TokenType::AddThenAssignOperator:
+				break;
+			case TokenType::MinusThenAssignOperator:
+				break;
+			case TokenType::DivideThenAssignOperator:
+				break;
+			case TokenType::MultiplyThenAssignOperator:
+				break;
+			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+				statement->setCompilerToken(compileReturnValue());
+				break;
 		}
 	}
 
@@ -400,8 +402,13 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
+	// TODO: Set correct argument nr, see InternalFunctionFactory commented code
+	for each(auto iter in InternalFunctionFactory::Instance()->GetMap()) {
+		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, 1, nullptr, nullptr, true));
+	}
+	
 	// TODO: read internal functions from a file or list
-	currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
+	//currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }
