@@ -11,10 +11,49 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleInput.cpp" />
+    <ClCompile Include="Cos.cpp" />
+    <ClCompile Include="Date.cpp" />
+    <ClCompile Include="DateTime.cpp" />
+    <ClCompile Include="FormatString.cpp" />
+    <ClCompile Include="InternalFunctionFactory.cpp" />
+    <ClCompile Include="Invert.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="Pow.cpp" />
+    <ClCompile Include="Print.cpp" />
+    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="ReadFile.cpp" />
+    <ClCompile Include="ReadFileLines.cpp" />
+    <ClCompile Include="SaveFile.cpp" />
+    <ClCompile Include="Sin.cpp" />
+    <ClCompile Include="SquareRoot.cpp" />
+    <ClCompile Include="Tan.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="VirtualMachine.cpp" />
+    <ClCompile Include="WriteToEndOfFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleInput.h" />
+    <ClInclude Include="Cos.h" />
+    <ClInclude Include="Date.h" />
+    <ClInclude Include="DateTime.h" />
+    <ClInclude Include="FormatString.h" />
+    <ClInclude Include="IinternalFunction.h" />
+    <ClInclude Include="InternalFunctionFactory.h" />
+    <ClInclude Include="Invert.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="Pow.h" />
+    <ClInclude Include="Print.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="ReadFile.h" />
+    <ClInclude Include="ReadFileLines.h" />
+    <ClInclude Include="SaveFile.h" />
+    <ClInclude Include="Sin.h" />
+    <ClInclude Include="SquareRoot.h" />
+    <ClInclude Include="Tan.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="VirtualMachine.h" />
+    <ClInclude Include="WriteToEndOfFile.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0A8F5AA0-9055-4740-89CF-92AF7F472149}</ProjectGuid>
