@@ -402,9 +402,9 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
-	// TODO: Set correct argument nr, see InternalFunctionFactory commented code
-	for each(auto iter in InternalFunctionFactory::Instance()->GetMap()) {
-		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, 1, nullptr, nullptr, true));
+	
+	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {
+		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, iter.second, nullptr, nullptr, true));
 	}
 	
 	// TODO: read internal functions from a file or list

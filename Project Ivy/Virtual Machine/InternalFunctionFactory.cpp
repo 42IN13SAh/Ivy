@@ -2,10 +2,10 @@
 
 InternalFunctionFactory* InternalFunctionFactory::factory = nullptr;
 
-Register::Register(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction)
+Register::Register(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction, int argNr)
 {
 	// register the class factory function
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction(name, classFactoryFunction);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction(name, classFactoryFunction, argNr);
 }
 
 InternalFunctionFactory* InternalFunctionFactory::Instance()
@@ -16,11 +16,11 @@ InternalFunctionFactory* InternalFunctionFactory::Instance()
 }
 
 
-void InternalFunctionFactory::RegisterFactoryFunction(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction)
+void InternalFunctionFactory::RegisterFactoryFunction(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction, int argNr)
 {
 	// register the class factory function 
 	factoryFunctionRegistry[name] = classFactoryFunction;
-	//factoryFunctionArgNrRegistery[name] = argNr;
+	factoryFunctionArgNrRegistry[name] = argNr;
 }
 
 
@@ -45,7 +45,7 @@ const std::map<std::string, std::function<IInternalFunction*(void)>> InternalFun
 	return factoryFunctionRegistry;
 }
 
-//const std::map<std::string, int> InternalFunctionFactory::GetArgNrMap()
-//{
-//	return factoryFunctionArgNrRegistry;
-//}
+const std::map<std::string, int> InternalFunctionFactory::GetArgNrMap()
+{
+	return factoryFunctionArgNrRegistry;
+}
