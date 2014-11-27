@@ -125,7 +125,7 @@
     <ClCompile Include="View\syntaxhighlighter.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
-    <ClCompile Include="..\TestApplication\Jzon.cpp">
+    <ClCompile Include="Jzon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -158,6 +158,7 @@
     <None Include="Images\BuildButtonIcon.png">
       <Filter>Resource Files\Images</Filter>
     </None>
+    <None Include="..\Tokens.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller\basecontroller.h">
@@ -172,8 +173,11 @@
     <ClInclude Include="View\errorlistitem.h">
       <Filter>Header Files\View</Filter>
     </ClInclude>
-    <ClInclude Include="..\TestApplication\Jzon.h">
+    <ClInclude Include="Jzon.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

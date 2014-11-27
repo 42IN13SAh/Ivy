@@ -8,8 +8,7 @@ class BaseController
 public:
     BaseController(MainWindow *source);
 protected:
-    void startTokenizing();
-    void startCompiling();
+	void startBuilding();
     void startRunning();
 
 	MainWindow *source; //TODO: find better name?

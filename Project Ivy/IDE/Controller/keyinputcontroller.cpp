@@ -20,9 +20,7 @@ KeyInputController::KeyInputController(MainWindow *source) : BaseController(sour
 void KeyInputController::handleKeyPressEvent(QKeyEvent *event){
     switch(event->key()){
     case Qt::Key_F6:
-        qDebug() << "F6 keyevent detected, calling compile function..";
-        startTokenizing();
-        startCompiling();
+		startBuilding();
     default:
         //No shortcut(s) found; pass the event to the base class to continue default behaviour
         source->defaultKeyPressEvent(event);
