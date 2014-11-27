@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Images/BuildButtonIcon.png</file>
+        <file>Images/RunButtonIcon.png</file>
+    </qresource>
+</RCC>

@@ -1,6 +1,7 @@
 #pragma once
+#include <queue>
 #include <stack>
-#include <vector>
+//#include <vector>
 #include "CompilerToken.h"
 #include "boost/any.hpp"
 #include "../Tokenizer/TokenType.h"
@@ -17,10 +18,12 @@ public:
 	void popOperatorStack();
 
 	void completeRPNVector();
-	std::vector<boost::any>* getrpnVector();
+	std::queue<boost::any>& getRPN();
+
+	//virtual ReturnValueCompilerToken* Get() { return this; }
 
 private:
-	std::vector<boost::any> rpnVector;
+	std::queue<boost::any> rpnVector;
 	std::stack<TokenType> operatorStack;
 };
 

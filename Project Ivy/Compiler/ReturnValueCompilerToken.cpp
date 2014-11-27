@@ -10,7 +10,7 @@ ReturnValueCompilerToken::~ReturnValueCompilerToken()
 }
 
 void ReturnValueCompilerToken::addValueToVector(boost::any value) { 
-	rpnVector.push_back(value);
+	rpnVector.push(value);
 }
 
 void ReturnValueCompilerToken::pushOperatorToStack(TokenType op) { 
@@ -36,6 +36,6 @@ void ReturnValueCompilerToken::completeRPNVector() {
 	}
 }
 
-std::vector<boost::any>* ReturnValueCompilerToken::getrpnVector() {
-	return &rpnVector;
+std::queue<boost::any>& ReturnValueCompilerToken::getRPN() {
+	return rpnVector;
 }
