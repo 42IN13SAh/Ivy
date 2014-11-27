@@ -1,4 +1,5 @@
 #include "bottombar.h"
+#include "mainwindow.h"
 #include <QHBoxLayout>
 #include <QWidget>
 #include <QDebug>
@@ -9,6 +10,8 @@
 BottomBar::BottomBar(QWidget *parent) :
     QTabWidget(parent)
 {
+	this->parent = (MainWindow*)parent;
+
     //console
     textArea = new QTextEdit();
     this->addTab(textArea, "Console");
@@ -26,15 +29,23 @@ BottomBar::BottomBar(QWidget *parent) :
     setFixedHeight(200);
     setStyleSheet("QTextEdit, QListWidget { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; } QTabWidget::pane { background-color: #2D2D2F; } QTabBar::tab { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; padding: 3px;} QTabBar::tab:selected { background-color: black; }");
 
-    errorList->addItem(new ErrorListItem(2, "First item", errorList));
-    errorList->addItem(new ErrorListItem(4, "Second item", errorList));
-
     connect(errorList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(errorListItemDoubleClicked(QListWidgetItem*)));
 }
 
 void BottomBar::errorListItemDoubleClicked(QListWidgetItem* listItem)
 {
     ErrorListItem* errorListItem = (ErrorListItem*)listItem;
+	parent->getCodeEditor()->moveCursor(errorListItem->getLineNumber(), errorListItem->getLinePosition());
+}
+
+void BottomBar::addError(int lineNumber, int linePosition, std::string text)
+{
+	errorList->addItem(new ErrorListItem(lineNumber, linePosition, QString::fromStdString(text), errorList));
+}
+
+void BottomBar::clearErrorList()
+{
+	errorList->clear();
 }
 
 /* Template code for overriding cout

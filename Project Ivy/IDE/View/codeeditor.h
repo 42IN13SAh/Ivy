@@ -20,7 +20,7 @@ public:
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
-    void setCursorOnLine(int lineNumber);
+    void moveCursor(int lineNumber, int linePosition);
 	std::vector<std::string> getEditorContent();
 
 protected:

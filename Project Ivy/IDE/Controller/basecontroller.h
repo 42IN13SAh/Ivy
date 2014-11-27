@@ -2,16 +2,25 @@
 #define BASECONTROLLER_H
 
 class MainWindow;
+class Tokenizer;
+class Compiler;
+class VirtualMachine;
 
 class BaseController
 {
 public:
     BaseController(MainWindow *source);
+	virtual ~BaseController();
 protected:
-	void startBuilding();
+	void startBuilding(bool onlyBuild);
     void startRunning();
 
 	MainWindow *source; //TODO: find better name?
+
+private:
+	Tokenizer *tokenizer;
+	Compiler *compiler;
+	VirtualMachine *virtualMachine;
 };
 
 #endif // BASECONTROLLER_H

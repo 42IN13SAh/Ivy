@@ -97,11 +97,14 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     }
 }
 
-void CodeEditor::setCursorOnLine(int lineNumber)
+void CodeEditor::moveCursor(int lineNumber, int linePosition)
 {
     QTextCursor tmpCursor = this->textCursor();
-    tmpCursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor, lineNumber);
+	tmpCursor.movePosition(QTextCursor::StartOfLine);
+	tmpCursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
+	tmpCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition);
     this->setTextCursor(tmpCursor);
+	this->setFocus();
 }
 
 std::vector<std::string> CodeEditor::getEditorContent()

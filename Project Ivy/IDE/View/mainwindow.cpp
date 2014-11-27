@@ -127,7 +127,12 @@ void MainWindow::keyPressEvent(QKeyEvent* event){
     keyInputController->handleKeyPressEvent(event);
 }
 
-std::vector<std::string> MainWindow::getEditorContent()
+CodeEditor* MainWindow::getCodeEditor()
 {
-	return editor->getEditorContent();
+	return editor;
+}
+
+BottomBar* MainWindow::getBottomBar()
+{
+	return bottomBar;
 }

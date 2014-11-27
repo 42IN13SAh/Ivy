@@ -16,14 +16,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
+	MainWindow(QWidget *parent = 0);
+	CodeEditor* getCodeEditor();
+	BottomBar* getBottomBar();
 
 public slots:
     void about();
     void newFile();
     void openFile(const QString &path = QString());
     void defaultKeyPressEvent(QKeyEvent* event);
-	std::vector<std::string> getEditorContent();
 
 private:
     void setupEditor();
