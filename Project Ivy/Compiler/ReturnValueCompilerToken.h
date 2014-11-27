@@ -11,7 +11,7 @@ class ReturnValueCompilerToken : public CompilerToken
 public:
 	ReturnValueCompilerToken();
 	virtual ~ReturnValueCompilerToken();
-
+	bool isEmpty();
 	void addValueToVector(boost::any);
 	void pushOperatorToStack(TokenType);
 	TokenType peekOperatorStack();

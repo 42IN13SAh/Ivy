@@ -1,9 +1,9 @@
 var x = 10;
-
+var y = 20;
+var a = 30;
 function z() {
-	while(x is 10) {
-		x = 12;
-		print(x);
+	if(x is 10 or y is 3 * 8 / 10 - 9){
+		var y = 100;
 	}
 }
 

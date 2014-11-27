@@ -13,12 +13,17 @@ void ReturnValueCompilerToken::addValueToVector(boost::any value) {
 	rpnVector.push(value);
 }
 
+bool ReturnValueCompilerToken::isEmpty()
+{
+	return operatorStack.empty();
+}
+
 void ReturnValueCompilerToken::pushOperatorToStack(TokenType op) { 
 	operatorStack.push(op);
 }
 
 TokenType ReturnValueCompilerToken::peekOperatorStack() {
-	if (operatorStack.size() > 1) {
+	if (!operatorStack.empty()) {
 		return operatorStack.top();
 	}
 
