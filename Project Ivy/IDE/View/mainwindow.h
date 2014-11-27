@@ -23,6 +23,7 @@ public slots:
     void newFile();
     void openFile(const QString &path = QString());
     void defaultKeyPressEvent(QKeyEvent* event);
+	std::vector<std::string> getEditorContent();
 
 private:
     void setupEditor();

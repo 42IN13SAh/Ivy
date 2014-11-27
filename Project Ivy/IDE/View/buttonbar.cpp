@@ -6,7 +6,7 @@
 
 ButtonBar::ButtonBar(QWidget *parent) : QWidget(parent)
 {
-    controller = new ButtonController();
+    controller = new ButtonController((MainWindow *)parent);
     QHBoxLayout *layout = new QHBoxLayout();
 
     runButton = new QPushButton();

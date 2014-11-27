@@ -4,9 +4,9 @@
 #include "keyinputcontroller.h"
 #include "mainwindow.h"
 
-KeyInputController::KeyInputController(MainWindow *window)
+KeyInputController::KeyInputController(MainWindow *source) : BaseController(source)
 {
-    this->source = window;
+
 }
 
 /**

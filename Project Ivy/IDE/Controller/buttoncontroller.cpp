@@ -1,7 +1,7 @@
 #include "buttoncontroller.h"
 #include <qdebug.h>
 
-ButtonController::ButtonController()
+ButtonController::ButtonController(MainWindow * source) : BaseController(source)
 {
 }
 

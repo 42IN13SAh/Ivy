@@ -21,6 +21,7 @@ public:
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
     void setCursorOnLine(int lineNumber);
+	std::vector<std::string> getEditorContent();
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -44,7 +45,7 @@ public:
 
     QSize sizeHint() const {
         return QSize(codeEditor->lineNumberAreaWidth(), 0);
-    }
+	}
 
 protected:
     void paintEvent(QPaintEvent *event) {

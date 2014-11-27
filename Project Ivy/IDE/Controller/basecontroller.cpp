@@ -1,13 +1,15 @@
 #include "basecontroller.h"
 #include <qdebug.h>
+#include "mainwindow.h"
 
-BaseController::BaseController()
+BaseController::BaseController(MainWindow * source)
 {
-    //TODO: load data from dll/lib here if needed (i.e. create tokenizer object that can be called if we really need that)
+	this->source = source;
 }
 
 void BaseController::startTokenizing(){
-    //TODO: implement
+	std::vector<std::string> list = source->getEditorContent();
+
     qDebug() << "Came into the 'startTokenizing' function in basecontroller";
 }
 
