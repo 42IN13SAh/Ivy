@@ -1,6 +1,6 @@
 #include "InternalFunctionFactory.h"
 
-InternalFunctionFactory* InternalFunctionFactory::factory = nullptr;
+//InternalFunctionFactory* InternalFunctionFactory::factory = nullptr;
 
 Register::Register(std::string name, std::function<IInternalFunction*(void)> classFactoryFunction, int argNr)
 {
@@ -10,9 +10,11 @@ Register::Register(std::string name, std::function<IInternalFunction*(void)> cla
 
 InternalFunctionFactory* InternalFunctionFactory::Instance()
 {
-	if (!factory)
-		factory = new InternalFunctionFactory;
-	return factory;
+	static InternalFunctionFactory instance;
+	/*if (factory == nullptr)
+		factory = new InternalFunctionFactory();*/
+
+	return &instance;
 }
 
 

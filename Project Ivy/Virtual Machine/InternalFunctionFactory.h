@@ -5,6 +5,28 @@
 #include <map>
 #include <functional>
 
+//#include "Date.h"
+//#include "DateTime.h"
+//#include "Time.h"
+//
+//#include "ReadFile.h"
+//#include "ReadFileLines.h"
+//#include "SaveFile.h"
+//#include "WriteToEndOfFile.h"
+//
+//#include "Cos.h"
+//#include "Log.h"
+//#include "Pow.h"
+//#include "Sin.h"
+//#include "SquareRoot.h"
+//#include "Tan.h"
+//#include "Invert.h"
+//#include "Random.h"
+//
+//#include "ConsoleInput.h"
+//#include "FormatString.h"
+//#include "Print.h"
+
 // Example 
 //std::shared_ptr<IinternalFunction> instance = InternalFunctionFactory::Instance()->Create("pow");
 //instance->Execute(std::vector<boost::any>{2.0, 3.0});
@@ -41,6 +63,28 @@ private:
 	// the registry of factory functions
 	std::map<std::string, std::function<IInternalFunction*(void)>> factoryFunctionRegistry;
 	std::map<std::string, int> factoryFunctionArgNrRegistry;
-	static InternalFunctionFactory *factory;
 
+	//static InternalFunctionFactory* factory;
 };
+
+//REGISTER_CLASS("date", Date, 0);
+//REGISTER_CLASS("dateTime", DateTime, 0);
+//REGISTER_CLASS("time", Time, 0);
+//
+//REGISTER_CLASS("writeToEndOfFile", WriteToEndOfFile, 2);
+//REGISTER_CLASS("saveFile", SaveFile, 2);
+//REGISTER_CLASS("readFileLines", ReadFileLines, 1);
+//REGISTER_CLASS("readFile", ReadFile, 1);
+//
+//REGISTER_CLASS("cos", Cos, 1);
+//REGISTER_CLASS("tan", Tan, 1);
+//REGISTER_CLASS("sin", Sin, 1);
+//REGISTER_CLASS("squareRoot", SquareRoot, 1);
+//REGISTER_CLASS("random", Random, 2);
+//REGISTER_CLASS("pow", Pow, 2);
+//REGISTER_CLASS("log", Log, 1);
+//REGISTER_CLASS("invert", Invert, 1);
+//
+//REGISTER_CLASS("consoleInput", ConsoleInput, 0);
+//REGISTER_CLASS("formatString", FormatString, 100);
+//REGISTER_CLASS("print", Print, 1);
