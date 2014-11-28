@@ -6,7 +6,6 @@
 #include <cctype>
 #include <locale>
 #include <regex>
-#include <iostream>
 #include <fstream>
 #include <chrono>
 #include <boost\algorithm\string\trim.hpp>
@@ -34,7 +33,7 @@ std::list<Token*> Tokenizer::getTokenList()
 }
 
 void Tokenizer::tokenize(std::string* input, int size)
-{	
+{
 	int lineNumber = 0;
 	int syntaxId = -1;
 	int level = 0;

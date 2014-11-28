@@ -2,10 +2,10 @@
 #include "mainwindow.h"
 #include <QHBoxLayout>
 #include <QWidget>
-#include <QDebug>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <boost/thread.hpp>
 
 BottomBar::BottomBar(QWidget *parent) :
     QTabWidget(parent)
@@ -30,6 +30,8 @@ BottomBar::BottomBar(QWidget *parent) :
     setStyleSheet("QTextEdit, QListWidget { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; } QTabWidget::pane { background-color: #2D2D2F; } QTabBar::tab { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; padding: 3px;} QTabBar::tab:selected { background-color: black; }");
 
     connect(errorList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(errorListItemDoubleClicked(QListWidgetItem*)));
+
+	createRedirector();
 }
 
 void BottomBar::errorListItemDoubleClicked(QListWidgetItem* listItem)
@@ -48,18 +50,14 @@ void BottomBar::clearErrorList()
 	errorList->clear();
 }
 
-/* Template code for overriding cout
-void BottomBar::readText()
+void outcallback(const char* ptr, std::streamsize count, void* textArea)
 {
-    std::stringstream redirectStream;
-    std::cout.rdbuf(redirectStream.rdbuf());
+	(void)count;
+	QTextEdit* textEdit = static_cast<QTextEdit*>(textArea);
+	textEdit->append(ptr);
+}
 
-    std::string str;
-    while(std::getline(redirectStream, str))
-    {
-        textArea->append("/n");
-        textArea->append(QString::fromStdString(str));
-    }
-
-    std::cout << "blablabla";
-}*/
+void BottomBar::createRedirector()
+{
+	stdRedirector = new StdRedirector<>(std::cout, outcallback, textArea);
+}

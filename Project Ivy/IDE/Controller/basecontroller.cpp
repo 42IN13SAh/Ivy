@@ -34,7 +34,6 @@ void BaseController::startBuilding(bool onlyBuild)
 	}
 	catch (BadSyntaxException& e)
 	{
-		qDebug() << e.what();
 		source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
 	}
 
@@ -43,10 +42,9 @@ void BaseController::startBuilding(bool onlyBuild)
 	{
 		compiler->compile();
 	}
-	catch (BadSyntaxException& e)
+	catch (exception& e)
 	{
-		qDebug() << e.what();
-		source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
+		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
 	}
 
 	if (onlyBuild)
@@ -67,7 +65,7 @@ void BaseController::startRunning()
 	}
 	catch (exception e)
 	{
-		qDebug() << e.what();
+		std::cout << e.what();
 	}
 
 	delete virtualMachine;

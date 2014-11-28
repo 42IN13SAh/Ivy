@@ -384,6 +384,7 @@
     </CustomBuild>
     <ClInclude Include="Jzon.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StdRedirector.h" />
     <ClInclude Include="View\errorlistitem.h" />
     <ClInclude Include="Controller\keyinputcontroller.h" />
     <CustomBuild Include="View\mainwindow.h">

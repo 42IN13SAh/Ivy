@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <vector>
 #include "errorlistitem.h"
+#include "../StdRedirector.h"
 
 class MainWindow;
 
@@ -28,7 +29,9 @@ private:
     QTextEdit *textArea;
     QListWidget *errorList;
 
-    void readText();
+	StdRedirector<> *stdRedirector;
+
+	void createRedirector();
 };
 
 #endif // BOTTOMBAR_H
