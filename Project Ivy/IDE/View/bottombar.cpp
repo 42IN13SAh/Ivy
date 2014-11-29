@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <boost/thread.hpp>
 
 BottomBar::BottomBar(QWidget *parent) :
     QTabWidget(parent)
