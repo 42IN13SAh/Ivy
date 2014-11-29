@@ -16,7 +16,7 @@ public:
 	void pushOperatorToStack(TokenType);
 	TokenType peekOperatorStack();
 	void popOperatorStack();
-
+	bool hasOpenParenthisOnStack();
 	void completeRPNVector();
 	std::queue<boost::any>& getRPN();
 
@@ -25,5 +25,6 @@ public:
 private:
 	std::queue<boost::any> rpnVector;
 	std::stack<TokenType> operatorStack;
+	int openParenthisCounter;
 };
 

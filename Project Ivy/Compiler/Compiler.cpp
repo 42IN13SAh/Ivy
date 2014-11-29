@@ -212,11 +212,12 @@ Action* Compiler::compileElse() {
 /// A return value is any calculation or sequence that returns a value.
 /// Returns a Token containing the calculation in RPN notation.
 ReturnValueCompilerToken* Compiler::compileReturnValue() {
+	int openParenthisCounter = 0;
 	std::vector<TokenType> endTypes = { TokenType::LineEnd, TokenType::ParameterOperator, TokenType::OpenBracket };
 
 	Token* cToken = getCurrentToken();
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
-	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end()) {
+	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end() && !(getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis && !rt->hasOpenParenthisOnStack())) {
 		if (cToken->getTokenType() == TokenType::Name){
 			compileReturnValueName(rt);
 		}
