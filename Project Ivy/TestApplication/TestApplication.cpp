@@ -1,18 +1,19 @@
 #include <fstream>
 #include <iostream>
 #include <chrono>
+#include <vld.h>
 
 #include "..\Tokenizer\Tokenizer.h"
 #include "..\Compiler\Compiler.h"
 #include "..\Virtual Machine\VirtualMachine.h"
 #include "Jzon.h"
 
-#define _CRTDBG_MAP_ALLOC
+//#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
 
 int main(){
-	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    /*	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );*/
 
 	Tokenizer* tok = new Tokenizer();
 	std::string line;
@@ -33,15 +34,15 @@ int main(){
 	Compiler* comp = new Compiler(tok->getTokenList());
 	comp->compile();
 
-	VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
-	vm->run(comp->getFirstAction());
+	//VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
+	//vm->run(comp->getFirstAction());
 
 	std::string msg;
 	std::cin >> msg;
 	
 	delete comp;
 	delete tok;
-	delete vm;
+	//delete vm;
 	/*auto end_time = std::chrono::high_resolution_clock::now();
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 	std::getchar();*/
