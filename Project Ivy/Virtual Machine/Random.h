@@ -10,7 +10,5 @@ public:
 	virtual boost::any GetResult();
 private:
 	boost::any Result;
-	static std::random_device rd;
-	static std::mt19937 mt;
 };
 
