@@ -16,7 +16,7 @@ SyntaxManager::~SyntaxManager()
 
 bool SyntaxManager::hasKeyWord(std::string keyWord)
 {
-	for (int i = 0; i < reservedKeyWords.size(); i++){
+	for (size_t i = 0; i < reservedKeyWords.size(); i++){
 		if (reservedKeyWords[i] == keyWord){
 			return true;
 		}
@@ -28,8 +28,8 @@ void SyntaxManager::jsonToSyntaxMap()
 {
 	try{
 		Jzon::Array rootNode;
-		Jzon::FileReader::ReadFile("tokens.json", rootNode);
-		for (int i = 0; i < rootNode.GetCount(); i++){
+		Jzon::FileReader::ReadFile("../tokens.json", rootNode);
+		for (size_t i = 0; i < rootNode.GetCount(); i++){
 			Jzon::Object object = rootNode.Get(i).AsObject();
 			int id = object.Get("id").ToInt();
 			std::string regexPattern = object.Get("regexPattern").ToString();
@@ -40,13 +40,13 @@ void SyntaxManager::jsonToSyntaxMap()
 			}
 			Jzon::Array jsonPartners = object.Get("partners").AsArray();
 			std::vector<int> partners;
-			for (int i = 0; i < jsonPartners.GetCount(); i++)
+			for (size_t i = 0; i < jsonPartners.GetCount(); i++)
 			{
 				partners.push_back(jsonPartners.Get(i).ToInt());
 			}
 			Jzon::Array jsonPossibleFollowUps = object.Get("possibleFollowUps").AsArray();
 			std::vector<int> possibleFollowUps;
-			for (int i = 0; i < jsonPossibleFollowUps.GetCount(); i++)
+			for (size_t i = 0; i < jsonPossibleFollowUps.GetCount(); i++)
 			{
 				possibleFollowUps.push_back(jsonPossibleFollowUps.Get(i).ToInt());
 			}

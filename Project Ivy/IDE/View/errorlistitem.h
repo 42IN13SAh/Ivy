@@ -7,9 +7,13 @@
 class ErrorListItem : public QListWidgetItem
 {
 public:
-    explicit ErrorListItem(int lineNumber, QString text, QListWidget *parent = 0);
-    int lineNumber;
+    explicit ErrorListItem(int lineNumber, int linePosition, QString text, QListWidget *parent = 0);
 
+	int getLineNumber();
+	int getLinePosition();
+private:
+    int lineNumber;
+	int linePosition;
 };
 
 #endif // ERRORLISTITEM_H

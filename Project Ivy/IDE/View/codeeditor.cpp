@@ -1,7 +1,6 @@
 #include <QtWidgets>
 #include "codeeditor.h"
 
-
 CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);;
@@ -98,9 +97,23 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     }
 }
 
-void CodeEditor::setCursorOnLine(int lineNumber)
+void CodeEditor::moveCursor(int lineNumber, int linePosition)
 {
     QTextCursor tmpCursor = this->textCursor();
-    tmpCursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor, lineNumber);
+	tmpCursor.movePosition(QTextCursor::Start);
+	tmpCursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
+	tmpCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition);
     this->setTextCursor(tmpCursor);
+	this->setFocus();
+}
+
+std::vector<std::string> CodeEditor::getEditorContent()
+{
+	std::vector<std::string> list;
+	for (QTextBlock block = document()->begin(); block.isValid(); block = block.next())
+	{
+		list.push_back(block.text().toStdString());
+	}
+
+	return list;
 }

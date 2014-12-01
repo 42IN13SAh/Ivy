@@ -9,12 +9,9 @@ class MainWindow;
 class KeyInputController : public BaseController
 {
 public:
-    KeyInputController(MainWindow *window);
+    KeyInputController(MainWindow *source);
 
     void handleKeyPressEvent(QKeyEvent* event);
-
-private:
-    MainWindow *source; //TODO: find better name?
 };
 
 #endif // KEYINPUTCONTROLLER_H
