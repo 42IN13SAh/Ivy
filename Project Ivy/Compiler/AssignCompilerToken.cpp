@@ -10,7 +10,7 @@ AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerTo
 
 AssignCompilerToken::~AssignCompilerToken()
 {
-	//delete value;
+	delete value;
 }
 
 std::string AssignCompilerToken::getName() {

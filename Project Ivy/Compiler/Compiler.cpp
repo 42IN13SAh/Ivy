@@ -9,9 +9,20 @@ Compiler::Compiler(list<Token*> tokenList) {
 }
 
 Compiler::~Compiler() {
-	//delete firstAction;
-	//delete lastAction;
-	//delete symbolTable;
+	Action *currentActionPtr = this->getFirstAction();
+	Action *nextActionPtr = currentActionPtr->getNextAction();
+	Action *onFalseActionPtr;
+	while (nextActionPtr != nullptr){
+		nextActionPtr = currentActionPtr->getNextAction();
+		onFalseActionPtr = currentActionPtr->getFalseAction();
+		delete currentActionPtr;
+		if (onFalseActionPtr != nullptr){
+			delete onFalseActionPtr;
+		}
+		currentActionPtr = nextActionPtr;
+	}
+	
+	delete currentSymbolTable;
 }
 
 /// Main compile function.

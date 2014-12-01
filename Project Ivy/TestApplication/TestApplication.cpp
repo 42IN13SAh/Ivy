@@ -39,10 +39,10 @@ int main(){
 
 	std::string msg;
 	std::cin >> msg;
-	
+
+	//delete vm;
 	delete comp;
 	delete tok;
-	//delete vm;
 	/*auto end_time = std::chrono::high_resolution_clock::now();
 	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 	std::getchar();*/

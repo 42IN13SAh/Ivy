@@ -15,6 +15,9 @@ SymbolTable::~SymbolTable()
 	for each(Symbol* s in symbols) {
 		delete s;
 	}
+	for each(FunctionSymbol* s in fSymbols) {
+		delete s;
+	}
 }
 
 

@@ -12,7 +12,5 @@ ConditionCompilerToken::ConditionCompilerToken(ReturnValueCompilerToken* rvct) {
 
 ConditionCompilerToken::~ConditionCompilerToken()
 {
-	//for each(SubConditionCompilerToken* sc in subcons) {
-	//	//delete sc;
-	//}
+	delete rvct;
 }

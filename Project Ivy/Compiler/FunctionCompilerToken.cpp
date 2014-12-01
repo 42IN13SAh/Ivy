@@ -10,7 +10,7 @@ FunctionCompilerToken::FunctionCompilerToken(std::string name)
 FunctionCompilerToken::~FunctionCompilerToken()
 {
 	for each(ReturnValueCompilerToken* rv in arguments) {
-		//delete rv;
+		delete rv;
 	}
 }
 
