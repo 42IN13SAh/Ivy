@@ -20,6 +20,7 @@ public:
 class InternalFunctionFactory
 {
 public:
+	InternalFunctionFactory();
 	// Get the single instance of the factory
 	static InternalFunctionFactory * Instance();
 

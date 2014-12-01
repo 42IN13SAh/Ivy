@@ -5,7 +5,8 @@ REGISTER_CLASS("log", Log);
 
 void Log::Execute(std::vector<boost::any> arglist)
 {
-
+	double a = boost::any_cast<double>(arglist[0]);
+	Result = log(a);
 }
 
 boost::any Log::GetResult()
