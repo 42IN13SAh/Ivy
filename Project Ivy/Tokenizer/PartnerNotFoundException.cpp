@@ -5,7 +5,7 @@ PartnerNotFoundException::PartnerNotFoundException(std::string token, int lineNu
 {
 	this->exceptionMessage = "Partner not found for token \"" + token + "\" on linenumber " + std::to_string(lineNumber) + " and lineposition " + std::to_string(linePosition);
 	this->lineNumber = lineNumber;
-	this->linePostition = linePosition;
+	this->linePosition = linePosition;
 	this->token = token;
 }
 

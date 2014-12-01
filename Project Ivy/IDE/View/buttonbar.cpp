@@ -6,7 +6,7 @@
 
 ButtonBar::ButtonBar(QWidget *parent) : QWidget(parent)
 {
-    controller = new ButtonController();
+    controller = new ButtonController((MainWindow *)parent);
     QHBoxLayout *layout = new QHBoxLayout();
 
     runButton = new QPushButton();
@@ -42,7 +42,7 @@ ButtonBar::ButtonBar(QWidget *parent) : QWidget(parent)
     setPalette(Pal);
 
     //background color for all buttons inside the buttonbar
-    setStyleSheet("QPushButton { color: white; background-color: #2D2D2F; border: none; border-color: black; } QPushButton:hover{ background-color: #1E1E1F; } QPushButton:pressed{ border-left: 2px solid grey; border-top: 2px solid grey; border-right: 2px solid black; border-bottom: 2px solid black; }");
+    setStyleSheet("QPushButton { color: white; background-color: #2D2D2F; border: none; border-color: black; } QPushButton:hover { background-color: #1E1E1F; } QPushButton:pressed { border-left: 2px solid grey; border-top: 2px solid grey; border-right: 2px solid black; border-bottom: 2px solid black; }");
 }
 
 void ButtonBar::runButtonClicked(){

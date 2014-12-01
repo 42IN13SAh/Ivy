@@ -1,7 +1,7 @@
 #include "bottombar.h"
+#include "mainwindow.h"
 #include <QHBoxLayout>
 #include <QWidget>
-#include <QDebug>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -9,6 +9,8 @@
 BottomBar::BottomBar(QWidget *parent) :
     QTabWidget(parent)
 {
+	this->parent = (MainWindow*)parent;
+
     //console
     textArea = new QTextEdit();
     this->addTab(textArea, "Console");
@@ -26,29 +28,35 @@ BottomBar::BottomBar(QWidget *parent) :
     setFixedHeight(200);
     setStyleSheet("QTextEdit, QListWidget { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; } QTabWidget::pane { background-color: #2D2D2F; } QTabBar::tab { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; padding: 3px;} QTabBar::tab:selected { background-color: black; }");
 
-    errorList->addItem(new ErrorListItem(2, "First item", errorList));
-    errorList->addItem(new ErrorListItem(4, "Second item", errorList));
-
     connect(errorList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(errorListItemDoubleClicked(QListWidgetItem*)));
+
+	createRedirector();
 }
 
 void BottomBar::errorListItemDoubleClicked(QListWidgetItem* listItem)
 {
     ErrorListItem* errorListItem = (ErrorListItem*)listItem;
+	parent->getCodeEditor()->moveCursor(errorListItem->getLineNumber(), errorListItem->getLinePosition());
 }
 
-/* Template code for overriding cout
-void BottomBar::readText()
+void BottomBar::addError(int lineNumber, int linePosition, std::string text)
 {
-    std::stringstream redirectStream;
-    std::cout.rdbuf(redirectStream.rdbuf());
+	errorList->addItem(new ErrorListItem(lineNumber, linePosition, QString::fromStdString(text), errorList));
+}
 
-    std::string str;
-    while(std::getline(redirectStream, str))
-    {
-        textArea->append("/n");
-        textArea->append(QString::fromStdString(str));
-    }
+void BottomBar::clearErrorList()
+{
+	errorList->clear();
+}
 
-    std::cout << "blablabla";
-}*/
+void outcallback(const char* ptr, std::streamsize count, void* textArea)
+{
+	(void)count;
+	QTextEdit* textEdit = static_cast<QTextEdit*>(textArea);
+	textEdit->append(ptr);
+}
+
+void BottomBar::createRedirector()
+{
+	stdRedirector = new StdRedirector<>(std::cout, outcallback, textArea);
+}

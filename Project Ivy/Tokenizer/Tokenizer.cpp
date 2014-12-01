@@ -6,7 +6,6 @@
 #include <cctype>
 #include <locale>
 #include <regex>
-#include <iostream>
 #include <fstream>
 #include <chrono>
 #include <boost\algorithm\string\trim.hpp>
@@ -34,44 +33,40 @@ std::list<Token*> Tokenizer::getTokenList()
 }
 
 void Tokenizer::tokenize(std::string* input, int size)
-{	
+{
 	int lineNumber = 0;
 	int syntaxId = -1;
 	int level = 0;
-	try{
-		while (++lineNumber <= size){
-			int linePosition = 1;
-			const char* unprocessedInput = trim(input->c_str(), linePosition);
-			while (*unprocessedInput != '\0'){
-				bool hasMatch = false;
-				for (Syntax* syntax : syntaxManager.getFollowupVector(syntaxId)){
-					boost::cmatch result;
-					if (boost::regex_search(unprocessedInput, result, syntax->getRegexPattern(), boost::match_continuous)){
-						hasMatch = true;
-						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
-						if (token->getTokenType() == TokenType::Name){
-							if (syntaxManager.hasKeyWord(token->getDescription())){
-								throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
-							}
+
+	while (++lineNumber <= size){
+		int linePosition = 1;
+		const char* unprocessedInput = trim(input->c_str(), linePosition);
+		while (*unprocessedInput != '\0'){
+			bool hasMatch = false;
+			for (Syntax* syntax : syntaxManager.getFollowupVector(syntaxId)){
+				boost::cmatch result;
+				if (boost::regex_search(unprocessedInput, result, syntax->getRegexPattern(), boost::match_continuous)){
+					hasMatch = true;
+					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
+					if (token->getTokenType() == TokenType::Name){
+						if (syntaxManager.hasKeyWord(token->getDescription())){
+							throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
 						}
-						tokenList.push_back(token);
-						tokenPartnerCheck(syntax, token, level, lineNumber, linePosition);
-						linePosition += result[0].length();
-						unprocessedInput += result[0].length();
-						unprocessedInput = trim(unprocessedInput, linePosition);
-						syntaxId = syntax->getID();
-						break;
 					}
-				}
-				if (!hasMatch){
-					throw BadSyntaxException(lineNumber, linePosition);
+					tokenList.push_back(token);
+					tokenPartnerCheck(syntax, token, level, lineNumber, linePosition);
+					linePosition += result[0].length();
+					unprocessedInput += result[0].length();
+					unprocessedInput = trim(unprocessedInput, linePosition);
+					syntaxId = syntax->getID();
+					break;
 				}
 			}
-			input++;
+			if (!hasMatch){
+				throw BadSyntaxException(lineNumber, linePosition);
+			}
 		}
-	}
-	catch (BadSyntaxException& e){
-		std::cout << e.what();
+		input++;
 	}
 }
 
