@@ -1,4 +1,6 @@
 #include "Compiler.h"
+//#include "../Virtual Machine/IInternalFunction.h"
+#include <memory>
 
 Compiler::Compiler(list<Token*> tokenList) {
 	this->tokenList = tokenList;
@@ -303,7 +305,7 @@ Action* Compiler::compileStatementVar(Action* statement) {
 
 	if (getNextToken()->getTokenType() == TokenType::AssignmentOperator) {
 		getNextToken();
-		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
+		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), TokenType::AssignmentOperator));
 	} else
 		statement = nullptr;
 
@@ -325,21 +327,15 @@ Action* Compiler::compileStatementName(Action* statement) {
 	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis)
 		statement->setCompilerToken(compileFunctionCall());
 	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) {
-		switch (peekNextToken()->getTokenType()) {
-		case TokenType::AssignmentOperator:
-			statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
-			break;
-		case TokenType::AddThenAssignOperator:
-			break;
-		case TokenType::MinusThenAssignOperator:
-			break;
-		case TokenType::DivideThenAssignOperator:
-			break;
-		case TokenType::MultiplyThenAssignOperator:
-			break;
-		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-			statement->setCompilerToken(compileReturnValue());
-			break;
+		TokenType op = getNextToken()->getTokenType();
+		getNextToken();
+		switch (op) {
+			case TokenType::AssignmentOperator: case TokenType::AddThenAssignOperator: case TokenType::MinusThenAssignOperator: case TokenType::DivideThenAssignOperator: case TokenType::MultiplyThenAssignOperator:
+				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), op));
+				break;
+			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+				statement->setCompilerToken(compileReturnValue());
+				break;
 		}
 	}
 
@@ -419,8 +415,16 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
+	
+	/*std::shared_ptr<IInternalFunction> x = InternalFunctionFactory::Instance()->Create("pow");
+	x->Execute({ 2.0, 3.0 });*/
+
+	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {
+		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, iter.second, nullptr, nullptr, true));
+	}
+	
 	// TODO: read internal functions from a file or list
-	currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
+	//currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }

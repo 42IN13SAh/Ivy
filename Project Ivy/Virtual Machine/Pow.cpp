@@ -4,7 +4,7 @@
 #include <string>
 #include "InternalFunctionFactory.h"
 
-REGISTER_CLASS("pow", Pow);
+REGISTER_CLASS("pow", Pow, 2);
 
 void Pow::Execute(std::vector<boost::any> arglist)
 {
