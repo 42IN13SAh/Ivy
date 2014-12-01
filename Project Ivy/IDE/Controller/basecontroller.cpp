@@ -35,6 +35,14 @@ void BaseController::startBuilding(bool onlyBuild)
 	catch (BadSyntaxException& e)
 	{
 		source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
+
+		if (onlyBuild)
+		{
+			delete tokenizer;
+		}
+
+		compiler = nullptr;
+		return;
 	}
 
 	compiler = new Compiler(tokenizer->getTokenList());
@@ -45,6 +53,15 @@ void BaseController::startBuilding(bool onlyBuild)
 	catch (exception& e)
 	{
 		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
+
+		if (onlyBuild)
+		{
+			delete tokenizer;			
+			delete compiler;
+		}
+
+		compiler = nullptr;
+		return;
 	}
 
 	if (onlyBuild)
@@ -59,13 +76,17 @@ void BaseController::startRunning()
 	startBuilding(false);
 
 	VirtualMachine *virtualMachine = new VirtualMachine();
-	try
+
+	if (compiler != nullptr) //compiler is a nullptr when there are builderrors
 	{
-		virtualMachine->run(compiler->getFirstAction());
-	}
-	catch (exception e)
-	{
-		std::cout << e.what();
+		try
+		{
+			virtualMachine->run(compiler->getFirstAction());
+		}
+		catch (exception e)
+		{
+			std::cout << e.what();
+		}
 	}
 
 	delete virtualMachine;
