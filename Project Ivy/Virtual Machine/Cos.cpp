@@ -1,7 +1,7 @@
 #include "Cos.h"
 #include "InternalFunctionFactory.h"
 
-REGISTER_CLASS("cos", Cos);
+REGISTER_CLASS("cos", Cos, 1);
 
 void Cos::Execute(std::vector<boost::any> arglist)
 {

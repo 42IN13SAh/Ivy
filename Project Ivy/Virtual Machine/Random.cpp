@@ -1,9 +1,7 @@
 #include "Random.h"
 #include "InternalFunctionFactory.h"
 
-REGISTER_CLASS("random", Random);
-std::random_device Random::rd;
-std::mt19937 Random::mt(rd());
+REGISTER_CLASS("random", Random, 2);
 
 void Random::Execute(std::vector<boost::any> arglist)
 {
