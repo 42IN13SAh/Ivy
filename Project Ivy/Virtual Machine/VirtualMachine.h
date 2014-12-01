@@ -37,7 +37,7 @@ private:
 	void executeAction(FunctionCompilerToken* compilerToken);
 	void executeAction(VarCompilerToken* compilerToken);
 	void executeAction(ConditionCompilerToken* compilerToken);
-	void executeAction(SubConditionCompilerToken* compilerToken);
+	//void executeAction(SubConditionCompilerToken* compilerToken);
 
 	boost::any getReturnValue(ReturnValueCompilerToken*);
 	boost::any getVarValue(VarCompilerToken*);

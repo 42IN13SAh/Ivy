@@ -2,10 +2,11 @@
 #include "../Virtual Machine/VirtualMachine.h"
 #include <iostream>
 
-AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerToken* value)
+AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerToken* value, TokenType assignOp)
 {
 	this->name = name;
 	this->value = value;
+	this->assignOp = assignOp;
 }
 
 AssignCompilerToken::~AssignCompilerToken()
