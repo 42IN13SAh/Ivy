@@ -109,6 +109,8 @@ void MainWindow::setupFileMenu()
     fileMenu->addAction(tr("&New"), this, SLOT(newFile()), QKeySequence::New);
     fileMenu->addAction(tr("&Open..."), this, SLOT(openFile()), QKeySequence::Open);
     fileMenu->addAction(tr("E&xit"), qApp, SLOT(quit()), QKeySequence::Quit);
+
+	setStyleSheet("QMenuBar { background-color: #323232; border-bottom: 1px solid black; } QMenuBar::item { background-color: #323232; color: white; } QMenuBar::item:selected { background-color: #1E1E1F; } QMenuItem { background-color: #323232; color: white; } QMenu::item { background-color: #323232; color: white; } QMenu::item:selected { background-color: #1E1E1F; } QMenu { background-color: #323232; }");
 }
 
 void MainWindow::setupHelpMenu()
@@ -127,3 +129,12 @@ void MainWindow::keyPressEvent(QKeyEvent* event){
     keyInputController->handleKeyPressEvent(event);
 }
 
+CodeEditor* MainWindow::getCodeEditor()
+{
+	return editor;
+}
+
+BottomBar* MainWindow::getBottomBar()
+{
+	return bottomBar;
+}

@@ -1,4 +1,6 @@
 #include "Compiler.h"
+//#include "../Virtual Machine/IInternalFunction.h"
+#include <memory>
 
 Compiler::Compiler(list<Token*> tokenList) {
 	this->tokenList = tokenList;
@@ -212,22 +214,25 @@ Action* Compiler::compileElse() {
 /// A return value is any calculation or sequence that returns a value.
 /// Returns a Token containing the calculation in RPN notation.
 ReturnValueCompilerToken* Compiler::compileReturnValue() {
+	int openParenthisCounter = 0;
 	std::vector<TokenType> endTypes = { TokenType::LineEnd, TokenType::ParameterOperator, TokenType::OpenBracket };
 
 	Token* cToken = getCurrentToken();
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
-
-	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end() && !(rt->peekOperatorStack() != TokenType::OpenParenthesis && cToken->getTokenType() == TokenType::ClosingParenthesis)) {
-		if (cToken->getTokenType() == TokenType::Name)
+	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end() && !(getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis && !rt->hasOpenParenthisOnStack())) {
+		if (cToken->getTokenType() == TokenType::Name){
 			compileReturnValueName(rt);
-		else if (cToken->getTokenType() == TokenType::IncreaseOperator || cToken->getTokenType() == TokenType::DecreaseOperator)
+		}
+		else if (cToken->getTokenType() == TokenType::IncreaseOperator || cToken->getTokenType() == TokenType::DecreaseOperator){
 			compileReturnValueIncreaseDecrease(rt);
+		}
 		else if (cToken->getParentType() == ParentType::MathOperator || cToken->getParentType() == ParentType::ConditionOperator || cToken->getParentType() == ParentType::SubConditionOperator
-							|| cToken->getTokenType() == TokenType::OpenParenthesis || cToken->getTokenType() == TokenType::ClosingParenthesis)
+			|| cToken->getTokenType() == TokenType::OpenParenthesis || cToken->getTokenType() == TokenType::ClosingParenthesis){
 			compileReturnValueMath(rt);
-		else
+		}
+		else{
 			rt->addValueToVector(cToken->getDescription());
-
+		}
 		cToken = getNextToken();
 	}
 	rt->completeRPNVector();
@@ -300,7 +305,7 @@ Action* Compiler::compileStatementVar(Action* statement) {
 
 	if (getNextToken()->getTokenType() == TokenType::AssignmentOperator) {
 		getNextToken();
-		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
+		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), TokenType::AssignmentOperator));
 	} else
 		statement = nullptr;
 
@@ -322,21 +327,15 @@ Action* Compiler::compileStatementName(Action* statement) {
 	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis)
 		statement->setCompilerToken(compileFunctionCall());
 	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) {
-		switch (peekNextToken()->getTokenType()) {
-		case TokenType::AssignmentOperator:
-			statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
-			break;
-		case TokenType::AddThenAssignOperator:
-			break;
-		case TokenType::MinusThenAssignOperator:
-			break;
-		case TokenType::DivideThenAssignOperator:
-			break;
-		case TokenType::MultiplyThenAssignOperator:
-			break;
-		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-			statement->setCompilerToken(compileReturnValue());
-			break;
+		TokenType op = getNextToken()->getTokenType();
+		getNextToken();
+		switch (op) {
+			case TokenType::AssignmentOperator: case TokenType::AddThenAssignOperator: case TokenType::MinusThenAssignOperator: case TokenType::DivideThenAssignOperator: case TokenType::MultiplyThenAssignOperator:
+				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), op));
+				break;
+			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+				statement->setCompilerToken(compileReturnValue());
+				break;
 		}
 	}
 
@@ -373,35 +372,59 @@ void Compiler::compileReturnValueIncreaseDecrease(ReturnValueCompilerToken* rt) 
 /// Compiles any math within a return value.
 /// Called by compileReturnValue.
 void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
-	if (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis)
-		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
-	else if (getCurrentToken()->getParentType() == ParentType::MathOperator) {
-		TokenType tmp = rt->peekOperatorStack();
-
-		if (tmp == TokenType::MultiplyOperator || tmp == TokenType::DivideOperator || tmp == TokenType::ModuloOperator) {
-			rt->addValueToVector(tmp);
-			rt->popOperatorStack();
-		}
-
+	if (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis){
 		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
 	}
-	else if (getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis) {
-		while (rt->peekOperatorStack() != TokenType::OpenParenthesis && rt->peekOperatorStack() != TokenType::Null) {
+	else if (getCurrentToken()->getParentType() == ParentType::MathOperator){
+		if (!rt->isEmpty()){
+			TokenType tmp = rt->peekOperatorStack();
+			if (tmp == TokenType::DivideOperator || tmp == TokenType::ModuloOperator || tmp == TokenType::MultiplyOperator){
+				rt->addValueToVector(tmp);
+				rt->popOperatorStack();
+			}
+			else if ((getCurrentToken()->getTokenType() == TokenType::AddOperator || getCurrentToken()->getTokenType() == TokenType::MinusOperator) &&
+				(tmp == TokenType::AddOperator || tmp == TokenType::MinusOperator)){
+				rt->addValueToVector(tmp);
+				rt->popOperatorStack();
+			}
+		}
+		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
+	}
+	else if (getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis){
+		while (rt->peekOperatorStack() != TokenType::OpenParenthesis){
 			rt->addValueToVector(rt->peekOperatorStack());
 			rt->popOperatorStack();
 		}
-
 		rt->popOperatorStack();
 	}
-	else if (getCurrentToken()->getParentType() == ParentType::ConditionOperator || getCurrentToken()->getParentType() == ParentType::SubConditionOperator)
+	else if (getCurrentToken()->getParentType() == ParentType::SubConditionOperator){
+		if (!rt->isEmpty()){
+			rt->addValueToVector(rt->peekOperatorStack());
+			rt->popOperatorStack();
+		}
 		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
-
+	}
+	else if (getCurrentToken()->getParentType() == ParentType::ConditionOperator){
+		if (!rt->isEmpty()){
+			rt->addValueToVector(rt->peekOperatorStack());
+			rt->popOperatorStack();
+		}
+		rt->addValueToVector(getCurrentToken()->getTokenType());
+	}
 }
 
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
+	
+	/*std::shared_ptr<IInternalFunction> x = InternalFunctionFactory::Instance()->Create("pow");
+	x->Execute({ 2.0, 3.0 });*/
+
+	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {
+		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, iter.second, nullptr, nullptr, true));
+	}
+	
 	// TODO: read internal functions from a file or list
-	currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
+	//currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }

@@ -3,7 +3,7 @@
 #include "../Compiler/ConditionCompilerToken.h"
 #include "../Compiler/FunctionCompilerToken.h"
 #include "../Compiler/ReturnValueCompilerToken.h"
-#include "../Compiler/SubConditionCompilerToken.h"
+//#include "../Compiler/SubConditionCompilerToken.h"
 #include "../Compiler/VarCompilerToken.h"
 #include "../Compiler/ReturnCompilerToken.h"
 #include <string>
@@ -74,8 +74,8 @@ void VirtualMachine::executeAction(CompilerToken* ct){
 		executeAction((FunctionCompilerToken*)ct);
 	else if (typeid(*ct) == typeid(ConditionCompilerToken))
 		executeAction((ConditionCompilerToken*)ct);
-	else if (typeid(*ct) == typeid(SubConditionCompilerToken))
-		executeAction((SubConditionCompilerToken*)ct);
+	/*else if (typeid(*ct) == typeid(SubConditionCompilerToken))
+		executeAction((SubConditionCompilerToken*)ct);*/
 	else if (typeid(*ct) == typeid(VarCompilerToken))
 		executeAction((VarCompilerToken*)ct);
 	else
@@ -90,8 +90,27 @@ void VirtualMachine::executeAction(ReturnValueCompilerToken* compilerToken) {
 void VirtualMachine::executeAction(AssignCompilerToken* compilerToken)
 {
 	//TODO: -=, +=, etc...
-	
-	updateVariable(compilerToken->getName(), getReturnValue(compilerToken->getReturnValue()));
+	// Do this by setting another var in compilerToken which holds the operator type
+	// Apply an extra calculation based on the operator
+	boost::any val = currentSymbolTable->getValue(compilerToken->getName());
+	boost::any newVal = getReturnValue(compilerToken->getReturnValue());
+
+	switch (compilerToken->getAssignOp()) {
+		case TokenType::AssignmentOperator: val = newVal; break;
+		case TokenType::AddThenAssignOperator: 
+		{ 
+			if (val.type() == typeid(std::string))
+				val = boost::any_cast<std::string>(val) + boost::any_cast<std::string>(newVal);
+			else
+				val = boost::any_cast<double>(val) + boost::any_cast<double>(newVal);
+			break;
+		}
+		case TokenType::MinusThenAssignOperator: val = boost::any_cast<double>(val) - boost::any_cast<double>(newVal); break;
+		case TokenType::DivideThenAssignOperator: val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal); break;
+		case TokenType::MultiplyThenAssignOperator: val = boost::any_cast<double>(val) * boost::any_cast<double>(newVal); break;
+	}
+
+	updateVariable(compilerToken->getName(), val);
 
 	currentAction = currentAction->getNextAction();
 	//return action->getNextAction();
@@ -108,13 +127,14 @@ void VirtualMachine::executeAction(ConditionCompilerToken* compilerToken)
 {
 	//TODO: write this method
 	//return nullptr;
+	currentAction = (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken()))) ? currentAction->getNextAction() : currentAction->getFalseAction();
 }
 
-void VirtualMachine::executeAction(SubConditionCompilerToken* compilerToken)
-{
-	//TODO: write this method
-	//return nullptr;
-}
+//void VirtualMachine::executeAction(SubConditionCompilerToken* compilerToken)
+//{
+//	//TODO: write this method
+//	//return nullptr;
+//}
 
 void VirtualMachine::executeAction(VarCompilerToken* compilerToken)
 {
@@ -223,13 +243,26 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) {
 boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken) {
 	// TODO: Get vars from global symboltable and function symboltable
 	FunctionSymbol* fs = currentSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
+	if (fs == nullptr) {
+		currentAction = currentAction->getNextAction();
+		// throw exception(); Function not found
+		return nullptr;
+	}
 	if (fs->isInternal()) {
 		// TODO: get function from internal function list, parse arguments and execute
 		if (fs->getName() == "print") {
 			print(getReturnValue(compilerToken->getArguments()[0]));
 		}
 
+		/*std::shared_ptr<IInternalFunction> fnc = InternalFunctionFactory::Instance()->Create(fs->getName());
+		std::vector<boost::any> args;
+		for each(ReturnValueCompilerToken* rvct in compilerToken->getArguments()) {
+			args.push_back(getReturnValue(rvct));
+		}
+		fnc->Execute(args); */
+
 		currentAction = currentAction->getNextAction();
+		/*return fnc->GetResult();*/
 		// TODO: Return returnvalue from function
 	}
 	else {

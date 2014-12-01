@@ -5,7 +5,7 @@ ReservedKeywordException::ReservedKeywordException(std::string token, int lineNu
 {
 	this->exceptionMessage = "\"" + token + "\" is a reserved keyword. You may not use this name. Error on linenumber " + std::to_string(lineNumber) + " and lineposition " + std::to_string(linePosition);
 	this->lineNumber = lineNumber;
-	this->linePostition = linePosition;
+	this->linePosition = linePosition;
 	this->token = token;
 }
 

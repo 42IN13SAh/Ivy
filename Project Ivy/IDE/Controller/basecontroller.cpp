@@ -1,22 +1,95 @@
 #include "basecontroller.h"
 #include <qdebug.h>
+#include <iostream>
+#include "mainwindow.h"
 
-BaseController::BaseController()
+#include "..\..\Tokenizer\Tokenizer.h"
+#include "..\..\Tokenizer\BadSyntaxException.h"
+#include "..\..\Compiler\Compiler.h"
+#include "..\..\Virtual Machine\VirtualMachine.h"
+#include "..\Jzon.h"
+
+BaseController::BaseController(MainWindow * source)
 {
-    //TODO: load data from dll/lib here if needed (i.e. create tokenizer object that can be called if we really need that)
+	this->source = source;
 }
 
-void BaseController::startTokenizing(){
-    //TODO: implement
-    qDebug() << "Came into the 'startTokenizing' function in basecontroller";
+BaseController::~BaseController()
+{
+	delete virtualMachine;
+	delete compiler;
+	delete tokenizer;
 }
 
-void BaseController::startCompiling(){
-    //TODO: implement
-    qDebug() << "Came into the 'startCompiling' function in basecontroller";
+void BaseController::startBuilding(bool onlyBuild)
+{
+	source->getBottomBar()->clearErrorList();
+
+	std::vector<std::string> list = source->getCodeEditor()->getEditorContent();
+
+	tokenizer = new Tokenizer();
+	try
+	{
+		tokenizer->tokenize(&list[0], list.size());
+	}
+	catch (BadSyntaxException& e)
+	{
+		source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
+
+		if (onlyBuild)
+		{
+			delete tokenizer;
+		}
+
+		compiler = nullptr;
+		return;
+	}
+
+	compiler = new Compiler(tokenizer->getTokenList());
+	try
+	{
+		compiler->compile();
+	}
+	catch (exception& e)
+	{
+		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
+
+		if (onlyBuild)
+		{
+			delete tokenizer;			
+			delete compiler;
+		}
+
+		compiler = nullptr;
+		return;
+	}
+
+	if (onlyBuild)
+	{
+		delete compiler;
+		delete tokenizer;
+	}
 }
 
-void BaseController::startRunning(){
-    //TODO implement
-    qDebug() << "Came into the 'startRunning' function in basecontroller";
+void BaseController::startRunning()
+{
+	startBuilding(false);
+
+	VirtualMachine *virtualMachine = new VirtualMachine();
+
+	if (compiler != nullptr) //compiler is a nullptr when there are builderrors
+	{
+		try
+		{
+			virtualMachine->run(compiler->getFirstAction());
+		}
+		catch (exception e)
+		{
+			std::cout << e.what();
+		}
+	}
+
+	delete virtualMachine;
+	delete compiler;
+	delete tokenizer;
 }
