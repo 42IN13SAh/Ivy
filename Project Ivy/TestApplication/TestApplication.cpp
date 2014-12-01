@@ -35,7 +35,7 @@ int main(){
 	comp->compile();
 
 	VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
-	vm->run(comp->getFirstAction());
+ 	vm->run(comp->getFirstAction());
 
 	std::string msg;
 	std::cin >> msg;

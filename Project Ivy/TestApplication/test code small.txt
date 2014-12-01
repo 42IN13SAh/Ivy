@@ -1,9 +1,20 @@
-var x = 10;
+var x = 15;
 var y = 20;
 var a = 30;
+var st = " --Niek-- ";
+var remi = " --Remi bazen team-- ";
+
 function z() {
-	if(x is 10 or y is 3 * 8 / (10 - 9)){
-		var y = 100;
+	if(x is 11){
+		print(st);
+	}else if(x is 12){
+		print(remi);	
+	}
+	else{
+		while(y < 100){
+			y += 1;
+			print("manders");
+		}
 	}
 }
 
