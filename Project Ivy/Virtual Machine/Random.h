@@ -1,5 +1,6 @@
 #pragma once
 #include "IInternalFunction.h" 
+#include <random>
 
 class Random : public IInternalFunction
 {
