@@ -5,10 +5,18 @@ var st = " --Niek-- ";
 var remi = " --Remi bazen team-- ";
 
 function z() {
-	while(y < 30){
-		++y;
-		print("manders");
+	while(x < 1000){
+		x += 10;
+		h();
 	}
+}
+
+function h(){
+	niekisbeest();
+}
+
+function niekisbeest(){
+	print("Niek is beest");
 }
 
 z();

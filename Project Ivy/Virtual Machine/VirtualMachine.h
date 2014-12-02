@@ -37,7 +37,7 @@ private:
 	void executeAction(CompilerToken*);
 	void executeAction(ReturnValueCompilerToken* compilerToken);
 	void executeAction(AssignCompilerToken* compilerToken);
-	void executeAction(FunctionCompilerToken* compilerToken);
+	void executeAction(FunctionCompilerToken* compilerToken, Action* lastAction);
 	void executeAction(VarCompilerToken* compilerToken);
 	void executeAction(ConditionCompilerToken* compilerToken);
 	//void executeAction(SubConditionCompilerToken* compilerToken);
@@ -46,7 +46,7 @@ private:
 	bool exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*);
 	boost::any getVarValue(VarCompilerToken*);
-	boost::any getFunctionValue(FunctionCompilerToken*);
+	boost::any getFunctionValue(FunctionCompilerToken*, Action* lastAction);
 
 	void print(boost::any);
 };
