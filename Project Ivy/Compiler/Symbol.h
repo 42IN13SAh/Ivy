@@ -10,11 +10,9 @@ public:
 	Symbol(string name, boost::any value);
 	Symbol(string name);
 	~Symbol();
-
 	string getName();
 	boost::any getValue();
 	void setValue(boost::any value);
-
 private:
 	string name;
 	boost::any value;

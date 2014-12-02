@@ -10,7 +10,8 @@ ReturnValueCompilerToken::~ReturnValueCompilerToken()
 {
 }
 
-void ReturnValueCompilerToken::addValueToVector(boost::any value) { 
+void ReturnValueCompilerToken::addValueToVector(boost::any value) 
+{ 
 	rpnVector.push(value);
 }
 
@@ -19,14 +20,16 @@ bool ReturnValueCompilerToken::isEmpty()
 	return operatorStack.empty();
 }
 
-void ReturnValueCompilerToken::pushOperatorToStack(TokenType op) { 
+void ReturnValueCompilerToken::pushOperatorToStack(TokenType op) 
+{ 
 	if (op == TokenType::OpenParenthesis){
 		openParenthisCounter++;
 	}
 	operatorStack.push(op);
 }
 
-TokenType ReturnValueCompilerToken::peekOperatorStack() {
+TokenType ReturnValueCompilerToken::peekOperatorStack() 
+{
 	if (!operatorStack.empty()) {
 		return operatorStack.top();
 	}
@@ -42,7 +45,8 @@ bool ReturnValueCompilerToken::hasOpenParenthisOnStack()
 	return false;
 }
 
-void ReturnValueCompilerToken::popOperatorStack() {
+void ReturnValueCompilerToken::popOperatorStack() 
+{
 	if (!operatorStack.empty()){
 		if (operatorStack.top() == TokenType::OpenParenthesis){
 			openParenthisCounter--;
@@ -51,13 +55,15 @@ void ReturnValueCompilerToken::popOperatorStack() {
 	}
 }
 
-void ReturnValueCompilerToken::completeRPNVector() {
+void ReturnValueCompilerToken::completeRPNVector()
+{
 	while (!operatorStack.empty()) {
 		addValueToVector(operatorStack.top());
 		operatorStack.pop();
 	}
 }
 
-std::queue<boost::any>& ReturnValueCompilerToken::getRPN() {
+std::queue<boost::any>& ReturnValueCompilerToken::getRPN() 
+{
 	return rpnVector;
 }

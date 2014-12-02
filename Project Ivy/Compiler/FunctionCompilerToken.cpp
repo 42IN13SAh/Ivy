@@ -14,8 +14,7 @@ FunctionCompilerToken::~FunctionCompilerToken()
 	}
 }
 
-
-void FunctionCompilerToken::setName(string name) {
+void FunctionCompilerToken::setName(std::string name) {
 	this->name = name;
 }
 
@@ -23,19 +22,19 @@ void FunctionCompilerToken::addArgument(ReturnValueCompilerToken* rvct) {
 	arguments.push_back(rvct);
 }
 
-void FunctionCompilerToken::addArgumentName(string name) {
+void FunctionCompilerToken::addArgumentName(std::string name) {
 	argumentNames.push_back(name);
 }
 
-string FunctionCompilerToken::getName() {
+std::string FunctionCompilerToken::getName() {
 	return name;
 }
 
-vector<ReturnValueCompilerToken*>& FunctionCompilerToken::getArguments() {
+std::vector<ReturnValueCompilerToken*>& FunctionCompilerToken::getArguments() {
 	return arguments;
 }
 
-vector<string> FunctionCompilerToken::getArgumentNames() {
+std::vector<std::string> FunctionCompilerToken::getArgumentNames() {
 	return argumentNames;
 }
 

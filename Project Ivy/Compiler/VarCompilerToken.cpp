@@ -11,11 +11,13 @@ VarCompilerToken::~VarCompilerToken()
 {
 }
 
-void VarCompilerToken::setBackOperator(TokenType o) {
+void VarCompilerToken::setBackOperator(TokenType o) 
+{
 	this->backOperator = o;
 }
 
-void VarCompilerToken::setFrontOperator(TokenType o) {
+void VarCompilerToken::setFrontOperator(TokenType o) 
+{
 	this->frontOperator = o;
 }
 

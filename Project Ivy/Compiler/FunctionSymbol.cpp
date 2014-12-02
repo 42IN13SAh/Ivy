@@ -13,7 +13,7 @@ FunctionSymbol::FunctionSymbol(std::string name, int argNr, Action* startAction,
 
 FunctionSymbol::~FunctionSymbol()
 {
-	if (!this->isInternal()){ //Only internal functions have actions that need to be deleted
+	if (!this->isInternal()){ 
 		Action *currentActionPtr = this->startAction;
 		Action *nextActionPtr = currentActionPtr->getNextAction();
 		Action *onFalseActionPtr;
@@ -30,11 +30,41 @@ FunctionSymbol::~FunctionSymbol()
 	delete symbolTable;
 }
 
-Action* FunctionSymbol::getStartAction() { return startAction; }
-Action* FunctionSymbol::getEndAction() { return endAction; }
-SymbolTable* FunctionSymbol::getSymbolTable() { return symbolTable; }
-std::string FunctionSymbol::getName() { return name; }
-int FunctionSymbol::getArgumentNr() { return argNr; }
-void FunctionSymbol::setStartAction(Action* startAction) { this->startAction = startAction; }
-void FunctionSymbol::setEndAction(Action* endAction) { this->endAction = endAction; }
-bool FunctionSymbol::isInternal() { return internal; }
+Action* FunctionSymbol::getStartAction() 
+{ 
+	return startAction; 
+}
+Action* FunctionSymbol::getEndAction() 
+{ 
+	return endAction; 
+}
+
+SymbolTable* FunctionSymbol::getSymbolTable() 
+{ 
+	return symbolTable; 
+}
+
+std::string FunctionSymbol::getName() 
+{ 
+	return name; 
+}
+
+int FunctionSymbol::getArgumentNr() 
+{ 
+	return argNr; 
+}
+
+void FunctionSymbol::setStartAction(Action* startAction) 
+{ 
+	this->startAction = startAction;
+}
+
+void FunctionSymbol::setEndAction(Action* endAction)
+{ 
+	this->endAction = endAction; 
+}
+
+bool FunctionSymbol::isInternal()
+{
+	return internal;
+}
