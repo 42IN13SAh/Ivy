@@ -28,11 +28,10 @@ private:
     QRegExp commentEndExpression;
 
     QTextCharFormat keywordFormat;
-    QTextCharFormat classFormat;
+	QTextCharFormat conditionFormat;
+	QTextCharFormat subconditionFormat;
     QTextCharFormat singleLineCommentFormat;
-    QTextCharFormat multiLineCommentFormat;
     QTextCharFormat quotationFormat;
-    QTextCharFormat functionFormat;
 };
 
 #endif // HIGHLIGHTER_H
