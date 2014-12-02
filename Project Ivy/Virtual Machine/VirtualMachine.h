@@ -6,7 +6,9 @@
 #include <vector>
 #include <iostream>
 #include <typeinfo>
-//#include <math.h>
+#include <stack>
+#include "../Tokenizer/TokenType.h"
+#include "InternalFunctionFactory.h"
 
 class AssignCompilerToken;
 class ConditionCompilerToken;
@@ -29,19 +31,22 @@ public:
 private:
 	//vector<SymbolTable> symbolTables;
 	SymbolTable* currentSymbolTable;
+	SymbolTable* globalSymbolTable;
 	Action* currentAction;
 
 	void executeAction(CompilerToken*);
 	void executeAction(ReturnValueCompilerToken* compilerToken);
 	void executeAction(AssignCompilerToken* compilerToken);
-	void executeAction(FunctionCompilerToken* compilerToken);
+	void executeAction(FunctionCompilerToken* compilerToken, Action* lastAction);
 	void executeAction(VarCompilerToken* compilerToken);
 	void executeAction(ConditionCompilerToken* compilerToken);
-	void executeAction(SubConditionCompilerToken* compilerToken);
-
+	//void executeAction(SubConditionCompilerToken* compilerToken);
+	bool exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
+	bool exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
+	bool exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*);
 	boost::any getVarValue(VarCompilerToken*);
-	boost::any getFunctionValue(FunctionCompilerToken*);
+	boost::any getFunctionValue(FunctionCompilerToken*, Action* lastAction);
 
 	void print(boost::any);
 };

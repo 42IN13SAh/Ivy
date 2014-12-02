@@ -1,13 +1,12 @@
 #ifndef BUTTONCONTROLLER_H
 #define BUTTONCONTROLLER_H
 
-
 #include "basecontroller.h"
 
 class ButtonController : public BaseController
 {
 public:
-    ButtonController();
+    ButtonController(MainWindow * source);
     void runButtonClicked();
     void buildButtonClicked();
 };

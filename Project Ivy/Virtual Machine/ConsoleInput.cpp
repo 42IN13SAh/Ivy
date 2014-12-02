@@ -1,7 +1,4 @@
 #include "ConsoleInput.h"
-#include "InternalFunctionFactory.h"
-
-REGISTER_CLASS("consoleInput", ConsoleInput);
 
 void ConsoleInput::Execute(std::vector<boost::any> arglist)
 {

@@ -15,6 +15,7 @@
 #include "ReturnCompilerToken.h"
 
 #include "../Tokenizer/Token.h"
+#include "../Virtual Machine/InternalFunctionFactory.h"
 
 class Compiler
 {

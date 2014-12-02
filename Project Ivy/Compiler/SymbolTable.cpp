@@ -1,4 +1,5 @@
 #include "SymbolTable.h"
+#include "../Virtual Machine/ExceptionCodes.h"
 
 SymbolTable::SymbolTable(int level, string functionName)
 {
@@ -77,7 +78,9 @@ boost::any SymbolTable::getValue(string name)
 			return symbol->getValue();
 	}
 
-	throw new exception; //Symbol not found. TODO: better exception handling
+	// TODO: create enum with clear names for "exception" not found
+	return ExceptionCodes::NotFound;
+	//throw new exception; //Symbol not found. TODO: better exception handling
 }
 
 void SymbolTable::addFunctionSymbol(FunctionSymbol* fs) {

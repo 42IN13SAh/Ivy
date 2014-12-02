@@ -89,9 +89,6 @@
     <Text Include="test code 1.0.txt" />
     <Text Include="test code small.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Tokens.json" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

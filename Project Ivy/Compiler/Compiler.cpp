@@ -1,5 +1,10 @@
+#include <memory>
+
 #include "Compiler.h"
 #include "SymbolTableItemsToBeDeleted.h"
+
+//#include "../Virtual Machine/IInternalFunction.h"
+
 
 Compiler::Compiler(list<Token*> tokenList) {
 	this->tokenList = tokenList;
@@ -164,12 +169,18 @@ void Compiler::compileStatement() {
 		break;
 	case TokenType::Return:
 		getNextToken();
-
 		statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
 		break;
 	case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-		statement->setCompilerToken(compileReturnValue());
-		break;
+		{
+			TokenType op = getCurrentToken()->getTokenType();
+			VarCompilerToken* v = new VarCompilerToken(getNextToken()->getDescription());
+			v->setFrontOperator(op);
+			statement->setCompilerToken(v);
+
+			getNextToken();
+			break;
+		}		
 	}
 
 	if (statement != nullptr && statement->getCompilerToken() != nullptr) {
@@ -216,7 +227,7 @@ void Compiler::compileIf() {
 	lastAction = ifAction->getNextAction();
 
 	compileCodeBlock();
-
+	lastAction->setNextAction(end);
 	if (start->getPartner() != nullptr && start->getPartner()->getTokenType() == TokenType::ElseStatement)
 		ifAction->setFalseAction(compileElse());
 	else
@@ -259,7 +270,16 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 			compileReturnValueMath(rt);
 		}
 		else{
-			rt->addValueToVector(cToken->getDescription());
+			switch (cToken->getTokenType()){
+			case TokenType::Number:
+				rt->addValueToVector(stod(cToken->getDescription()));
+				break;
+			case TokenType::BooleanTrue: case TokenType::BooleanFalse:
+				rt->addValueToVector(cToken->getDescription().compare("true") == 0);
+				break;
+			default:
+				rt->addValueToVector(cToken->getDescription());
+			}
 		}
 		cToken = getNextToken();
 	}
@@ -333,9 +353,8 @@ Action* Compiler::compileStatementVar(Action* statement) {
 
 	if (getNextToken()->getTokenType() == TokenType::AssignmentOperator) {
 		getNextToken();
-		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
-	}
-	else
+		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), TokenType::AssignmentOperator));
+	} else
 		statement = nullptr;
 
 	//A variable may not be declared twice with the same name
@@ -356,21 +375,19 @@ Action* Compiler::compileStatementName(Action* statement) {
 	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis)
 		statement->setCompilerToken(compileFunctionCall());
 	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) {
-		switch (peekNextToken()->getTokenType()) {
-		case TokenType::AssignmentOperator:
-			statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue()));
-			break;
-		case TokenType::AddThenAssignOperator:
-			break;
-		case TokenType::MinusThenAssignOperator:
-			break;
-		case TokenType::DivideThenAssignOperator:
-			break;
-		case TokenType::MultiplyThenAssignOperator:
-			break;
-		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-			statement->setCompilerToken(compileReturnValue());
-			break;
+		TokenType op = getNextToken()->getTokenType();
+		getNextToken();
+		switch (op) {
+			case TokenType::AssignmentOperator: case TokenType::AddThenAssignOperator: case TokenType::MinusThenAssignOperator: case TokenType::DivideThenAssignOperator: case TokenType::MultiplyThenAssignOperator:
+				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), op));
+				break;
+			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+			{
+				VarCompilerToken* v = new VarCompilerToken(name);
+				v->setBackOperator(op);
+				statement->setCompilerToken(v);
+				break;
+			}
 		}
 	}
 
@@ -434,8 +451,10 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 	}
 	else if (getCurrentToken()->getParentType() == ParentType::SubConditionOperator){
 		if (!rt->isEmpty()){
-			rt->addValueToVector(rt->peekOperatorStack());
-			rt->popOperatorStack();
+			if (rt->peekOperatorStack() != TokenType::OrStatement && rt->peekOperatorStack() != TokenType::AndStatement){
+				rt->addValueToVector(rt->peekOperatorStack());
+				rt->popOperatorStack();
+			}
 		}
 		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
 	}
@@ -444,14 +463,19 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 			rt->addValueToVector(rt->peekOperatorStack());
 			rt->popOperatorStack();
 		}
-		rt->addValueToVector(getCurrentToken()->getTokenType());
+		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
 	}
 }
 
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
-	// TODO: read internal functions from a file or list
-	currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
+	
+	/*::shared_ptr<IInternalFunction> x = InternalFunctionFactory::Instance()->Create("pow");
+	x->Execute({ 2.0, 3.0 });*/
+
+	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {
+		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, iter.second, nullptr, nullptr, true));
+	}
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }

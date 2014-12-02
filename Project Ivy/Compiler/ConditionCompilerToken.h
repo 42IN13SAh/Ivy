@@ -14,6 +14,7 @@ public:
 	enum ConditionOperator { AND, OR };
 
 	//virtual ConditionCompilerToken* Get() { return this; }
+	ReturnValueCompilerToken* getReturnValueCompilerToken() { return rvct; }
 
 private:
 	/*std::vector<TokenType> cOperatorVector;
