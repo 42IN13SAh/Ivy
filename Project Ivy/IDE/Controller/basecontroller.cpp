@@ -75,7 +75,7 @@ void BaseController::startRunning()
 {
 	startBuilding(false);
 
-	VirtualMachine *virtualMachine = new VirtualMachine();
+	VirtualMachine *virtualMachine = new VirtualMachine(compiler->getSymbolTable());
 
 	if (compiler != nullptr) //compiler is a nullptr when there are builderrors
 	{
