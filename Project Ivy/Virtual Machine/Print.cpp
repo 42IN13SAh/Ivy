@@ -1,11 +1,11 @@
 #include "Print.h"
-#include "InternalFunctionFactory.h"
-
-REGISTER_CLASS("print", Print, 1);
+#include <string>
+#include <iostream>
 
 void Print::Execute(std::vector<boost::any> arglist)
 {
-
+	std::string a = boost::any_cast<std::string>(arglist[0]);
+	std::cout << a;
 }
 
 boost::any Print::GetResult()

@@ -427,7 +427,7 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 /// Adds internal functions to the compiler.
 void Compiler::addInternalFunctions() {
 	
-	/*std::shared_ptr<IInternalFunction> x = InternalFunctionFactory::Instance()->Create("pow");
+	/*::shared_ptr<IInternalFunction> x = InternalFunctionFactory::Instance()->Create("pow");
 	x->Execute({ 2.0, 3.0 });*/
 
 	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {

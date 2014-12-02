@@ -1,17 +1,13 @@
 #include "Pow.h"
-#include <math.h>
-#include <iostream>
-#include <string>
-#include "InternalFunctionFactory.h"
-
-REGISTER_CLASS("pow", Pow, 2);
 
 void Pow::Execute(std::vector<boost::any> arglist)
 {
 	double a = boost::any_cast<double>(arglist[0]);
 	double b = boost::any_cast<double>(arglist[1]);
-	Result = pow(a, b);
-	std::cout << boost::any_cast<double>(Result);
+	double tempa = a;
+	for (int i = 0; i < b; i++)
+		a = a * tempa;
+	Result = a;
 }
 
 boost::any Pow::GetResult()
