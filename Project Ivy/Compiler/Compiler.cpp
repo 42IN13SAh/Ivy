@@ -188,7 +188,7 @@ void Compiler::compileIf() {
 	lastAction = ifAction->getNextAction();
 
 	compileCodeBlock();
-
+	lastAction->setNextAction(end);
 	if (start->getPartner() != nullptr && start->getPartner()->getTokenType() == TokenType::ElseStatement)
 		ifAction->setFalseAction(compileElse());
 	else
