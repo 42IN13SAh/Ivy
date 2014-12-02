@@ -433,9 +433,6 @@ void Compiler::addInternalFunctions() {
 	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {
 		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, iter.second, nullptr, nullptr, true));
 	}
-	
-	// TODO: read internal functions from a file or list
-	currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }
