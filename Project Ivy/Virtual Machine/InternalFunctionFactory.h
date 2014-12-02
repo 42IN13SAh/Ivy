@@ -45,6 +45,7 @@ class InternalFunctionFactory
 {
 public:
 	InternalFunctionFactory();
+	~InternalFunctionFactory();
 	// Get the single instance of the factory
 	static InternalFunctionFactory * Instance();
 
@@ -53,7 +54,7 @@ public:
 	void RegisterFactoryFunction(std::string name, IInternalFunction* classFactoryFunction, int argNr);
 
 	// create an instance of a registered class
-	std::shared_ptr<IInternalFunction> Create(std::string name);
+	IInternalFunction* Create(std::string name);
 	const std::map<std::string, IInternalFunction*> GetMap();
 	const std::map<std::string, int> GetArgNrMap();
 

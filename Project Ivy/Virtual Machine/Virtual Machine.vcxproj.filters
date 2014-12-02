@@ -164,5 +164,8 @@
     <ClInclude Include="Date.h">
       <Filter>Header Files\Date</Filter>
     </ClInclude>
+    <ClInclude Include="ExceptionCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

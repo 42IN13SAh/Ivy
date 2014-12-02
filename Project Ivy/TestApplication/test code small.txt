@@ -5,11 +5,18 @@ var st = " --Niek-- ";
 var remi = " --Remi bazen team-- ";
 
 function z() {
+<<<<<<< HEAD
 	test(y);
 }
 
 function test(y){
 	print(y);
+=======
+	while(y < 30){
+		++y;
+		print("manders");
+	}
+>>>>>>> cff6a73d477ecd39eb1be856e4d36c6501dc0a23
 }
 
 z();

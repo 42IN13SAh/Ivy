@@ -272,7 +272,6 @@ boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken
 		for (int i = 0; i < argNames.size(); i++) {
 			fs->getSymbolTable()->addSymbolToTable(argNames[i], getReturnValue(compilerToken->getArguments()[i]));
 		}
-		Action* tempAction = currentAction;
 		currentAction = fs->getStartAction()->getNextAction();
 		boost::any returnValue = nullptr;
 		while (currentAction != fs->getEndAction()) {

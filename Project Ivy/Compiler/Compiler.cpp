@@ -140,8 +140,16 @@ void Compiler::compileStatement() {
 			statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
 			break;
 		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-			statement->setCompilerToken(compileReturnValue());
+		{
+			TokenType op = getCurrentToken()->getTokenType();
+			VarCompilerToken* v = new VarCompilerToken(getNextToken()->getDescription());
+			v->setFrontOperator(op);
+			statement->setCompilerToken(v);
+
+			getNextToken();
 			break;
+		}
+			
 	}
 
 	if (statement != nullptr && statement->getCompilerToken() != nullptr) {
@@ -343,8 +351,12 @@ Action* Compiler::compileStatementName(Action* statement) {
 				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), op));
 				break;
 			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
-				statement->setCompilerToken(compileReturnValue());
+			{
+				VarCompilerToken* v = new VarCompilerToken(name);
+				v->setBackOperator(op);
+				statement->setCompilerToken(v);
 				break;
+			}
 		}
 	}
 
