@@ -7,16 +7,16 @@ var remi = " --Remi bazen team-- ";
 function z() {
 	while(x < 1000){
 		x += 10;
-		h();
+		q();
+		t();
 	}
 }
 
-function h(){
-	niekisbeest();
+function q(){
+	print("Niek");
 }
 
-function niekisbeest(){
-	print("Niek is beest");
+function t(){
+	print("Beest");
 }
-
 z();
