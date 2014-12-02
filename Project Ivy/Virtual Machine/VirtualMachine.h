@@ -6,7 +6,8 @@
 #include <vector>
 #include <iostream>
 #include <typeinfo>
-//#include <math.h>
+#include <stack>
+#include "../Tokenizer/TokenType.h"
 
 class AssignCompilerToken;
 class ConditionCompilerToken;
@@ -38,7 +39,9 @@ private:
 	void executeAction(VarCompilerToken* compilerToken);
 	void executeAction(ConditionCompilerToken* compilerToken);
 	//void executeAction(SubConditionCompilerToken* compilerToken);
-
+	bool exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
+	bool exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
+	bool exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*);
 	boost::any getVarValue(VarCompilerToken*);
 	boost::any getFunctionValue(FunctionCompilerToken*);

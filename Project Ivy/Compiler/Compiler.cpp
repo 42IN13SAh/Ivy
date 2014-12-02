@@ -231,7 +231,16 @@ ReturnValueCompilerToken* Compiler::compileReturnValue() {
 			compileReturnValueMath(rt);
 		}
 		else{
-			rt->addValueToVector(cToken->getDescription());
+			switch (cToken->getTokenType()){
+			case TokenType::Number:
+				rt->addValueToVector(stod(cToken->getDescription()));
+				break;
+			case TokenType::BooleanTrue: case TokenType::BooleanFalse:
+				rt->addValueToVector(cToken->getDescription().compare("true") == 0);
+				break;
+			default:
+				rt->addValueToVector(cToken->getDescription());
+			}
 		}
 		cToken = getNextToken();
 	}
@@ -399,8 +408,10 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 	}
 	else if (getCurrentToken()->getParentType() == ParentType::SubConditionOperator){
 		if (!rt->isEmpty()){
-			rt->addValueToVector(rt->peekOperatorStack());
-			rt->popOperatorStack();
+			if (rt->peekOperatorStack() != TokenType::OrStatement && rt->peekOperatorStack() != TokenType::AndStatement){
+				rt->addValueToVector(rt->peekOperatorStack());
+				rt->popOperatorStack();
+			}
 		}
 		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
 	}
@@ -409,7 +420,7 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt) {
 			rt->addValueToVector(rt->peekOperatorStack());
 			rt->popOperatorStack();
 		}
-		rt->addValueToVector(getCurrentToken()->getTokenType());
+		rt->pushOperatorToStack(getCurrentToken()->getTokenType());
 	}
 }
 
@@ -422,9 +433,6 @@ void Compiler::addInternalFunctions() {
 	for each(auto iter in InternalFunctionFactory::Instance()->GetArgNrMap()) {
 		currentSymbolTable->addFunctionSymbol(new FunctionSymbol(iter.first, iter.second, nullptr, nullptr, true));
 	}
-	
-	// TODO: read internal functions from a file or list
-	//currentSymbolTable->addFunctionSymbol(new FunctionSymbol("print", 1, nullptr, nullptr, true));
 }
 
 Token* Compiler::getCurrentToken() { return *tokenIter; }
