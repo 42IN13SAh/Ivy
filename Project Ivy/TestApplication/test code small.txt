@@ -5,10 +5,15 @@ var st = " --Niek-- ";
 var remi = " --Remi bazen team-- ";
 
 function z() {
-	if(x is 15){
-		print("niek");
-	}else{
-		print("remi");
+	while(y < 2000){
+		y+=10;
+		if(y is 100){
+			print("100");
+		}else if (y is 200){
+			print("yay 200!");
+		}else{
+			print("Geen van beide");
+		}
 	}
 }
 
