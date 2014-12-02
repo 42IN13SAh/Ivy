@@ -51,7 +51,9 @@ std::shared_ptr<IInternalFunction> InternalFunctionFactory::Create(std::string n
 	IInternalFunction * instance = nullptr;
 
 	// find name in the registry and call factory method.
-	instance = factoryFunctionRegistry[name];
+	auto it = factoryFunctionRegistry.find(name);
+	if (it != factoryFunctionRegistry.end())
+		instance = it->second;
 
 	// wrap instance in a shared ptr and return
 	if (instance != nullptr)
