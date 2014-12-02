@@ -1,8 +1,6 @@
 var x = 15;
 var y = 20;
 var a = 30;
-var st = " --Niek-- ";
-var remi = " --Remi bazen team-- ";
 
 function z() {
 	while(x < 1000){
@@ -19,4 +17,5 @@ function q(){
 function t(){
 	print("Beest");
 }
+
 z();

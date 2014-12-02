@@ -15,7 +15,7 @@ void Action::setCompilerToken(CompilerToken* ct) { compilerToken = ct; }
 
 Action::~Action()
 {
-	//delete nextAction;
-	//delete onFalseAction;
-	//delete compilerToken;
+	if (compilerToken != nullptr){
+		delete compilerToken;
+	}
 }

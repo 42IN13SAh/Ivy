@@ -13,9 +13,6 @@ SymbolTable::SymbolTable()
 
 SymbolTable::~SymbolTable()
 {
-	for each(Symbol* s in symbols) {
-		delete s;
-	}
 }
 
 
@@ -80,7 +77,7 @@ boost::any SymbolTable::getValue(string name)
 		if (symbol->getName() == name)
 			return symbol->getValue();
 	}
-	
+
 	// TODO: create enum with clear names for "exception" not found
 	return ExceptionCodes::NotFound;
 	//throw new exception; //Symbol not found. TODO: better exception handling
@@ -89,7 +86,8 @@ boost::any SymbolTable::getValue(string name)
 void SymbolTable::addFunctionSymbol(FunctionSymbol* fs) {
 	if (getFunctionSymbol(fs->getName(), fs->getArgumentNr()) == nullptr) {
 		fSymbols.push_back(fs);
-	} else {
+	}
+	else {
 		throw new exception; // Already exists
 	}
 }
@@ -100,4 +98,56 @@ FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) {
 			return fs;
 	}
 	return nullptr;
+}
+
+std::vector<Symbol *> SymbolTable::getAllSymbols(){
+	return this->symbols;
+}
+
+std::vector<FunctionSymbol *> SymbolTable::getAllFunctionSymbols(){
+	return this->fSymbols;
+}
+
+SymbolTableItemsToBeDeleted *SymbolTable::getItemsToDelete(std::vector<FunctionSymbol *>functionSymbolsToSkip, std::vector<Symbol *>symbolsToSkip){
+	SymbolTableItemsToBeDeleted *items = new SymbolTableItemsToBeDeleted();
+	for each (Symbol *symbol in this->symbols)
+	{
+		if (!(std::find(symbolsToSkip.begin(), symbolsToSkip.end(), symbol) != symbolsToSkip.end())) {
+			//symbol should not be skipped, add it to items
+			items->addSymbol(*symbol);
+		}
+	}
+	for each (FunctionSymbol *functionSymbol in this->fSymbols)
+	{
+		if (!(std::find(functionSymbolsToSkip.begin(), functionSymbolsToSkip.end(), functionSymbol) != functionSymbolsToSkip.end())) {
+			//symbol should not be skipped, add it to items
+			items->addFunctionSymbol(*functionSymbol);
+		}
+	}
+	/*We now have everything in THIS symboltable, but every functionsymbol has a potential symboltable of it's own. Therefore, we need to loop through all
+	the functionsymbols we have found (i.e. we didn't have to skip), and go through their symbol tables to check for any symbols or functionsymbols we haven't
+	found in here yet. This can ofcourse mean that we could find a functionsymbol, that has another functinosymbol in his symboltable, and THAT functionsymbol
+	as well, etc. This means that this function will be called recursively untill we 'resolved' all functionsymbols and their contents.
+	*/
+	std::vector<FunctionSymbol *>allFunctionSymbolsToSkip;
+	allFunctionSymbolsToSkip.insert(allFunctionSymbolsToSkip.end(), functionSymbolsToSkip.begin(), functionSymbolsToSkip.end());
+	std::vector<FunctionSymbol *>itemFunctionSymbols = items->getFunctionSymbols();
+	allFunctionSymbolsToSkip.insert(allFunctionSymbolsToSkip.end(), itemFunctionSymbols.begin(), itemFunctionSymbols.end());
+
+	std::vector<Symbol *>allSymbolsToSkip;
+	allSymbolsToSkip.insert(allSymbolsToSkip.end(), symbolsToSkip.begin(), symbolsToSkip.end());
+	std::vector<Symbol *>itemSymbols = items->getSymbols();
+	allSymbolsToSkip.insert(allSymbolsToSkip.end(), itemSymbols.begin(), itemSymbols.end());
+
+	for each (FunctionSymbol *functionSymbol in items->getFunctionSymbols())
+	{
+		SymbolTableItemsToBeDeleted *functionSymbolItems = functionSymbol->getSymbolTable()->getItemsToDelete(allFunctionSymbolsToSkip, allSymbolsToSkip);
+		std::vector<FunctionSymbol *>functionSymbolsFromFunctionSymbolItem = functionSymbolItems->getFunctionSymbols();
+		std::vector<Symbol *>symbolsFromFunctionSymbolItem = functionSymbolItems->getSymbols();
+		items->insertIntoFunctionSymbols(functionSymbolsFromFunctionSymbolItem);
+		items->insertIntoSymbols(symbolsFromFunctionSymbolItem);
+
+		delete functionSymbolItems;
+	}
+	return items;
 }
