@@ -5,10 +5,11 @@ var st = " --Niek-- ";
 var remi = " --Remi bazen team-- ";
 
 function z() {
-		while(y < 100){
-			y += 1;
-			print("manders");
-		}
+	if(x is 15){
+		print("niek");
+	}else{
+		print("remi");
+	}
 }
 
 z();
