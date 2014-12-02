@@ -1,8 +1,9 @@
 #pragma once
+#include "CompilerToken.h"
 #include <string>
 #include "../Tokenizer/TokenType.h"
 
-class VarCompilerToken
+class VarCompilerToken : public CompilerToken
 {
 public:
 	VarCompilerToken(std::string);

@@ -7,6 +7,7 @@
 #include "../Compiler/VarCompilerToken.h"
 #include "../Compiler/ReturnCompilerToken.h"
 #include <string>
+#include "ExceptionCodes.h"
 
 VirtualMachine::VirtualMachine()
 {
@@ -14,7 +15,8 @@ VirtualMachine::VirtualMachine()
 
 VirtualMachine::VirtualMachine(SymbolTable* symbolTable)
 {
-	this->currentSymbolTable = symbolTable;
+	globalSymbolTable = symbolTable;
+	currentSymbolTable = symbolTable;
 }
 
 VirtualMachine::~VirtualMachine()
@@ -93,7 +95,7 @@ void VirtualMachine::executeAction(AssignCompilerToken* compilerToken)
 	//TODO: -=, +=, etc...
 	// Do this by setting another var in compilerToken which holds the operator type
 	// Apply an extra calculation based on the operator
-	boost::any val = currentSymbolTable->getValue(compilerToken->getName());
+	boost::any val = getVarValue(&VarCompilerToken(compilerToken->getName()));/*currentSymbolTable->getValue(compilerToken->getName());*/
 	boost::any newVal = getReturnValue(compilerToken->getReturnValue());
 
 	switch (compilerToken->getAssignOp()) {
@@ -221,7 +223,14 @@ void VirtualMachine::executeAction(VarCompilerToken* compilerToken)
 
 boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) {
 	// TODO: test method
-	boost::any value = currentSymbolTable->getValue(compilerToken->getName());
+	boost::any value;
+	// nasty code needs better solution, no exception thrown in symboltable but here
+	value = currentSymbolTable->getValue(compilerToken->getName());
+	if (value.type() == typeid(ExceptionCodes)) {
+		value = globalSymbolTable->getValue(compilerToken->getName());
+		if (value.type() == typeid(ExceptionCodes))
+			throw exception(); // TODO: check exceptioncode value and give proper exception
+	}
 	TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
 
 	if (op != TokenType::Null) {
@@ -235,7 +244,7 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) {
 			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? ++val : --val);
 			value = boost::any(val);
 		} else
-			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? val++ : val-- );
+			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? ++val : --val );
 	}
 
 	return value;
@@ -250,21 +259,15 @@ boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken
 		return nullptr;
 	}
 	if (fs->isInternal()) {
-		// TODO: get function from internal function list, parse arguments and execute
-		if (fs->getName() == "print") {
-			print(getReturnValue(compilerToken->getArguments()[0]));
-		}
-
-		/*std::shared_ptr<IInternalFunction> fnc = InternalFunctionFactory::Instance()->Create(fs->getName());
+		IInternalFunction* fnc = InternalFunctionFactory::Instance()->Create(fs->getName());
 		std::vector<boost::any> args;
 		for each(ReturnValueCompilerToken* rvct in compilerToken->getArguments()) {
 			args.push_back(getReturnValue(rvct));
 		}
-		fnc->Execute(args); */
+		fnc->Execute(args); 
 
 		currentAction = currentAction->getNextAction();
-		/*return fnc->GetResult();*/
-		// TODO: Return returnvalue from function
+		return fnc->GetResult();
 	}
 	else {
 		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();

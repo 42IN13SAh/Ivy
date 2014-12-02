@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <stack>
 #include "../Tokenizer/TokenType.h"
+#include "InternalFunctionFactory.h"
 
 class AssignCompilerToken;
 class ConditionCompilerToken;
@@ -30,6 +31,7 @@ public:
 private:
 	//vector<SymbolTable> symbolTables;
 	SymbolTable* currentSymbolTable;
+	SymbolTable* globalSymbolTable;
 	Action* currentAction;
 
 	void executeAction(CompilerToken*);

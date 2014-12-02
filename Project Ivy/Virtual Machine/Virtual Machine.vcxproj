@@ -37,6 +37,7 @@
     <ClInclude Include="Cos.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="DateTime.h" />
+    <ClInclude Include="ExceptionCodes.h" />
     <ClInclude Include="FormatString.h" />
     <ClInclude Include="IinternalFunction.h" />
     <ClInclude Include="InternalFunctionFactory.h" />
