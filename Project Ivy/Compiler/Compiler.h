@@ -11,9 +11,7 @@
 #include "VarCompilerToken.h"
 #include "AssignCompilerToken.h"
 #include "ConditionCompilerToken.h"
-#include "SubConditionCompilerToken.h"
 #include "ReturnCompilerToken.h"
-
 #include "../Tokenizer/Token.h"
 #include "../Virtual Machine/InternalFunctionFactory.h"
 
@@ -22,24 +20,16 @@ class Compiler
 public:
 	Compiler(std::list<Token*>);
 	~Compiler();
-
 	void compile();
 	Action* getFirstAction();
 	SymbolTable* getSymbolTable();
-
 private:
 	std::list<Token*> tokenList;
-
 	Action* firstAction;
 	Action* lastAction;
 	SymbolTable* globalSymbolTable;
 	SymbolTable* currentSymbolTable;
 	std::list<Token*>::iterator tokenIter;
-	//std::vector<SymbolTable*> symbolTables;
-
-	//Token* currentToken;
-
-	// main compile methods
 	void compileFunction();
 	void addFunctionSignature();
 	void compileCodeBlock();
@@ -47,28 +37,19 @@ private:
 	void compileWhile();
 	void compileIf();
 	Action* compileElse();
-	// compileReturnValue cannot handle return values that should be compiled as a condition and then returned.
-	// Need to create a private (sub)function that handles this behaviour.
 	ReturnValueCompilerToken* compileReturnValue();
 	ConditionCompilerToken* compileCondition();
-	SubConditionCompilerToken* compileSubCondition();
 	FunctionCompilerToken* compileFunctionCall();
-
-	// submethods for compile methods
 	Action* compileStatementVar(Action*);
 	Action* compileStatementName(Action*);
 	void compileReturnValueName(ReturnValueCompilerToken*);
 	void compileReturnValueIncreaseDecrease(ReturnValueCompilerToken*);
 	void compileReturnValueMath(ReturnValueCompilerToken*);
-
 	Token* getCurrentToken();
 	Token* getNextToken();
 	Token* peekNextToken();
 	void eraseCurrentToken();
 	void resetTokenIter();
-
 	void addInternalFunctions();
-
-	//bool addNewVariable(int level, string functionname, string name);
 };
 

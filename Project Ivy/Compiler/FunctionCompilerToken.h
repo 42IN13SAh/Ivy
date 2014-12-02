@@ -4,30 +4,23 @@
 #include "CompilerToken.h"
 #include "ReturnValueCompilerToken.h"
 
-using namespace std;
-
 class FunctionCompilerToken :
 	public CompilerToken
 {
 public:
 	FunctionCompilerToken(std::string);
 	virtual ~FunctionCompilerToken();
-
-	void setName(string);
+	void setName(std::string);
 	void addArgument(ReturnValueCompilerToken*);
-	void addArgumentName(string);
+	void addArgumentName(std::string);
 	void setResult(boost::any);
-	
-	string getName();
-	vector<ReturnValueCompilerToken*>& getArguments();
-	vector<string> getArgumentNames();
+	std::string getName();
+	std::vector<ReturnValueCompilerToken*>& getArguments();
+	std::vector<std::string> getArgumentNames();
 	boost::any getResult();
-
-	//virtual FunctionCompilerToken* Get() { return this; }
-
 private:
-	string name;
-	vector<ReturnValueCompilerToken*> arguments;
-	vector<string> argumentNames;
+	std::string name;
+	std::vector<ReturnValueCompilerToken*> arguments;
+	std::vector<std::string> argumentNames;
 	boost::any result;
 };

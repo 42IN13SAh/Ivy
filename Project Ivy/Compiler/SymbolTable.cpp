@@ -18,29 +18,25 @@ SymbolTable::~SymbolTable()
 
 void SymbolTable::addSymbolToTable(string name)
 {
-	//check if there isn't already an existing variable with the same name, in that case an exception is thrown
 	for each (Symbol* symbol in symbols)
 	{
 		if (symbol->getName() == name)
 		{
-			throw new exception; //TODO: better exception handling
+			throw new exception;
 		}
 	}
-
 	symbols.push_back(new Symbol(name));
 }
 
 void SymbolTable::addSymbolToTable(string name, boost::any value)
 {
-	//check if there isn't already an existing variable with the same name, in that case an exception is thrown
 	for each (Symbol* symbol in symbols)
 	{
 		if (symbol->getName() == name)
 		{
-			throw new exception; //TODO: better exception handling
+			throw new exception; 
 		}
 	}
-
 	symbols.push_back(new Symbol(name, value));
 }
 
@@ -55,9 +51,7 @@ void SymbolTable::updateExistingSymbol(string name, boost::any value)
 			return;
 		}
 	}
-
-	//symbol was not found in the symboltable
-	throw new exception; //TODO: better exception handling
+	throw new exception;
 }
 
 bool SymbolTable::hasSymbol(string name)
@@ -77,22 +71,21 @@ boost::any SymbolTable::getValue(string name)
 		if (symbol->getName() == name)
 			return symbol->getValue();
 	}
-
-	// TODO: create enum with clear names for "exception" not found
 	return ExceptionCodes::NotFound;
-	//throw new exception; //Symbol not found. TODO: better exception handling
 }
 
-void SymbolTable::addFunctionSymbol(FunctionSymbol* fs) {
+void SymbolTable::addFunctionSymbol(FunctionSymbol* fs) 
+{
 	if (getFunctionSymbol(fs->getName(), fs->getArgumentNr()) == nullptr) {
 		fSymbols.push_back(fs);
 	}
 	else {
-		throw new exception; // Already exists
+		throw new exception; 
 	}
 }
 
-FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) {
+FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) 
+{
 	for each(FunctionSymbol* fs in fSymbols) {
 		if (fs->getName() == name && fs->getArgumentNr() == argNr)
 			return fs;
@@ -100,11 +93,13 @@ FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) {
 	return nullptr;
 }
 
-std::vector<Symbol *> SymbolTable::getAllSymbols(){
+std::vector<Symbol *> SymbolTable::getAllSymbols()
+{
 	return this->symbols;
 }
 
-std::vector<FunctionSymbol *> SymbolTable::getAllFunctionSymbols(){
+std::vector<FunctionSymbol *> SymbolTable::getAllFunctionSymbols()
+{
 	return this->fSymbols;
 }
 
@@ -113,14 +108,12 @@ SymbolTableItemsToBeDeleted *SymbolTable::getItemsToDelete(std::vector<FunctionS
 	for each (Symbol *symbol in this->symbols)
 	{
 		if (!(std::find(symbolsToSkip.begin(), symbolsToSkip.end(), symbol) != symbolsToSkip.end())) {
-			//symbol should not be skipped, add it to items
 			items->addSymbol(*symbol);
 		}
 	}
 	for each (FunctionSymbol *functionSymbol in this->fSymbols)
 	{
 		if (!(std::find(functionSymbolsToSkip.begin(), functionSymbolsToSkip.end(), functionSymbol) != functionSymbolsToSkip.end())) {
-			//symbol should not be skipped, add it to items
 			items->addFunctionSymbol(*functionSymbol);
 		}
 	}

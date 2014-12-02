@@ -1,7 +1,6 @@
 #pragma once
 #include <queue>
 #include <stack>
-//#include <vector>
 #include "CompilerToken.h"
 #include "boost/any.hpp"
 #include "../Tokenizer/TokenType.h"
@@ -19,9 +18,6 @@ public:
 	bool hasOpenParenthisOnStack();
 	void completeRPNVector();
 	std::queue<boost::any>& getRPN();
-
-	//virtual ReturnValueCompilerToken* Get() { return this; }
-
 private:
 	std::queue<boost::any> rpnVector;
 	std::stack<TokenType> operatorStack;
