@@ -3,7 +3,6 @@
 #include "../Compiler/ConditionCompilerToken.h"
 #include "../Compiler/FunctionCompilerToken.h"
 #include "../Compiler/ReturnValueCompilerToken.h"
-//#include "../Compiler/SubConditionCompilerToken.h"
 #include "../Compiler/VarCompilerToken.h"
 #include "../Compiler/ReturnCompilerToken.h"
 #include "ExceptionCodes.h"
@@ -26,34 +25,15 @@ VirtualMachine::~VirtualMachine()
 void VirtualMachine::run(Action *firstAction)
 {
 	currentAction = firstAction;
-
 	while (currentAction != nullptr)
 	{
-		
-			//TODO: set the currentsymboltable from the information from the current action
-			//TODO: donothingaction
-			
-			CompilerToken* compilerToken = currentAction->getCompilerToken();
-			executeAction(compilerToken);
-
-			//action = executeAction(action, action->getCompilerToken());
-
-			//if (compilerToken == nullptr) //this is DoNothingAction
-			//{
-			//	currentAction = currentAction->getNextAction();
-			//}
-			//else if (typeid(*compilerToken) == typeid(AssignCompilerToken))
-			//{
-			//	executeAction((AssignCompilerToken*)compilerToken);
-			//}
-			//else if (typeid(*compilerToken) == typeid(FunctionCompilerToken)) {
-			//	executeAction((FunctionCompilerToken*)compilerToken);
-			//}
-		
+		CompilerToken* compilerToken = currentAction->getCompilerToken();
+		executeAction(compilerToken);
 	}
 }
 
-void VirtualMachine::addVariable(std::string name, boost::any value) {
+void VirtualMachine::addVariable(std::string name, boost::any value) 
+{
 	currentSymbolTable->addSymbolToTable(name, value);
 }
 
@@ -67,21 +47,24 @@ void VirtualMachine::executeAction(CompilerToken* ct){
 		currentAction = currentAction->getNextAction();
 	}
 	else{
-		// Think of a better way to do this
-		if (typeid(*ct) == typeid(ReturnValueCompilerToken))
+		if (typeid(*ct) == typeid(ReturnValueCompilerToken)){
 			executeAction((ReturnValueCompilerToken*)ct);
-		else if (typeid(*ct) == typeid(AssignCompilerToken))
+		}
+		else if (typeid(*ct) == typeid(AssignCompilerToken)){
 			executeAction((AssignCompilerToken*)ct);
-		else if (typeid(*ct) == typeid(FunctionCompilerToken))
+		}
+		else if (typeid(*ct) == typeid(FunctionCompilerToken)){
 			executeAction((FunctionCompilerToken*)ct, currentAction);
-		else if (typeid(*ct) == typeid(ConditionCompilerToken))
+		}
+		else if (typeid(*ct) == typeid(ConditionCompilerToken)){
 			executeAction((ConditionCompilerToken*)ct);
-		/*else if (typeid(*ct) == typeid(SubConditionCompilerToken))
-			executeAction((SubConditionCompilerToken*)ct);*/
-		else if (typeid(*ct) == typeid(VarCompilerToken))
+		}
+		else if (typeid(*ct) == typeid(VarCompilerToken)){
 			executeAction((VarCompilerToken*)ct);
-		else
+		}
+		else{
 			currentAction = currentAction->getNextAction();
+		}
 	}
 }
 
@@ -92,162 +75,79 @@ void VirtualMachine::executeAction(ReturnValueCompilerToken* compilerToken) {
 
 void VirtualMachine::executeAction(AssignCompilerToken* compilerToken)
 {
-	//TODO: -=, +=, etc...
-	// Do this by setting another var in compilerToken which holds the operator type
-	// Apply an extra calculation based on the operator
 	boost::any val = getVarValue(&VarCompilerToken(compilerToken->getName()));
 	boost::any newVal = getReturnValue(compilerToken->getReturnValue());
-
 	switch (compilerToken->getAssignOp()) {
 		case TokenType::AssignmentOperator: val = newVal; break;
 		case TokenType::AddThenAssignOperator: 
 		{ 
-			if (val.type() == typeid(std::string))
-				val = boost::any_cast<std::string>(val) + boost::any_cast<std::string>(newVal);
-			else
-				val = boost::any_cast<double>(val) + boost::any_cast<double>(newVal);
+												 if (val.type() == typeid(std::string)){
+													 val = boost::any_cast<std::string>(val)+boost::any_cast<std::string>(newVal);
+												 }
+												 else{
+													 val = boost::any_cast<double>(val)+boost::any_cast<double>(newVal);
+												 }
 			break;
 		}
-		case TokenType::MinusThenAssignOperator: val = boost::any_cast<double>(val) - boost::any_cast<double>(newVal); break;
-		case TokenType::DivideThenAssignOperator: val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal); break;
-		case TokenType::MultiplyThenAssignOperator: val = boost::any_cast<double>(val) * boost::any_cast<double>(newVal); break;
+		case TokenType::MinusThenAssignOperator: 
+			val = boost::any_cast<double>(val) - boost::any_cast<double>(newVal); 
+			break;
+		case TokenType::DivideThenAssignOperator: 
+			val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal); 
+			break;
+		case TokenType::MultiplyThenAssignOperator: 
+			val = boost::any_cast<double>(val) * boost::any_cast<double>(newVal); 
+			break;
 	}
-
 	updateVariable(compilerToken->getName(), val);
-
 	currentAction = currentAction->getNextAction();
-	//return action->getNextAction();
 }
 
 void VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, Action* lastAction)
 {
-	//TODO: if the function has a return type, do not forget to set the result
 	getFunctionValue(compilerToken, lastAction);
-	
 }
 
 void VirtualMachine::executeAction(ConditionCompilerToken* compilerToken)
 {
-	//TODO: write this method
-	//return nullptr;
 	currentAction = (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken()))) ? currentAction->getNextAction() : currentAction->getFalseAction();
 }
 
-//void VirtualMachine::executeAction(SubConditionCompilerToken* compilerToken)
-//{
-//	//TODO: write this method
-//	//return nullptr;
-//}
-
 void VirtualMachine::executeAction(VarCompilerToken* compilerToken)
 {
-	// TODO: Clean all commented code
-	//TODO: use the correct symboltable with the corrosponding action
-	//boost::any value = currentSymbolTable->getValue(compilerToken->getName());
 	getVarValue(compilerToken);
-
-	// Old getVar function
-
-	//TokenType frontOperator = compilerToken->getFrontOperator();
-	//TokenType backOperator = compilerToken->getBackOperator();
-
-	//if (frontOperator != TokenType::Null)
-	//{
-	//	if (frontOperator == TokenType::IncreaseOperator)
-	//	{
-	//		if (value.type() == typeid(double))
-	//		{
-	//			double result = boost::any_cast<double>(value);
-	//			result++;
-	//			updateVariable(compilerToken->getName(), result);
-	//			compilerToken->setResult(result);
-	//		}
-	//		else
-	//		{
-	//			throw new exception; //You can only do increase on a number. TODO: better exception handling
-	//		}
-	//	}
-	//	else if (frontOperator == TokenType::DecreaseOperator)
-	//	{
-	//		if (value.type() == typeid(double))
-	//		{
-	//			double result = boost::any_cast<double>(value);
-	//			result--;
-	//			updateVariable(compilerToken->getName(), result);
-	//			compilerToken->setResult(result);
-	//		}
-	//		else
-	//		{
-	//			throw new exception; //You can only do decrease on a number. TODO: better exception handling
-	//		}
-	//	}
-	//}
-	//else if (backOperator != TokenType::Null)
-	//{
-	//	if (backOperator == TokenType::IncreaseOperator)
-	//	{
-	//		if (value.type() == typeid(double))
-	//		{
-	//			double result = boost::any_cast<double>(value);
-	//			compilerToken->setResult(result);
-	//			result++;
-	//			updateVariable(compilerToken->getName(), result);
-	//		}
-	//		else
-	//		{
-	//			throw new exception; //You can only do increase on a number. TODO: better exception handling
-	//		}
-	//	}
-	//	else if (backOperator == TokenType::DecreaseOperator)
-	//	{
-	//		if (value.type() == typeid(double))
-	//		{
-	//			double result = boost::any_cast<double>(value);
-	//			compilerToken->setResult(result);
-	//			result--;
-	//			updateVariable(compilerToken->getName(), result);
-	//		}
-	//		else
-	//		{
-	//			throw new exception; //You can only do decrease on a number. TODO: better exception handling
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	compilerToken->setResult(value);
-	//}
-	if (currentAction->getNextAction() != nullptr)
+	if (currentAction->getNextAction() != nullptr){
 		currentAction = currentAction->getNextAction();
+	}
 }
 
-boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) {
+boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken) 
+{
 	boost::any value;
 	value = currentSymbolTable->getValue(compilerToken->getName());
 	if (value.type() == typeid(ExceptionCodes)) {
 		value = globalSymbolTable->getValue(compilerToken->getName());
-		if (value.type() == typeid(ExceptionCodes))
-			throw exception(); 
+		if (value.type() == typeid(ExceptionCodes)){
+			throw exception();
+		}
 	}
 	TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
 	if (op != TokenType::Null) {
-		//if (std::isnan(value)) 
-		//	// Not a Number exception
-		//	throw exception(); // TODO: better exception
-
 		double val = boost::any_cast<double>(value);
 		bool isFrontOp = (compilerToken->getFrontOperator() != TokenType::Null);
 		if (isFrontOp) {
 			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? ++val : --val);
 			value = boost::any(val);
-		} else
+		}
+		else{
 			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? ++val : --val);
+		}
 	}
-
 	return value;
 }
 
-boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken, Action* lastAction) {
+boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken, Action* lastAction) 
+{
 	FunctionSymbol* fs = currentSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
 	if (fs->isInternal()){
 		IInternalFunction* fnc = InternalFunctionFactory::Instance()->Create(fs->getName());
@@ -285,7 +185,6 @@ boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken
 
 boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueCompilerToken)
 {
-	//TODO: check and clean this method
 	std::queue<boost::any> rpn = returnValueCompilerToken->getRPN();
 	std::stack<boost::any> resultStack;
 	while (!rpn.empty()) {
@@ -435,16 +334,4 @@ bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType op, std
 		break;
 	}
 	return true;
-}
-
-void VirtualMachine::print(boost::any p)
-{
-	std::string r;
-	try {
-		r = std::to_string(boost::any_cast<double>(p));
-	}
-	catch (exception e) {
-		r = boost::any_cast<std::string>(p);
-	}
-	std::cout << r << endl;
 }

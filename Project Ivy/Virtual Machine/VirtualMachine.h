@@ -20,34 +20,28 @@ class VarCompilerToken;
 class VirtualMachine
 {
 public:
-	VirtualMachine(SymbolTable* symbolTable); //Temporary constructor, not the right one yet!!!
+	VirtualMachine(SymbolTable* symbolTable);
 	VirtualMachine();
 	~VirtualMachine();
-
 	void run(Action *firstAction);
 	void addVariable(string name, boost::any value);
 	void updateVariable(string name, boost::any value);
-
 private:
-	//vector<SymbolTable> symbolTables;
 	SymbolTable* currentSymbolTable;
 	SymbolTable* globalSymbolTable;
 	Action* currentAction;
-
 	void executeAction(CompilerToken*);
 	void executeAction(ReturnValueCompilerToken* compilerToken);
 	void executeAction(AssignCompilerToken* compilerToken);
 	void executeAction(FunctionCompilerToken* compilerToken, Action* lastAction);
 	void executeAction(VarCompilerToken* compilerToken);
 	void executeAction(ConditionCompilerToken* compilerToken);
-	//void executeAction(SubConditionCompilerToken* compilerToken);
 	bool exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	bool exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	bool exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*);
 	boost::any getVarValue(VarCompilerToken*);
 	boost::any getFunctionValue(FunctionCompilerToken*, Action* lastAction);
-
 	void print(boost::any);
 };
 

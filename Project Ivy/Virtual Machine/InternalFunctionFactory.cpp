@@ -1,7 +1,5 @@
 #include "InternalFunctionFactory.h"
 
-//InternalFunctionFactory* InternalFunctionFactory::factory = nullptr;
-
 InternalFunctionFactory::InternalFunctionFactory()
 {
 	//Date
@@ -28,7 +26,8 @@ InternalFunctionFactory::InternalFunctionFactory()
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("print", new Print(), 1);
 }
 
-InternalFunctionFactory::~InternalFunctionFactory() {
+InternalFunctionFactory::~InternalFunctionFactory() 
+{
 	for each(auto it in factoryFunctionRegistry)
 		delete it.second;
 }
@@ -36,16 +35,12 @@ InternalFunctionFactory::~InternalFunctionFactory() {
 InternalFunctionFactory* InternalFunctionFactory::Instance()
 {
 	static InternalFunctionFactory instance;
-	/*if (factory == nullptr)
-		factory = new InternalFunctionFactory();*/
-
 	return &instance;
 }
 
 
 void InternalFunctionFactory::RegisterFactoryFunction(std::string name, IInternalFunction* classFactoryFunction, int argNr)
 {
-	// register the class factory function 
 	factoryFunctionRegistry[name] = classFactoryFunction;
 	factoryFunctionArgNrRegistry[name] = argNr;
 }
@@ -54,17 +49,16 @@ void InternalFunctionFactory::RegisterFactoryFunction(std::string name, IInterna
 IInternalFunction* InternalFunctionFactory::Create(std::string name)
 {
 	IInternalFunction * instance = nullptr;
-
-	// find name in the registry and call factory method.
 	auto it = factoryFunctionRegistry.find(name);
-	if (it != factoryFunctionRegistry.end())
+	if (it != factoryFunctionRegistry.end()){
 		instance = it->second;
-
-	// wrap instance in a shared ptr and return
-	if (instance != nullptr)
+	}
+	if (instance != nullptr){
 		return instance;
-	else
+	}
+	else{
 		return nullptr;
+	}
 }
 
 const std::map<std::string, IInternalFunction*> InternalFunctionFactory::GetMap()
