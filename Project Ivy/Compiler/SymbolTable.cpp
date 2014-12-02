@@ -98,8 +98,7 @@ std::vector<Symbol *> SymbolTable::getAllSymbols()
 	return this->symbols;
 }
 
-std::vector<FunctionSymbol *> SymbolTable::getAllFunctionSymbols()
-{
+std::vector<FunctionSymbol *> SymbolTable::getAllFunctionSymbols(){
 	return this->fSymbols;
 }
 
@@ -108,12 +107,14 @@ SymbolTableItemsToBeDeleted *SymbolTable::getItemsToDelete(std::vector<FunctionS
 	for each (Symbol *symbol in this->symbols)
 	{
 		if (!(std::find(symbolsToSkip.begin(), symbolsToSkip.end(), symbol) != symbolsToSkip.end())) {
+			//symbol should not be skipped, add it to items
 			items->addSymbol(*symbol);
 		}
 	}
 	for each (FunctionSymbol *functionSymbol in this->fSymbols)
 	{
 		if (!(std::find(functionSymbolsToSkip.begin(), functionSymbolsToSkip.end(), functionSymbol) != functionSymbolsToSkip.end())) {
+			//symbol should not be skipped, add it to items
 			items->addFunctionSymbol(*functionSymbol);
 		}
 	}

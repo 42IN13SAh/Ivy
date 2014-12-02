@@ -1,12 +1,13 @@
-var x = 15;
-var y = 20;
-var a = 30;
+var age;
+function main(){
+	age = 30;
+	testfunctio("hallo", "Niek");
+}
 
-function z() {
-	while(x < 1000){
-		x += 10;
-		print(x);
+function testfunctio(x, y){
+	if(x is "hallo" and y is "Niek"){
+		print(age);
 	}
 }
 
-z();
+main();
