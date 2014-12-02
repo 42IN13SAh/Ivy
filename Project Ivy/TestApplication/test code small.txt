@@ -5,8 +5,8 @@ var st = " --Niek-- ";
 var remi = " --Remi bazen team-- ";
 
 function z() {
-		while(y < 100){
-			y += 1;
+		while(y < 30){
+			++y;
 			print("manders");
 		}
 }

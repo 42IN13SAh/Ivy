@@ -28,6 +28,11 @@ InternalFunctionFactory::InternalFunctionFactory()
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("print", new Print(), 1);
 }
 
+InternalFunctionFactory::~InternalFunctionFactory() {
+	for each(auto it in factoryFunctionRegistry)
+		delete it.second;
+}
+
 InternalFunctionFactory* InternalFunctionFactory::Instance()
 {
 	static InternalFunctionFactory instance;
@@ -46,7 +51,7 @@ void InternalFunctionFactory::RegisterFactoryFunction(std::string name, IInterna
 }
 
 
-std::shared_ptr<IInternalFunction> InternalFunctionFactory::Create(std::string name)
+IInternalFunction* InternalFunctionFactory::Create(std::string name)
 {
 	IInternalFunction * instance = nullptr;
 
@@ -57,7 +62,7 @@ std::shared_ptr<IInternalFunction> InternalFunctionFactory::Create(std::string n
 
 	// wrap instance in a shared ptr and return
 	if (instance != nullptr)
-		return std::shared_ptr<IInternalFunction>(instance);
+		return instance;
 	else
 		return nullptr;
 }
