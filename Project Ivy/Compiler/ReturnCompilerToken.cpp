@@ -7,4 +7,5 @@ ReturnCompilerToken::ReturnCompilerToken(ReturnValueCompilerToken* rvct)
 
 ReturnCompilerToken::~ReturnCompilerToken()
 {
+	delete rvct;
 }

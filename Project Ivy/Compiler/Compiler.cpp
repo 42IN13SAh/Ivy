@@ -1,6 +1,10 @@
-#include "Compiler.h"
-//#include "../Virtual Machine/IInternalFunction.h"
 #include <memory>
+
+#include "Compiler.h"
+#include "SymbolTableItemsToBeDeleted.h"
+
+//#include "../Virtual Machine/IInternalFunction.h"
+
 
 Compiler::Compiler(list<Token*> tokenList) {
 	this->tokenList = tokenList;
@@ -11,9 +15,38 @@ Compiler::Compiler(list<Token*> tokenList) {
 }
 
 Compiler::~Compiler() {
-	//delete firstAction;
-	//delete lastAction;
-	//delete symbolTable;
+	Action *currentActionPtr = this->getFirstAction();
+	Action *nextActionPtr = currentActionPtr->getNextAction();
+	Action *onFalseActionPtr;
+	while (nextActionPtr != nullptr){
+		nextActionPtr = currentActionPtr->getNextAction();
+		onFalseActionPtr = currentActionPtr->getFalseAction();
+		delete currentActionPtr;
+		if (onFalseActionPtr != nullptr){
+			delete onFalseActionPtr;
+		}
+		currentActionPtr = nextActionPtr;
+	}
+
+	//Actions are deleted, now to delete the two symboltables. Since they can overlap, we will get all unique pointers and delete those using a function from symboltable.
+	SymbolTableItemsToBeDeleted *items = currentSymbolTable->getItemsToDelete();
+	//==============================================================================================
+	for each (Symbol *symbol in items->getSymbols())
+	{
+		delete symbol;
+	}
+	for each (FunctionSymbol *functionSymbol in items->getFunctionSymbols())
+	{
+		delete functionSymbol;
+	}
+	delete items;
+
+	//currentSymbolTable might actually be the same as the globalSymbolTable, so check that first
+	if (currentSymbolTable != globalSymbolTable){
+		//They both point to something different, so delete the global as well
+		delete globalSymbolTable;
+	}
+	delete currentSymbolTable;
 }
 
 /// Main compile function.
@@ -102,19 +135,19 @@ void Compiler::compileCodeBlock() {
 		Action* last = lastAction;
 
 		switch (getCurrentToken()->getTokenType()) {
-			case TokenType::WhileStatement:
-				compileWhile();
-				break;
-			case TokenType::IfStatement:
-				compileIf();
-				break;
-			case TokenType::Function:
-				// TODO: better exception handling for this function in function case.
-				throw new exception;
-				break;
-			default:
-				compileStatement();
-				break;
+		case TokenType::WhileStatement:
+			compileWhile();
+			break;
+		case TokenType::IfStatement:
+			compileIf();
+			break;
+		case TokenType::Function:
+			// TODO: better exception handling for this function in function case.
+			throw new exception;
+			break;
+		default:
+			compileStatement();
+			break;
 		}
 		if (last == lastAction)
 			getNextToken();
@@ -128,18 +161,17 @@ void Compiler::compileStatement() {
 	Action* statement = new Action();
 
 	switch (getCurrentToken()->getTokenType()) {
-		case TokenType::Var:
-			statement = compileStatementVar(statement);
-			break;
-		case TokenType::Name:
-			statement = compileStatementName(statement);
-			break;
-		case TokenType::Return:
-			getNextToken();
-
-			statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
-			break;
-		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
+	case TokenType::Var:
+		statement = compileStatementVar(statement);
+		break;
+	case TokenType::Name:
+		statement = compileStatementName(statement);
+		break;
+	case TokenType::Return:
+		getNextToken();
+		statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
+		break;
+	case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
 		{
 			TokenType op = getCurrentToken()->getTokenType();
 			VarCompilerToken* v = new VarCompilerToken(getNextToken()->getDescription());
@@ -148,8 +180,7 @@ void Compiler::compileStatement() {
 
 			getNextToken();
 			break;
-		}
-			
+		}		
 	}
 
 	if (statement != nullptr && statement->getCompilerToken() != nullptr) {
@@ -184,7 +215,7 @@ void Compiler::compileWhile() {
 /// Called by compileCodeBlock.
 void Compiler::compileIf() {
 	Token* start = getCurrentToken();
-	
+
 	Action* ifAction = new Action();
 	Action* end = new DoNothingAction();
 
@@ -214,7 +245,7 @@ Action* Compiler::compileElse() {
 	lastAction = elseAction;
 	getNextToken();
 	compileCodeBlock();
-	
+
 	return elseAction;
 }
 
@@ -303,7 +334,7 @@ FunctionCompilerToken* Compiler::compileFunctionCall() {
 	Token* start = getNextToken();
 
 	while (getCurrentToken()->getPartner() != start) {
-		
+
 		if (getNextToken()->getPartner() != start)
 			fct->addArgument(compileReturnValue());
 	}
@@ -450,7 +481,7 @@ void Compiler::addInternalFunctions() {
 Token* Compiler::getCurrentToken() { return *tokenIter; }
 Token* Compiler::getNextToken() { return (tokenIter != tokenList.end()) ? *++tokenIter : nullptr; }
 
-Token* Compiler::peekNextToken() { 
+Token* Compiler::peekNextToken() {
 	Token* temp = getNextToken();
 	tokenIter--;
 	return temp;

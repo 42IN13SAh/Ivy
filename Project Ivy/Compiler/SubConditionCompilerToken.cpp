@@ -7,8 +7,8 @@ SubConditionCompilerToken::SubConditionCompilerToken()
 
 SubConditionCompilerToken::~SubConditionCompilerToken()
 {
-	//delete left;
-	//delete right;
+	delete left;
+	delete right;
 }
 
 void SubConditionCompilerToken::setLeft(ReturnValueCompilerToken* rv) {
