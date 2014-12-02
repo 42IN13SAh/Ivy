@@ -35,13 +35,8 @@ int main(){
 	Compiler* comp = new Compiler(tok->getTokenList());
 	comp->compile();
 
-<<<<<<< HEAD
 	//VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
 	//vm->run(comp->getFirstAction());
-=======
-	VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
- 	vm->run(comp->getFirstAction());
->>>>>>> 1446cba81a47f16887d7407cae6fdc8da3683240
 
 	std::string msg;
 	std::cin >> msg;

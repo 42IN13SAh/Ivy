@@ -15,19 +15,6 @@ Compiler::Compiler(list<Token*> tokenList) {
 }
 
 Compiler::~Compiler() {
-	//Actions are deleted, now to delete the two symboltables. Since they can overlap, we will get all unique pointers and delete those using a function from symboltable.
-	SymbolTableItemsToBeDeleted *items = currentSymbolTable->getItemsToDelete();
-	//==============================================================================================
-	for each (Symbol *symbol in items->getSymbols())
-	{
-		delete symbol;
-	}
-	for each (FunctionSymbol *functionSymbol in items->getFunctionSymbols())
-	{
-		delete functionSymbol;
-	}
-	delete items;
-
 	Action *currentActionPtr = this->getFirstAction();
 	Action *nextActionPtr = currentActionPtr->getNextAction();
 	Action *onFalseActionPtr;
@@ -40,6 +27,19 @@ Compiler::~Compiler() {
 		}
 		currentActionPtr = nextActionPtr;
 	}
+
+	//Actions are deleted, now to delete the two symboltables. Since they can overlap, we will get all unique pointers and delete those using a function from symboltable.
+	SymbolTableItemsToBeDeleted *items = currentSymbolTable->getItemsToDelete();
+	//==============================================================================================
+	for each (Symbol *symbol in items->getSymbols())
+	{
+		delete symbol;
+	}
+	for each (FunctionSymbol *functionSymbol in items->getFunctionSymbols())
+	{
+		delete functionSymbol;
+	}
+	delete items;
 
 	//currentSymbolTable might actually be the same as the globalSymbolTable, so check that first
 	if (currentSymbolTable != globalSymbolTable){
