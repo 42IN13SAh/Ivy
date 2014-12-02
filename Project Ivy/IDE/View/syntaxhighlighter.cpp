@@ -5,13 +5,17 @@ Highlighter::Highlighter(QTextDocument *parent)
 {
     HighlightingRule rule;
 
-    keywordFormat.setForeground(Qt::darkBlue);
-    keywordFormat.setFontWeight(QFont::Bold);
+	// Default keywords
+	keywordFormat.setForeground(QColor("#00BBFF"));
+    keywordFormat.setFontWeight(QFont::Normal);
     QStringList keywordPatterns;
-    keywordPatterns << "\\breturn\\b"
-                    << "\\bnumber\\b"
-                    << "\\bboolean\\b"
-                    << "\\bvar\\b"
+    keywordPatterns << "\\bif\\b"
+                    << "\\belse\\b"
+                    << "\\bwhile\\b"
+                    << "\\breturn\\b"
+					<< "\\bfalse\\b"
+					<< "\\btrue\\b"
+					<< "\\bvar\\b"
                     << "\\bfunction\\b";
     foreach (const QString &pattern, keywordPatterns) {
         rule.pattern = QRegExp(pattern);
@@ -19,32 +23,48 @@ Highlighter::Highlighter(QTextDocument *parent)
         highlightingRules.append(rule);
     }
 
-    //classFormat.setFontWeight(QFont::Bold);
-    //classFormat.setForeground(Qt::darkMagenta);
-    //rule.pattern = QRegExp("\\bQ[A-Za-z]+\\b");
-    //rule.format = classFormat;
-    //highlightingRules.append(rule);
+	// Conditions
+	conditionFormat.setForeground(QColor("#BB00FF"));
+	conditionFormat.setFontWeight(QFont::Normal);
+	QStringList conditionPatterns;
+	conditionPatterns << "\\band\\b"
+					  << "\\bor\\b";
+	foreach(const QString &pattern, conditionPatterns) {
+		rule.pattern = QRegExp(pattern);
+		rule.format = conditionFormat;
+		highlightingRules.append(rule);
+	}
 
-    singleLineCommentFormat.setForeground(Qt::darkGreen);
+	// Subconditions
+	subconditionFormat.setForeground(QColor("#FF77EE"));
+	subconditionFormat.setFontWeight(QFont::Normal);
+	QStringList subconditionPatterns;
+	subconditionPatterns << "\\bis\\b"
+						 << "\\bnot\\b"
+						 << ">="
+						 << "<="
+						 << ">"
+						 << "<";
+	foreach(const QString &pattern, subconditionPatterns) {
+		rule.pattern = QRegExp(pattern);
+		rule.format = subconditionFormat;
+		highlightingRules.append(rule);
+	}
+
+	// Strings
+	quotationFormat.setForeground(QColor("#FFCC00"));
+	QRegExp string("\".*\"");
+	string.setMinimal(true);
+	rule.pattern = string;
+	rule.format = quotationFormat;
+	highlightingRules.append(rule);
+
+	// Comments
+	singleLineCommentFormat.setForeground(QColor("#99FF66"));
     QRegExp comment("#.*#");
     comment.setMinimal(true);
     rule.pattern = comment;
     rule.format = singleLineCommentFormat;
-    highlightingRules.append(rule);
-
-    //multiLineCommentFormat.setForeground(Qt::darkGreen);
-
-    quotationFormat.setForeground(Qt::red);
-    QRegExp string("\".*\"");
-    string.setMinimal(true);
-    rule.pattern = string;
-    rule.format = quotationFormat;
-    highlightingRules.append(rule);
-
-    functionFormat.setFontItalic(true);
-    functionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
-    rule.format = functionFormat;
     highlightingRules.append(rule);
 
     commentStartExpression = QRegExp("#");
