@@ -14,19 +14,17 @@ FunctionSymbol::FunctionSymbol(std::string name, int argNr, Action* startAction,
 FunctionSymbol::~FunctionSymbol()
 {
 	if (!this->isInternal()){ //Only internal functions have actions that need to be deleted
-		if (this->startAction != NULL && this->startAction != nullptr){
-			Action *currentActionPtr = this->startAction;
-			Action *nextActionPtr = currentActionPtr->getNextAction();
-			Action *onFalseActionPtr;
-			while (nextActionPtr != nullptr && nextActionPtr != this->endAction){
-				nextActionPtr = currentActionPtr->getNextAction();
-				onFalseActionPtr = currentActionPtr->getFalseAction();
-				delete currentActionPtr;
-				if (onFalseActionPtr != nullptr){
-					delete onFalseActionPtr;
-				}
-				currentActionPtr = nextActionPtr;
+		Action *currentActionPtr = this->startAction;
+		Action *nextActionPtr = currentActionPtr->getNextAction();
+		Action *onFalseActionPtr;
+		while (nextActionPtr != nullptr && nextActionPtr != this->endAction){
+			nextActionPtr = currentActionPtr->getNextAction();
+			onFalseActionPtr = currentActionPtr->getFalseAction();
+			delete currentActionPtr;
+			if (onFalseActionPtr != nullptr){
+				delete onFalseActionPtr;
 			}
+			currentActionPtr = nextActionPtr;
 		}
 	}
 	delete symbolTable;

@@ -5,17 +5,8 @@ var a = 30;
 function z() {
 	while(x < 1000){
 		x += 10;
-		q();
-		t();
+		print(x);
 	}
-}
-
-function q(){
-	print("Niek");
-}
-
-function t(){
-	print("Beest");
 }
 
 z();
