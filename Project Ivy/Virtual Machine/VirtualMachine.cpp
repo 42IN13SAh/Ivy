@@ -32,10 +32,7 @@ void VirtualMachine::run(Action *firstAction)
 			//TODO: donothingaction
 			
 			CompilerToken* compilerToken = currentAction->getCompilerToken();
-			if (compilerToken != nullptr)
-				executeAction(compilerToken);
-			else
-				currentAction = currentAction->getNextAction();
+			executeAction(compilerToken);
 
 			//action = executeAction(action, action->getCompilerToken());
 
@@ -64,22 +61,26 @@ void VirtualMachine::updateVariable(string name, boost::any value)
 }
 
 void VirtualMachine::executeAction(CompilerToken* ct){ 
-	
-	// Think of a better way to do this
-	if (typeid(*ct) == typeid(ReturnValueCompilerToken))
-		executeAction((ReturnValueCompilerToken*)ct);
-	else if (typeid(*ct) == typeid(AssignCompilerToken))
-		executeAction((AssignCompilerToken*)ct);
-	else if (typeid(*ct) == typeid(FunctionCompilerToken))
-		executeAction((FunctionCompilerToken*)ct);
-	else if (typeid(*ct) == typeid(ConditionCompilerToken))
-		executeAction((ConditionCompilerToken*)ct);
-	/*else if (typeid(*ct) == typeid(SubConditionCompilerToken))
-		executeAction((SubConditionCompilerToken*)ct);*/
-	else if (typeid(*ct) == typeid(VarCompilerToken))
-		executeAction((VarCompilerToken*)ct);
-	else
+	if (ct == nullptr){
 		currentAction = currentAction->getNextAction();
+	}
+	else{
+		// Think of a better way to do this
+		if (typeid(*ct) == typeid(ReturnValueCompilerToken))
+			executeAction((ReturnValueCompilerToken*)ct);
+		else if (typeid(*ct) == typeid(AssignCompilerToken))
+			executeAction((AssignCompilerToken*)ct);
+		else if (typeid(*ct) == typeid(FunctionCompilerToken))
+			executeAction((FunctionCompilerToken*)ct);
+		else if (typeid(*ct) == typeid(ConditionCompilerToken))
+			executeAction((ConditionCompilerToken*)ct);
+		/*else if (typeid(*ct) == typeid(SubConditionCompilerToken))
+			executeAction((SubConditionCompilerToken*)ct);*/
+		else if (typeid(*ct) == typeid(VarCompilerToken))
+			executeAction((VarCompilerToken*)ct);
+		else
+			currentAction = currentAction->getNextAction();
+	}
 }
 
 void VirtualMachine::executeAction(ReturnValueCompilerToken* compilerToken) {
@@ -272,17 +273,15 @@ boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken
 			// TODO: Add variable to function symboltable
 			addVariable(argNames[i], getReturnValue(compilerToken->getArguments()[i]));
 		}
-		Action* ca = fs->getStartAction();
+		currentAction = fs->getStartAction()->getNextAction();
 		boost::any returnValue = nullptr;
-		while (ca != fs->getEndAction()) {
-			if (typeid(ca->getCompilerToken()) == typeid(ReturnCompilerToken)) {
-				returnValue = getReturnValue(((ReturnCompilerToken*)ca->getCompilerToken())->getReturnValueCompilerToken());
+		while (currentAction != fs->getEndAction()) {
+			if (typeid(currentAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
+				returnValue = getReturnValue(((ReturnCompilerToken*)currentAction->getCompilerToken())->getReturnValueCompilerToken());
 				break;
 			} else
-				executeAction(ca->getCompilerToken());
-			// TODO: if compilerToken == returncompilertoken set value as return value
+				executeAction(currentAction->getCompilerToken());
 		}
-
 		currentAction = fs->getEndAction();
 		return returnValue;
 		// TODO: remove vars from function
@@ -295,114 +294,155 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 {
 	//TODO: check and clean this method
 	std::queue<boost::any> rpn = returnValueCompilerToken->getRPN();
-
-	while (rpn.size() != 1) {
-		boost::any left = rpn.front();
+	std::stack<boost::any> resultStack;
+	while (!rpn.empty()) {
+		boost::any value = rpn.front();
 		rpn.pop();
-		boost::any right = rpn.front();
-		rpn.pop();
-
-		if (left.type() == typeid(VarCompilerToken*))
-			left = getVarValue(boost::any_cast<VarCompilerToken*>(left));
-		else if (left.type() == typeid(FunctionCompilerToken*))
-			left = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(left));
-
-		if (right.type() == typeid(VarCompilerToken*))
-			right = getVarValue(boost::any_cast<VarCompilerToken*>(right));
-		else if (right.type() == typeid(FunctionCompilerToken*))
-			right = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(right));
-
-		TokenType op = boost::any_cast<TokenType>(rpn.front());
-		rpn.pop();
-
-		try{
-			left = stod(boost::any_cast<std::string>(left));
-			right = stod(boost::any_cast<std::string>(right));
-		} catch (exception e) {}
-
-		if (left.type() == typeid(std::string) || right.type() == typeid(std::string)) {
-			std::string l = (left.type() == typeid(std::string)) ? boost::any_cast<std::string>(left) : std::to_string(boost::any_cast<double>(left));
-			std::string r = (right.type() == typeid(std::string)) ? boost::any_cast<std::string>(right) : std::to_string(boost::any_cast<double>(right));
-			if (op == TokenType::AddOperator)
-				rpn.push(l + r);
-			else
-				// cannot use this operator on strings
-				throw exception(); // TODO: Better exception
-		}
-		else /* if (isdigit(left) && isdigit(right)) */ {
-			double l = boost::any_cast<double>(left);
-			double r = boost::any_cast<double>(right);
-			switch (op) {
-				case TokenType::AddOperator: rpn.push(l + r); break;
-				case TokenType::MinusOperator: rpn.push(l - r); break;
-				case TokenType::DivideOperator: rpn.push(l / r); break;
-				case TokenType::MultiplyOperator: rpn.push(l * r); break;
-				case TokenType::ModuloOperator: rpn.push((int)l % (int)r); break;
+		if (value.type() == typeid(TokenType)){
+			TokenType op = boost::any_cast<TokenType>(value);
+			boost::any right = resultStack.top();
+			resultStack.pop();
+			boost::any left = resultStack.top();
+			resultStack.pop();
+			if (exNumber(left,right,op,resultStack)){
+				continue;
 			}
+			if (exString(left, right, op, resultStack)){
+				continue;
+			}
+			if (exBool(left, right, op, resultStack)){
+				continue;
+			}
+			throw exception();
+		}
+		else{
+			if (value.type() == typeid(VarCompilerToken*))
+				value = getVarValue(boost::any_cast<VarCompilerToken*>(value));
+			else if (value.type() == typeid(FunctionCompilerToken*))
+				value = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(left));
+			resultStack.push(value);
 		}
 	}
-
-	return rpn.front();
-
-	// Old RPN function
-
-	//for (size_t i = 0; i < rpnVector.size(); i++)
-	//{
-	//	boost::any value = nullptr;
-
-	//	if (value.type() == typeid(string))
-	//	{
-	//		resultStack.push(atof(boost::any_cast<string>(value).c_str()));
-	//	}
-	//	else if (value.type() == typeid(TokenType))
-	//	{
-	//		double b = boost::any_cast<double>(resultStack.top());
-	//		resultStack.pop();
-	//		double a = boost::any_cast<double>(resultStack.top());
-	//		resultStack.pop();
-
-	//		switch (boost::any_cast<TokenType>(value))
-	//		{
-	//		case TokenType::AddOperator:
-	//			resultStack.push(a + b);
-	//			break;
-	//		case TokenType::MinusOperator:
-	//			resultStack.push(a - b);
-	//			break;
-	//		case TokenType::DivideOperator:
-	//			resultStack.push(a / b);
-	//			break;
-	//		case TokenType::MultiplyOperator:
-	//			resultStack.push(a * b);
-	//			break;
-	//		case TokenType::ModuloOperator:
-	//			resultStack.push((int)a % (int)b);
-	//			break;
-	//		}
-	//	}
-	//	else if (value.type() == typeid(VarCompilerToken*))
-	//	{
-	//		VarCompilerToken* varCompilerToken = boost::any_cast<VarCompilerToken*>(value);
-
-	//		//executeAction(varCompilerToken);
-
-	//		//resultStack.push(varCompilerToken->getResult());
-	//		resultStack.push(getVarValue(varCompilerToken));
-	//	}
-	//	else //it is a function
-	//	{
-	//		FunctionCompilerToken* functionCompilerToken = boost::any_cast<FunctionCompilerToken*>(value);
-
-	//		executeAction(functionCompilerToken);
-
-	//		resultStack.push(functionCompilerToken->getResult());
-	//	}
-	//}
-
-	//return resultStack.top();
+	return resultStack.top();
 }
 
+bool VirtualMachine::exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+{
+	std::string lString;
+	std::string rString;
+	try{
+		lString = boost::any_cast<std::string>(left);
+		rString = boost::any_cast<std::string>(right);
+	}
+	catch(exception& e){
+		return false;
+	}
+	switch (op){
+	case TokenType::AddOperator:
+		resultStack.push(lString + rString);
+		break;
+	case TokenType::IsStatement:
+		resultStack.push(lString.compare(rString) == 0);
+		break;
+	case TokenType::NotStatement:
+		resultStack.push(lString.compare(rString) != 0);
+		break;
+	default:
+		throw exception();
+		return false;
+		break;
+	}
+	return true;
+}
 
+bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+{
+	double lDouble;
+	double rDouble;
+	try{
+		lDouble = boost::any_cast<double>(left);
+		rDouble = boost::any_cast<double>(right);
+	}
+	catch (exception& e){
+		return false;
+	}
+	switch (op){
+	case TokenType::AddOperator:
+		resultStack.push(lDouble + rDouble);
+		break;
+	case TokenType::MinusOperator:
+		resultStack.push(lDouble - rDouble);
+		break;
+	case TokenType::MultiplyOperator:
+		resultStack.push(lDouble * rDouble);
+		break;
+	case TokenType::DivideOperator:
+		resultStack.push(lDouble / rDouble);
+		break;
+	case TokenType::ModuloOperator:
+		resultStack.push((int)lDouble % (int)rDouble);
+		break;
+	case TokenType::IsStatement:
+		resultStack.push(lDouble == rDouble);
+		break;
+	case TokenType::NotStatement:
+		resultStack.push(lDouble != rDouble);
+		break;
+	case TokenType::GreatherOrEqualStatement:
+		resultStack.push(lDouble >= rDouble);
+		break;
+	case TokenType::GreatherThenStatement:
+		resultStack.push(lDouble > rDouble);
+		break;
+	case TokenType::LesserThenStatement:
+		resultStack.push(lDouble < rDouble);
+		break;
+	case TokenType::LesserOrEqualStatement:
+		resultStack.push(lDouble <= rDouble);
+		break;
+	default:
+		throw exception();
+		return false;
+		break;
+	}
+	return true;
+}
+
+bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+{
+	bool lBool;
+	bool rBool;
+	try{
+		lBool = boost::any_cast<bool>(left);
+		rBool = boost::any_cast<bool>(right);
+	}
+	catch (exception& e){
+		return false;
+	}
+	switch (op){
+	case TokenType::IsStatement:
+		resultStack.push(lBool == rBool);
+		break;
+	case TokenType::NotStatement:
+		resultStack.push(lBool != rBool);
+		break;
+	case TokenType::OrStatement:
+		if (lBool|| rBool){
+			resultStack.push(true);
+			break;
+		}
+		resultStack.push(false);
+		break;
+	case TokenType::AndStatement:
+		resultStack.push(lBool && rBool);
+		break;
+	default:
+		throw exception();
+		return false;
+		break;
+	}
+	return true;
+}
 
 void VirtualMachine::print(boost::any p)
 {
