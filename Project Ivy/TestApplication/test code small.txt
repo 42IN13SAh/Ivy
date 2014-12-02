@@ -5,18 +5,16 @@ var st = " --Niek-- ";
 var remi = " --Remi bazen team-- ";
 
 function z() {
-<<<<<<< HEAD
-	test(y);
-}
-
-function test(y){
-	print(y);
-=======
-	while(y < 30){
-		++y;
-		print("manders");
+	while(y < 2000){
+		y+=10;
+		if(y is 100){
+			print("100");
+		}else if (y is 200){
+			print("yay 200!");
+		}else{
+			print("Geen van beide");
+		}
 	}
->>>>>>> cff6a73d477ecd39eb1be856e4d36c6501dc0a23
 }
 
 z();
