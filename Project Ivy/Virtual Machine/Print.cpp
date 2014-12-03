@@ -11,7 +11,7 @@ void Print::Execute(std::vector<boost::any> arglist)
 	catch (std::exception e) {
 		r = boost::any_cast<std::string>(arglist[0]);
 	}
-	std::cout << r << std::endl;
+	std::cout << r;
 }
 
 boost::any Print::GetResult()

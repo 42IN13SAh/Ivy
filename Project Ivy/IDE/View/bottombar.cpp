@@ -13,6 +13,7 @@ BottomBar::BottomBar(QWidget *parent) :
 
     //console
     textArea = new QTextEdit();
+	textArea->setReadOnly(true);
     this->addTab(textArea, "Console");
 
     //errorlist
@@ -53,7 +54,10 @@ void outcallback(const char* ptr, std::streamsize count, void* textArea)
 {
 	(void)count;
 	QTextEdit* textEdit = static_cast<QTextEdit*>(textArea);
-	textEdit->append(ptr);
+
+	std::string str(ptr);
+
+	textEdit->append(QString::fromStdString(str));
 }
 
 void BottomBar::createRedirector()
