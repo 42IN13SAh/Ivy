@@ -1,18 +1,8 @@
-var x = 10;
-var y = 20;
+var x = "Niek";
+var y = "totaal";
 
-function getY(){
-	return y;
+function test(x,y){
+	print(x + " " + y);
 }
 
-function getX(){
-	return x;
-}
-
-function check(){
-	if(getX() * 6 + getY() is 80){
-		print("Klopt als een bus");
-	}
-}
-
-check();
+test(x,y);

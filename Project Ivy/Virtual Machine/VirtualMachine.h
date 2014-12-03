@@ -32,15 +32,15 @@ private:
 	void executeAction(CompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(ReturnValueCompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(AssignCompilerToken* compilerToken, SymbolTable& symbolTable);
-	void executeAction(FunctionCompilerToken* compilerToken, Action* lastAction, SymbolTable& symbolTable);
+	boost::any executeAction(FunctionCompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(VarCompilerToken* compilerToken, SymbolTable& symbolTable);
+	boost::any executeInternalFunction(std::string name, FunctionCompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable);
 	bool exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	bool exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	bool exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*, SymbolTable& symbolTable);
 	boost::any getVarValue(VarCompilerToken*, SymbolTable& symbolTable);
-	boost::any getFunctionValue(FunctionCompilerToken*, Action* lastAction, SymbolTable& symbolTable);
 	void print(boost::any);
 };
 
