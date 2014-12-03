@@ -114,7 +114,13 @@ void VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, Action*
 
 void VirtualMachine::executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable)
 {
-	currentAction = (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable))) ? currentAction->getNextAction() : currentAction->getFalseAction();
+	Action* tempAction = currentAction;
+	if (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable))){
+		currentAction = tempAction->getNextAction();
+	}
+	else{
+		currentAction = currentAction->getFalseAction();
+	}
 }
 
 void VirtualMachine::executeAction(VarCompilerToken* compilerToken, SymbolTable& symbolTable)
@@ -173,8 +179,8 @@ boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken
 		currentAction = fs->getStartAction()->getNextAction();
 		boost::any returnValue = nullptr;
 		while (currentAction != fs->getEndAction()) {
-			if (typeid(currentAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
-				returnValue = getReturnValue(((ReturnCompilerToken*)currentAction->getCompilerToken())->getReturnValueCompilerToken(), symbolTable);
+			if (currentAction->getCompilerToken() != nullptr && typeid(*currentAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
+				returnValue = getReturnValue(((ReturnCompilerToken*)currentAction->getCompilerToken())->getReturnValueCompilerToken(), *fs->getSymbolTable());
 				break;
 			}
 			else
@@ -216,7 +222,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			if (value.type() == typeid(VarCompilerToken*))
 				value = getVarValue(boost::any_cast<VarCompilerToken*>(value), symbolTable);
 			else if (value.type() == typeid(FunctionCompilerToken*))
-				value = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(left), currentAction, symbolTable);
+				value = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(value), currentAction, symbolTable);
 			resultStack.push(value);
 		}
 	}

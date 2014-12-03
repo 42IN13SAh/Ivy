@@ -263,7 +263,6 @@ FunctionCompilerToken* Compiler::compileFunctionCall()
 		if (getNextToken()->getPartner() != start)
 			fct->addArgument(compileReturnValue());
 	}
-	getNextToken();
 	return fct;
 }
 

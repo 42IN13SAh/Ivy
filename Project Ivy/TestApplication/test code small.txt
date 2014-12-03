@@ -1,13 +1,18 @@
-var age;
-function main(){
-	age = 30;
-	testfunctio("hallo", "Niek");
+var x = 10;
+var y = 20;
+
+function getY(){
+	return y;
 }
 
-function testfunctio(x, y){
-	if(x is "hallo" and y is "Niek"){
-		print(age);
+function getX(){
+	return x;
+}
+
+function check(){
+	if(getX() * 6 + getY() is 80){
+		print("Klopt als een bus");
 	}
 }
 
-main();
+check();
