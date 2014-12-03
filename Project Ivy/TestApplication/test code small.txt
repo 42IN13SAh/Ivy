@@ -1,13 +1,8 @@
-var age;
-function main(){
-	age = 30;
-	testfunctio("hallo", "Niek");
+var x = "Niek";
+var y = "totaal";
+
+function test(x,y){
+	print(x + " " + y);
 }
 
-function testfunctio(x, y){
-	if(x is "hallo" and y is "Niek"){
-		print(age);
-	}
-}
-
-main();
+test(x,y);

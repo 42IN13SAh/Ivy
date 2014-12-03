@@ -28,6 +28,7 @@ void VirtualMachine::run(Action *firstAction)
 	{
 		CompilerToken* compilerToken = currentAction->getCompilerToken();
 		executeAction(compilerToken, *globalSymbolTable);
+		currentAction = currentAction->getNextAction();
 	}
 }
 
@@ -47,10 +48,7 @@ void VirtualMachine::updateVariable(string name, boost::any value, SymbolTable& 
 }
 
 void VirtualMachine::executeAction(CompilerToken* ct, SymbolTable& symbolTable){
-	if (ct == nullptr){
-		currentAction = currentAction->getNextAction();
-	}
-	else{
+	if (ct != nullptr){
 		if (typeid(*ct) == typeid(ReturnValueCompilerToken)){
 			executeAction((ReturnValueCompilerToken*)ct, symbolTable);
 		}
@@ -58,7 +56,7 @@ void VirtualMachine::executeAction(CompilerToken* ct, SymbolTable& symbolTable){
 			executeAction((AssignCompilerToken*)ct, symbolTable);
 		}
 		else if (typeid(*ct) == typeid(FunctionCompilerToken)){
-			executeAction((FunctionCompilerToken*)ct, currentAction, symbolTable);
+			executeAction((FunctionCompilerToken*)ct, symbolTable);
 		}
 		else if (typeid(*ct) == typeid(ConditionCompilerToken)){
 			executeAction((ConditionCompilerToken*)ct, symbolTable);
@@ -66,15 +64,11 @@ void VirtualMachine::executeAction(CompilerToken* ct, SymbolTable& symbolTable){
 		else if (typeid(*ct) == typeid(VarCompilerToken)){
 			executeAction((VarCompilerToken*)ct, symbolTable);
 		}
-		else{
-			currentAction = currentAction->getNextAction();
-		}
 	}
 }
 
 void VirtualMachine::executeAction(ReturnValueCompilerToken* compilerToken, SymbolTable& symbolTable) {
 	getReturnValue(compilerToken, symbolTable);
-	currentAction = currentAction->getNextAction();
 }
 
 void VirtualMachine::executeAction(AssignCompilerToken* compilerToken, SymbolTable& symbolTable)
@@ -82,50 +76,88 @@ void VirtualMachine::executeAction(AssignCompilerToken* compilerToken, SymbolTab
 	boost::any val = getVarValue(&VarCompilerToken(compilerToken->getName()), symbolTable);
 	boost::any newVal = getReturnValue(compilerToken->getReturnValue(), symbolTable);
 	switch (compilerToken->getAssignOp()) {
-		case TokenType::AssignmentOperator: val = newVal; break;
-		case TokenType::AddThenAssignOperator: 
-		{ 
-												 if (val.type() == typeid(std::string)){
-													 val = boost::any_cast<std::string>(val)+boost::any_cast<std::string>(newVal);
-												 }
-												 else{
-													 val = boost::any_cast<double>(val)+boost::any_cast<double>(newVal);
-												 }
-			break;
-		}
-		case TokenType::MinusThenAssignOperator: 
-			val = boost::any_cast<double>(val) - boost::any_cast<double>(newVal); 
-			break;
-		case TokenType::DivideThenAssignOperator: 
-			val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal); 
-			break;
-		case TokenType::MultiplyThenAssignOperator: 
-			val = boost::any_cast<double>(val) * boost::any_cast<double>(newVal); 
-			break;
+	case TokenType::AssignmentOperator: val = newVal; break;
+	case TokenType::AddThenAssignOperator:
+	{
+											 if (val.type() == typeid(std::string)){
+												 val = boost::any_cast<std::string>(val)+boost::any_cast<std::string>(newVal);
+											 }
+											 else{
+												 val = boost::any_cast<double>(val)+boost::any_cast<double>(newVal);
+											 }
+											 break;
+	}
+	case TokenType::MinusThenAssignOperator:
+		val = boost::any_cast<double>(val)-boost::any_cast<double>(newVal);
+		break;
+	case TokenType::DivideThenAssignOperator:
+		val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal);
+		break;
+	case TokenType::MultiplyThenAssignOperator:
+		val = boost::any_cast<double>(val)* boost::any_cast<double>(newVal);
+		break;
 	}
 	updateVariable(compilerToken->getName(), val, symbolTable);
-	currentAction = currentAction->getNextAction();
 }
 
-void VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, Action* lastAction, SymbolTable& symbolTable)
+boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, SymbolTable& symbolTable)
 {
-	getFunctionValue(compilerToken, lastAction, symbolTable);
+	FunctionSymbol* fs = globalSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
+	if (fs->isInternal()){
+		executeInternalFunction(fs->getName(), compilerToken, symbolTable);
+	}
+	else{
+		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
+		std::vector<std::string> argNames = fct->getArgumentNames();
+		for (int i = 0; i < argNames.size(); i++) {
+			fs->getSymbolTable()->addSymbolToTable(argNames[i], getReturnValue(compilerToken->getArguments()[i], symbolTable));
+		}
+		Action* fAction = fs->getStartAction()->getNextAction();
+		boost::any returnValue = nullptr;
+		while (fAction != fs->getEndAction()){
+			if (fAction->getCompilerToken() != nullptr && typeid(*fAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
+				returnValue = getReturnValue(((ReturnCompilerToken*)fAction->getCompilerToken())->getReturnValueCompilerToken(), *fs->getSymbolTable());
+				break;
+			}
+			else{
+				executeAction(fAction->getCompilerToken(), *fs->getSymbolTable());
+				fAction = fAction->getNextAction();
+			}
+		}
+		return returnValue;
+	}
+	return nullptr;
+}
+
+boost::any VirtualMachine::executeInternalFunction(std::string name, FunctionCompilerToken* compilerToken, SymbolTable& symbolTable){
+	IInternalFunction* fnc = InternalFunctionFactory::Instance()->Create(name);
+	std::vector<boost::any> args;
+	for each(ReturnValueCompilerToken* rvct in compilerToken->getArguments()) {
+		args.push_back(getReturnValue(rvct, symbolTable));
+	}
+	fnc->Execute(args);
+	currentAction = currentAction->getNextAction();
+	return fnc->GetResult();
 }
 
 void VirtualMachine::executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable)
 {
-	currentAction = (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable))) ? currentAction->getNextAction() : currentAction->getFalseAction();
+	Action* tempAction = currentAction;
+	if (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable))){
+		currentAction = tempAction->getNextAction();
+	}
+	else{
+		currentAction = currentAction->getFalseAction();
+	}
 }
 
 void VirtualMachine::executeAction(VarCompilerToken* compilerToken, SymbolTable& symbolTable)
 {
 	getVarValue(compilerToken, symbolTable);
-	if (currentAction->getNextAction() != nullptr){
-		currentAction = currentAction->getNextAction();
-	}
 }
 
-boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTable& symbolTable) {
+boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTable& symbolTable) 
+{
 	boost::any value;
 	value = symbolTable.getValue(compilerToken->getName());
 	if (value.type() == typeid(ExceptionCodes)) {
@@ -147,45 +179,6 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 		}
 	}
 	return value;
-}
-
-boost::any VirtualMachine::getFunctionValue(FunctionCompilerToken* compilerToken, Action* lastAction, SymbolTable& symbolTable) {
-	FunctionSymbol* fs = globalSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
-	if (fs == nullptr){
-		throw exception();
-	}
-	if (fs->isInternal()){
-		IInternalFunction* fnc = InternalFunctionFactory::Instance()->Create(fs->getName());
-		std::vector<boost::any> args;
-		for each(ReturnValueCompilerToken* rvct in compilerToken->getArguments()) {
-			args.push_back(getReturnValue(rvct, symbolTable));
-		}
-		fnc->Execute(args);
-		currentAction = currentAction->getNextAction();
-		return fnc->GetResult();
-	}
-	else{
-		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
-		std::vector<std::string> argNames = fct->getArgumentNames();
-		for (int i = 0; i < argNames.size(); i++) {
-			fs->getSymbolTable()->addSymbolToTable(argNames[i], getReturnValue(compilerToken->getArguments()[i], symbolTable));
-		}
-		currentAction = fs->getStartAction()->getNextAction();
-		boost::any returnValue = nullptr;
-		while (currentAction != fs->getEndAction()) {
-			if (typeid(currentAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
-				returnValue = getReturnValue(((ReturnCompilerToken*)currentAction->getCompilerToken())->getReturnValueCompilerToken(), symbolTable);
-				break;
-			}
-			else
-				executeAction(currentAction->getCompilerToken(), *fs->getSymbolTable());
-		}
-		if (currentAction != lastAction->getNextAction()){
-			currentAction = lastAction->getNextAction();
-		}
-		return returnValue;
-	}
-	return nullptr;
 }
 
 boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueCompilerToken, SymbolTable& symbolTable)
@@ -216,7 +209,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			if (value.type() == typeid(VarCompilerToken*))
 				value = getVarValue(boost::any_cast<VarCompilerToken*>(value), symbolTable);
 			else if (value.type() == typeid(FunctionCompilerToken*))
-				value = getFunctionValue(boost::any_cast<FunctionCompilerToken*>(left), currentAction, symbolTable);
+				value = executeAction(boost::any_cast<FunctionCompilerToken*>(value), symbolTable);
 			resultStack.push(value);
 		}
 	}

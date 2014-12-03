@@ -88,8 +88,4 @@ void BaseController::startRunning()
 			std::cout << e.what();
 		}
 	}
-
-	delete virtualMachine;
-	delete compiler;
-	delete tokenizer;
 }
