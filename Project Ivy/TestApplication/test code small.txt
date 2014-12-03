@@ -1,8 +1,10 @@
-var x = "Niek";
-var y = "totaal";
+var a = 1;
 
-function test(x,y){
-	print(x + " " + y);
+function hoogAopTot100(a){
+	while(a <= 100){
+		print(a);
+		a++;
+	}
 }
 
-test(x,y);
+hoogAopTot100(a);
