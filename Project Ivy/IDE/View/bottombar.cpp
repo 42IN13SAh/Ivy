@@ -50,6 +50,11 @@ void BottomBar::clearErrorList()
 	errorList->clear();
 }
 
+void BottomBar::clearConsole()
+{
+	textArea->clear();
+}
+
 void outcallback(const char* ptr, std::streamsize count, void* textArea)
 {
 	(void)count;

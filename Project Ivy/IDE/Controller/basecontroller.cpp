@@ -73,6 +73,8 @@ void BaseController::startBuilding(bool onlyBuild)
 
 void BaseController::startRunning()
 {
+	source->getBottomBar()->clearConsole();
+
 	startBuilding(false);
 
 	VirtualMachine *virtualMachine = new VirtualMachine(compiler->getSymbolTable());
