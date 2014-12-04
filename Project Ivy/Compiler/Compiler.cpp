@@ -198,6 +198,7 @@ void Compiler::compileIf()
 	}
 	lastAction->setNextAction(end);
 	lastAction = end;
+	getNextToken();
 }
 
 Action* Compiler::compileElse()
