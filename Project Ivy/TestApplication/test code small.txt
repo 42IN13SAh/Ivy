@@ -1,0 +1,8 @@
+var x = "Niek";
+var y = "totaal";
+
+function test(x,y){
+	print(x + " " + y);
+}
+
+test(x,y);
