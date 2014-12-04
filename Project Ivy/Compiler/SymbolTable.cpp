@@ -34,7 +34,7 @@ void SymbolTable::addSymbolToTable(string name, boost::any value)
 	{
 		if (symbol->getName() == name)
 		{
-			return;
+			throw new exception; 
 		}
 	}
 	symbols.push_back(new Symbol(name, value));

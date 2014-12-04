@@ -68,6 +68,7 @@ void Compiler::compile()
 
 void Compiler::compileFunction() 
 {
+
 	Action* startFunction = new Action(); 
 	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
 	Token* start = getNextToken();
@@ -106,7 +107,6 @@ void Compiler::addFunctionSignature()
 
 void Compiler::compileCodeBlock()
 {
-	Token* t = getCurrentToken();
 	while (getCurrentToken()->getTokenType() != TokenType::ClosingBracket) {
 		Action* last = lastAction;
 		switch (getCurrentToken()->getTokenType()) {
@@ -175,7 +175,6 @@ void Compiler::compileWhile()
 	DoNothingAction* onFalse = new DoNothingAction();
 	condition->setFalseAction(onFalse);
 	lastAction = onFalse;
-	getNextToken();
 }
 
 void Compiler::compileIf()
