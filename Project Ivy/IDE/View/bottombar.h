@@ -17,6 +17,7 @@ public:
     explicit BottomBar(QWidget *parent = 0);
 	void addError(int lineNumber, int linePosition, std::string text);
 	void clearErrorList();
+	void clearConsole();
 
 signals:
 
