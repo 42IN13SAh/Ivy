@@ -1,10 +1,31 @@
-var a = 1;
+var age;
 
-function hoogAopTot100(a){
-	while(a <= 100){
-		print(a);
-		a++;
+function main(){
+	age = 30;
+	guesAge();
+	loopDieLoop();
+	guesAge();
+}
+
+function guesAge(){
+	if(age is 30){
+		print("Correct");
+	}else{
+		print("false");
 	}
 }
 
-hoogAopTot100(a);
+function loopDieLoop(){
+	while(returnMultiply(4) is 8 and ++age < 100){
+		print("Aging");
+	}
+	if(age is 100){
+		print("Died!");
+	}
+}
+
+function returnMultiply(para){
+	return para * 2;
+}
+
+main();
