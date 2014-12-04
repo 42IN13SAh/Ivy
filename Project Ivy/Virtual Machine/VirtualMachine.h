@@ -32,7 +32,7 @@ private:
 	void executeAction(CompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(ReturnValueCompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(AssignCompilerToken* compilerToken, SymbolTable& symbolTable);
-	void executeAction(FunctionCompilerToken* compilerToken, Action* lastAction, SymbolTable& symbolTable);
+	void executeAction(FunctionCompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(VarCompilerToken* compilerToken, SymbolTable& symbolTable);
 	void executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable);
 	bool exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);

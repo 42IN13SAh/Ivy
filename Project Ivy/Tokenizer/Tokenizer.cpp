@@ -10,7 +10,6 @@
 #include <chrono>
 #include <boost\algorithm\string\trim.hpp>
 #include "Tokenizer.h"
-#include "BadSyntaxException.h"
 #include "PartnerNotFoundException.h"
 #include "ReservedKeywordException.h"
 
@@ -32,6 +31,10 @@ std::list<Token*> Tokenizer::getTokenList()
 	return tokenList;
 }
 
+const std::vector<BadSyntaxException>& Tokenizer::getErrorList() {
+	return errorList;
+}
+
 void Tokenizer::tokenize(std::string* input, int size)
 {
 	int lineNumber = 0;
@@ -50,7 +53,11 @@ void Tokenizer::tokenize(std::string* input, int size)
 					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
 					if (token->getTokenType() == TokenType::Name){
 						if (syntaxManager.hasKeyWord(token->getDescription())){
-							throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
+							errorList.push_back(ReservedKeywordException(token->getDescription(), lineNumber, linePosition));
+							linePosition += result[0].length();
+							unprocessedInput += result[0].length();
+							break;
+							// throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
 						}
 					}
 					tokenList.push_back(token);
@@ -63,7 +70,11 @@ void Tokenizer::tokenize(std::string* input, int size)
 				}
 			}
 			if (!hasMatch){
-				throw BadSyntaxException(lineNumber, linePosition);
+				errorList.push_back(BadSyntaxException(lineNumber, linePosition));
+				unprocessedInput++;
+				linePosition++;
+				//syntaxId = -1;
+				//throw BadSyntaxException(lineNumber, linePosition);
 			}
 		}
 		input++;
@@ -79,7 +90,9 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 	}
 	if (syntax->getPartners().size() > 0){
 		if (partnerStack.size() == 0){
-			throw PartnerNotFoundException(token->getDescription(), linenumber, lineposition);
+			errorList.push_back(PartnerNotFoundException(token->getDescription(), linenumber, lineposition));
+			// throw PartnerNotFoundException(token->getDescription(), linenumber, lineposition);
+			return;
 		}
 		Token* stackToken = partnerStack.top();
 		partnerStack.pop();
@@ -129,25 +142,3 @@ const char* Tokenizer::trim(const char* str, int& lineposition)
 	}
 	return str;
 }
-
-//Uncomment to run tokenizer and test him, remeber to put properties to .exe instead of static .lib and include boost::regex1.56!!!
-
-/*int main(){
-	Tokenizer tok;
-	std::string line;
-	std::vector<std::string> lines;
-	std::ifstream file;
-	file.open("test code 1.0.txt");
-	while (std::getline(file, line)){
-		lines.push_back(line);
-	}
-	file.close();
-	auto start_time = std::chrono::high_resolution_clock::now();
-	for (int i = 0; i < 100; i++){
-		tok.tokenize(&lines[0], lines.size());
-	}
-	auto end_time = std::chrono::high_resolution_clock::now();
-	std::cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
-	std::getchar();
-	return 0;
-}*/

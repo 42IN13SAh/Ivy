@@ -58,7 +58,7 @@ void VirtualMachine::executeAction(CompilerToken* ct, SymbolTable& symbolTable){
 			executeAction((AssignCompilerToken*)ct, symbolTable);
 		}
 		else if (typeid(*ct) == typeid(FunctionCompilerToken)){
-			executeAction((FunctionCompilerToken*)ct, currentAction, symbolTable);
+			executeAction((FunctionCompilerToken*)ct, symbolTable);
 		}
 		else if (typeid(*ct) == typeid(ConditionCompilerToken)){
 			executeAction((ConditionCompilerToken*)ct, symbolTable);
@@ -107,9 +107,9 @@ void VirtualMachine::executeAction(AssignCompilerToken* compilerToken, SymbolTab
 	currentAction = currentAction->getNextAction();
 }
 
-void VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, Action* lastAction, SymbolTable& symbolTable)
+void VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, SymbolTable& symbolTable)
 {
-	getFunctionValue(compilerToken, lastAction, symbolTable);
+	getFunctionValue(compilerToken, currentAction, symbolTable);
 }
 
 void VirtualMachine::executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable)

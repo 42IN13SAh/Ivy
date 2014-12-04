@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <chrono>
-#include <vld.h>
 
 #include "..\Tokenizer\Tokenizer.h"
 #include "..\Compiler\Compiler.h"
