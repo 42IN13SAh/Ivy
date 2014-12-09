@@ -183,7 +183,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>"View";"Controller";"$(QTDIR)\include";"$(QTDIR)\include\QtWidgets";"$(QTDIR)\include\QtGui";"$(QTDIR)\include\QtANGLE";"$(QTDIR)\include\QtCore";"debug";$(QTDIR)\mkspecs\win32-msvc2013;E:\Applications\boost_1_56_0;D:\boost\include\boost-1_56;C:\Program Files\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;D:\local\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy;View;Controller;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2013;E:\Applications\boost_1_56_0;D:\boost\include\boost-1_56;C:\Program Files\boost_1_56_0;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0;D:\C++ Boost\boost_1_56_0;D:\Program Files\Boost;C:\boost_1_56_0;D:\local\boost_1_56_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -211,6 +211,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -264,6 +265,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Controller\basecontroller.cpp" />
+    <ClCompile Include="Controller\Jzon.cpp" />
     <ClCompile Include="Debug\moc_bottombar.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -294,7 +296,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Jzon.cpp" />
     <ClCompile Include="Release\moc_bottombar.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -327,12 +328,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller\basecontroller.h" />
+    <ClInclude Include="Controller\Jzon.h" />
+    <ClInclude Include="View\StdRedirector.h" />
     <CustomBuild Include="View\bottombar.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DNDEBUG -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing bottombar.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing bottombar.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-IC:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy" "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing bottombar.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing bottombar.h...</Message>
@@ -350,7 +353,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing buttonbar.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing buttonbar.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-IC:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy" "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing buttonbar.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing buttonbar.h...</Message>
@@ -369,7 +372,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing codeeditor.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing codeeditor.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-IC:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy" "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing codeeditor.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing codeeditor.h...</Message>
@@ -382,9 +385,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
-    <ClInclude Include="Jzon.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="StdRedirector.h" />
     <ClInclude Include="View\errorlistitem.h" />
     <ClInclude Include="Controller\keyinputcontroller.h" />
     <CustomBuild Include="View\mainwindow.h">
@@ -392,7 +393,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing mainwindow.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing mainwindow.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-IC:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy" "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing mainwindow.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing mainwindow.h...</Message>
@@ -410,7 +411,7 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing syntaxhighlighter.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing syntaxhighlighter.h...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_DLL  "-IC:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy" "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IE:\Applications\boost_1_56_0" "-ID:\boost\include\boost-1_56" "-IC:\Program Files\boost_1_56_0" "-IC:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0" "-ID:\C++ Boost\boost_1_56_0" "-ID:\Program Files\Boost" "-IC:\boost_1_56_0" "-ID:\local\boost_1_56_0" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DQT_DLL  "-I.\View" "-I.\Controller" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing syntaxhighlighter.h...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing syntaxhighlighter.h...</Message>
@@ -459,14 +460,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Compiler\Compiler.vcxproj">
-      <Project>{ca162487-27cf-465d-80fd-723ba35dd3c7}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Tokenizer\Tokenizer.vcxproj">
-      <Project>{040bd7e0-b737-4952-82ed-42d66cddf8eb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Virtual Machine\Virtual Machine.vcxproj">
-      <Project>{0a8f5aa0-9055-4740-89cf-92af7f472149}</Project>
+    <ProjectReference Include="..\Ivy\Ivy.vcxproj">
+      <Project>{a85a7596-da92-4ffc-8673-4f109a552e76}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

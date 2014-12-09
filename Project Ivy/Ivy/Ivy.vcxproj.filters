@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Compiler">
+      <UniqueIdentifier>{8586d97a-0137-4093-afb0-315cca305422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tokenizer">
+      <UniqueIdentifier>{eb9e1d41-3362-4684-b8a6-e72a3d1e2944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Virtual Machine">
+      <UniqueIdentifier>{b0f777ae-c9dc-4486-b0a6-04e563a28854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Compiler">
+      <UniqueIdentifier>{bf5fecdc-636a-4952-a8bb-054f229f92c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Virtual Machine">
+      <UniqueIdentifier>{db75d43b-97b8-4332-8eed-674d9a02c747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tokenizer">
+      <UniqueIdentifier>{dc6f76e3-24a5-49af-8afc-ac90732d9a1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Compiler\Action">
+      <UniqueIdentifier>{f0c1f5c0-5749-4e47-bcd4-e82314af0f17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Compiler\CompilerTokens">
+      <UniqueIdentifier>{f50dffe7-316b-4559-b512-0220e500b4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Compiler\Exception">
+      <UniqueIdentifier>{5699cd5c-65f2-4e01-883b-3f0b146dc9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Compiler\Action">
+      <UniqueIdentifier>{34f0ea08-54cb-4869-9b8f-d89e6d469a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Compiler\CompilerTokens">
+      <UniqueIdentifier>{6648d51a-b8cb-47a9-bb9d-f618c0dda1c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tokenizer\Exceptions">
+      <UniqueIdentifier>{3ef27b2e-6dbe-43a7-ab1b-4b09bb65a2cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tokenizer\Exceptions">
+      <UniqueIdentifier>{eb2c3950-fab0-495f-9200-3552088fee35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{185464a4-8c87-4566-9408-981872a76564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{c0289179-84a4-41a1-87e4-96609ae204eb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Action.h">
+      <Filter>Header Files\Compiler\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="DoNothingAction.h">
+      <Filter>Header Files\Compiler\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="AssignCompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionCompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionCompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="ReturnCompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="ReturnValueCompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="VarCompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionCodes.h">
+      <Filter>Header Files\Compiler\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="Compiler.h">
+      <Filter>Header Files\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionSymbol.h">
+      <Filter>Header Files\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol.h">
+      <Filter>Header Files\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
+      <Filter>Header Files\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTableItemsToBeDeleted.h">
+      <Filter>Header Files\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleInput.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Cos.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FormatString.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="IinternalFunction.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalFunctionFactory.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Invert.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Pow.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Print.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadFile.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadFileLines.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveFile.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Sin.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareRoot.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Tan.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteToEndOfFile.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualMachine.h">
+      <Filter>Header Files\Virtual Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="BadSyntaxException.h">
+      <Filter>Header Files\Tokenizer\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="PartnerNotFoundException.h">
+      <Filter>Header Files\Tokenizer\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ReservedKeyWordException.h">
+      <Filter>Header Files\Tokenizer\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ParentTokenType.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Syntax.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="SyntaxManager.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Token.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Tokenizer.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="TokenType.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Jzon.h">
+      <Filter>Header Files\Tokenizer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Action.cpp">
+      <Filter>Source Files\Compiler\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="DoNothingAction.cpp">
+      <Filter>Source Files\Compiler\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignCompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="ConditionCompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionCompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="ReturnCompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="ReturnValueCompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="VarCompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="CompilerToken.cpp">
+      <Filter>Source Files\Compiler\CompilerTokens</Filter>
+    </ClCompile>
+    <ClCompile Include="Compiler.cpp">
+      <Filter>Source Files\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionSymbol.cpp">
+      <Filter>Source Files\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol.cpp">
+      <Filter>Source Files\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>Source Files\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTableItemsToBeDeleted.cpp">
+      <Filter>Source Files\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleInput.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Cos.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="FormatString.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalFunctionFactory.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Invert.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Pow.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Print.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadFile.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadFileLines.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveFile.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Sin.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SquareRoot.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Tan.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteToEndOfFile.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualMachine.cpp">
+      <Filter>Source Files\Virtual Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="BadSyntaxException.cpp">
+      <Filter>Source Files\Tokenizer\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="PartnerNotFoundException.cpp">
+      <Filter>Source Files\Tokenizer\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ReservedKeyWordException.cpp">
+      <Filter>Source Files\Tokenizer\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Syntax.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxManager.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Token.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Tokenizer.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Jzon.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

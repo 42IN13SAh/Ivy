@@ -75,17 +75,6 @@
     <ClInclude Include="Jzon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Compiler\Compiler.vcxproj">
-      <Project>{ca162487-27cf-465d-80fd-723ba35dd3c7}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Tokenizer\Tokenizer.vcxproj">
-      <Project>{040bd7e0-b737-4952-82ed-42d66cddf8eb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Virtual Machine\Virtual Machine.vcxproj">
-      <Project>{0a8f5aa0-9055-4740-89cf-92af7f472149}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="test code 1.0.txt" />
     <Text Include="test code small.txt" />
   </ItemGroup>

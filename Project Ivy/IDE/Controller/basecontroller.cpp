@@ -3,11 +3,11 @@
 #include <iostream>
 #include "mainwindow.h"
 
-#include "..\..\Tokenizer\Tokenizer.h"
-#include "..\..\Tokenizer\BadSyntaxException.h"
-#include "..\..\Compiler\Compiler.h"
-#include "..\..\Virtual Machine\VirtualMachine.h"
-#include "..\Jzon.h"
+#include "Tokenizer.h"
+#include "BadSyntaxException.h"
+#include "Compiler.h"
+#include "VirtualMachine.h"
+#include "Jzon.h"
 
 BaseController::BaseController(MainWindow * source)
 {
@@ -50,7 +50,7 @@ void BaseController::startBuilding(bool onlyBuild)
 	{
 		compiler->compile();
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
 		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
 
@@ -85,7 +85,7 @@ void BaseController::startRunning()
 		{
 			virtualMachine->run(compiler->getFirstAction());
 		}
-		catch (exception e)
+		catch (std::exception e)
 		{
 			std::cout << e.what();
 		}
