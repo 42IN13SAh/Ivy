@@ -1,3 +1,8 @@
+#ifdef VIRTUALMACHINE_EXPORTS
+#define VIRTUALMACHINE_API __declspec(dllexport) 
+#else
+#define VIRTUALMACHINE_API __declspec(dllimport) 
+#endif
 #pragma once
 #include <string>
 #include <vector>

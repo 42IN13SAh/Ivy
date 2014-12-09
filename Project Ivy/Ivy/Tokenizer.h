@@ -1,3 +1,8 @@
+#ifdef TOKENIZER_EXPORTS
+#define TOKENIZER_API __declspec(dllexport) 
+#else
+#define TOKENIZER_API __declspec(dllimport) 
+#endif
 #pragma once
 #include <stack>
 #include <string>
