@@ -1,8 +1,3 @@
-#ifdef COMPILER_EXPORTS
-#define COMPILER_API __declspec(dllexport) 
-#else
-#define COMPILER_API __declspec(dllimport) 
-#endif
 #pragma once
 #include <vector>
 #include <map>

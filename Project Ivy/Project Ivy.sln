@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApplication", "TestApplication\TestApplication.vcxproj", "{37480992-89A1-4A62-B1F6-EE121E2AC9E5}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IDE", "IDE\IVY_ide.vcxproj", "{7FC3408A-CAEC-3650-87FE-CDED3A5B8D76}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ivy", "Ivy\Ivy.vcxproj", "{A85A7596-DA92-4FFC-8673-4F109A552E76}"
@@ -17,12 +15,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{37480992-89A1-4A62-B1F6-EE121E2AC9E5}.Debug|Win32.ActiveCfg = Debug|Win32
-		{37480992-89A1-4A62-B1F6-EE121E2AC9E5}.Debug|Win32.Build.0 = Debug|Win32
-		{37480992-89A1-4A62-B1F6-EE121E2AC9E5}.Debug|x64.ActiveCfg = Debug|Win32
-		{37480992-89A1-4A62-B1F6-EE121E2AC9E5}.Release|Win32.ActiveCfg = Release|Win32
-		{37480992-89A1-4A62-B1F6-EE121E2AC9E5}.Release|Win32.Build.0 = Release|Win32
-		{37480992-89A1-4A62-B1F6-EE121E2AC9E5}.Release|x64.ActiveCfg = Release|Win32
 		{7FC3408A-CAEC-3650-87FE-CDED3A5B8D76}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7FC3408A-CAEC-3650-87FE-CDED3A5B8D76}.Debug|Win32.Build.0 = Debug|Win32
 		{7FC3408A-CAEC-3650-87FE-CDED3A5B8D76}.Debug|x64.ActiveCfg = Debug|Win32
