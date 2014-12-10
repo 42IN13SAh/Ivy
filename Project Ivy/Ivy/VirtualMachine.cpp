@@ -109,7 +109,7 @@ boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, S
 {
 	FunctionSymbol* fs = globalSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
 	if (fs->isInternal()){
-		executeInternalFunction(fs->getName(), compilerToken, symbolTable);
+		return executeInternalFunction(fs->getName(), compilerToken, symbolTable);
 	}
 	else{
 		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
