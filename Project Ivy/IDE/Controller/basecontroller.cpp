@@ -28,7 +28,7 @@ void BaseController::startBuilding(bool onlyBuild)
 	std::vector<std::string> list = source->getCodeEditor()->getEditorContent();
 
 	tokenizer = new Tokenizer();
-	try
+	/*try
 	{
 		tokenizer->tokenize(&list[0], list.size());
 	}
@@ -42,6 +42,15 @@ void BaseController::startBuilding(bool onlyBuild)
 		}
 
 		compiler = nullptr;
+		return;
+	}*/
+	tokenizer->tokenize(&list[0], list.size());
+	if (tokenizer->getErrorList().size() > 0) {
+		for each(BadSyntaxException e in tokenizer->getErrorList()) {
+			source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
+		}
+
+		delete tokenizer;
 		return;
 	}
 

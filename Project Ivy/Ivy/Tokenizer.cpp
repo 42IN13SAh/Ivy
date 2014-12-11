@@ -32,6 +32,10 @@ std::list<Token*> Tokenizer::getTokenList()
 	return tokenList;
 }
 
+const std::vector<BadSyntaxException>& Tokenizer::getErrorList() {
+	return errorList;
+}
+
 void Tokenizer::tokenize(std::string* input, int size)
 {
 	int lineNumber = 0;
@@ -47,14 +51,25 @@ void Tokenizer::tokenize(std::string* input, int size)
 				boost::cmatch result;
 				if (boost::regex_search(unprocessedInput, result, syntax->getRegexPattern(), boost::match_continuous)){
 					hasMatch = true;
+					/*if (syntax->getTokenType() == TokenType::String) {
+						result[0] = result[0].str();
+					}*/
 					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
 					if (token->getTokenType() == TokenType::Name){
 						if (syntaxManager.hasKeyWord(token->getDescription())){
-							throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
+							//throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
+							errorList.push_back(ReservedKeywordException(token->getDescription(), lineNumber, linePosition));
+							unprocessedInput += token->getDescription().length();
+							delete token;
+							break;
 						}
 					}
+					if (!tokenPartnerCheck(syntax, token, level, lineNumber, linePosition)) {
+						unprocessedInput++;
+						delete token;
+						break;
+					}
 					tokenList.push_back(token);
-					tokenPartnerCheck(syntax, token, level, lineNumber, linePosition);
 					linePosition += result[0].length();
 					unprocessedInput += result[0].length();
 					unprocessedInput = trim(unprocessedInput, linePosition);
@@ -63,14 +78,22 @@ void Tokenizer::tokenize(std::string* input, int size)
 				}
 			}
 			if (!hasMatch){
-				throw BadSyntaxException(lineNumber, linePosition);
+				//throw BadSyntaxException(lineNumber, linePosition);
+				errorList.push_back(BadSyntaxException(lineNumber, linePosition));
+				// Check until space, if found chars is a name or word, skip that much positions
+				unprocessedInput++;
 			}
 		}
 		input++;
 	}
+	while (!partnerStack.empty()) {
+		Token* t = partnerStack.top();
+		partnerStack.pop();
+		errorList.push_back(PartnerNotFoundException(t->getDescription(), t->getLineNumber(), t->getLinePosition()));
+	}
 }
 
-void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int& linenumber, int& lineposition)
+bool Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int& linenumber, int& lineposition)
 {
 	if (syntax->getShouldPush()){
 		partnerStack.push(token);
@@ -79,7 +102,9 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 	}
 	if (syntax->getPartners().size() > 0){
 		if (partnerStack.size() == 0){
-			throw PartnerNotFoundException(token->getDescription(), linenumber, lineposition);
+			//throw PartnerNotFoundException(token->getDescription(), linenumber, lineposition);
+			errorList.push_back(PartnerNotFoundException(token->getDescription(), linenumber, lineposition));
+			return false;
 		}
 		Token* stackToken = partnerStack.top();
 		partnerStack.pop();
@@ -100,6 +125,7 @@ void Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 			level--;
 		}
 	}
+	return true;
 }
 
 const char* Tokenizer::trim(const char* str, int& lineposition)
