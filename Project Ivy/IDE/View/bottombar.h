@@ -6,7 +6,7 @@
 #include <QListWidget>
 #include <vector>
 #include "errorlistitem.h"
-#include "../StdRedirector.h"
+#include "StdRedirector.h"
 
 class MainWindow;
 

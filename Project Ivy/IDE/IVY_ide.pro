@@ -30,3 +30,9 @@ INCLUDEPATH += View/
 INCLUDEPATH += Controller/
 RESOURCES += \
     Resources.qrc
+
+win32:INCLUDEPATH += "C:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Ivy"
+win32:LIBS += "C:\Users\niek\Documents\DeveloperTwo\Ivy\Project Ivy\Release"
+
+win32:INCLUDEPATH += "C:\boost_1_57_0"
+win32:LIBS += "C:\boost_1_57_0\stage\lib"

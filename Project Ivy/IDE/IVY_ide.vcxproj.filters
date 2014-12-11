@@ -125,8 +125,8 @@
     <ClCompile Include="View\syntaxhighlighter.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
-    <ClCompile Include="Jzon.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Controller\Jzon.cpp">
+      <Filter>Source Files\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,14 +173,14 @@
     <ClInclude Include="View\errorlistitem.h">
       <Filter>Header Files\View</Filter>
     </ClInclude>
-    <ClInclude Include="Jzon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="StdRedirector.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="View\StdRedirector.h">
+      <Filter>Header Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\Jzon.h">
+      <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
