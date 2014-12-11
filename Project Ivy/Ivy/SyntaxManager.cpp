@@ -91,6 +91,10 @@ std::map<int, Syntax*>* SyntaxManager::getSyntaxMap()
 	return &syntaxMap;
 }
 
+Syntax* SyntaxManager::getSyntax(int id) {
+	return syntaxMap[id];
+}
+
 void SyntaxManager::initTokenDictionary()
 {
 	tokenDictionary["IFSTATEMENT"] = TokenType::IfStatement;

@@ -145,7 +145,7 @@ void Compiler::compileStatement()
 			break;
 		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
 			{
-				TokenType op = getCurrentToken()->getTokenType();
+				TokenType::TokenType op = getCurrentToken()->getTokenType();
 				VarCompilerToken* v = new VarCompilerToken(getNextToken()->getDescription());
 				v->setFrontOperator(op);
 				statement->setCompilerToken(v);
@@ -212,7 +212,7 @@ Action* Compiler::compileElse()
 ReturnValueCompilerToken* Compiler::compileReturnValue() 
 {
 	int openParenthisCounter = 0;
-	std::vector<TokenType> endTypes = { TokenType::LineEnd, TokenType::ParameterOperator, TokenType::OpenBracket };
+	std::vector<TokenType::TokenType> endTypes = { TokenType::LineEnd, TokenType::ParameterOperator, TokenType::OpenBracket };
 	Token* cToken = getCurrentToken();
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
 	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end() && !(getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis && !rt->hasOpenParenthisOnStack())) {
@@ -293,7 +293,7 @@ Action* Compiler::compileStatementName(Action* statement)
 		statement->setCompilerToken(compileFunctionCall());
 	}
 	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) {
-		TokenType op = getNextToken()->getTokenType();
+		TokenType::TokenType op = getNextToken()->getTokenType();
 		getNextToken();
 		switch (op) {
 			case TokenType::AssignmentOperator: case TokenType::AddThenAssignOperator: case TokenType::MinusThenAssignOperator: case TokenType::DivideThenAssignOperator: case TokenType::MultiplyThenAssignOperator:
@@ -339,7 +339,7 @@ void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt)
 	}
 	else if (getCurrentToken()->getParentType() == ParentType::MathOperator){
 		if (!rt->isEmpty()){
-			TokenType tmp = rt->peekOperatorStack();
+			TokenType::TokenType tmp = rt->peekOperatorStack();
 			if (tmp == TokenType::DivideOperator || tmp == TokenType::ModuloOperator || tmp == TokenType::MultiplyOperator){
 				rt->addValueToVector(tmp);
 				rt->popOperatorStack();

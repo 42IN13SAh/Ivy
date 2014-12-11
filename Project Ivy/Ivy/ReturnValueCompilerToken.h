@@ -12,14 +12,14 @@ public:
 	virtual ~ReturnValueCompilerToken();
 	bool isEmpty();
 	void addValueToVector(boost::any);
-	void pushOperatorToStack(TokenType tokenType);
-	TokenType peekOperatorStack();
+	void pushOperatorToStack(TokenType::TokenType tokenType);
+	TokenType::TokenType peekOperatorStack();
 	void popOperatorStack();
 	bool hasOpenParenthisOnStack();
 	void completeRPNVector();
 	std::queue<boost::any>& getRPN();
 private:
 	std::queue<boost::any> rpnVector;
-	std::stack<TokenType> operatorStack;
+	std::stack<TokenType::TokenType> operatorStack;
 	int openParenthisCounter;
 };

@@ -32,7 +32,7 @@ std::list<Token*> Tokenizer::getTokenList()
 	return tokenList;
 }
 
-const std::vector<BadSyntaxException>& Tokenizer::getErrorList() {
+const std::vector<BaseException>& Tokenizer::getErrorList() {
 	return errorList;
 }
 
@@ -51,14 +51,16 @@ void Tokenizer::tokenize(std::string* input, int size)
 				boost::cmatch result;
 				if (boost::regex_search(unprocessedInput, result, syntax->getRegexPattern(), boost::match_continuous)){
 					hasMatch = true;
-					/*if (syntax->getTokenType() == TokenType::String) {
-						result[0] = result[0].str();
-					}*/
-					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, result[0], syntax->getTokenType(), syntax->getParentType(), nullptr);
+					std::string res(result[0]);
+					if (syntax->getTokenType() == TokenType::String) {
+						res.erase(res.begin());
+						res.erase(res.end()-1);
+					}
+					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, res, syntax->getTokenType(), syntax->getParentType(), nullptr);
 					if (token->getTokenType() == TokenType::Name){
 						if (syntaxManager.hasKeyWord(token->getDescription())){
 							//throw ReservedKeywordException(token->getDescription(), lineNumber, linePosition);
-							errorList.push_back(ReservedKeywordException(token->getDescription(), lineNumber, linePosition));
+							errorList.push_back(ReservedKeywordException(lineNumber, linePosition, token->getDescription()));
 							unprocessedInput += token->getDescription().length();
 							delete token;
 							break;
@@ -79,7 +81,7 @@ void Tokenizer::tokenize(std::string* input, int size)
 			}
 			if (!hasMatch){
 				//throw BadSyntaxException(lineNumber, linePosition);
-				errorList.push_back(BadSyntaxException(lineNumber, linePosition));
+				errorList.push_back(BadSyntaxException(lineNumber, linePosition, getSyntaxValuesAsString(syntaxManager.getFollowupVector(syntaxId)), tokenList.back()->getDescription()));
 				// Check until space, if found chars is a name or word, skip that much positions
 				unprocessedInput++;
 			}
@@ -89,7 +91,9 @@ void Tokenizer::tokenize(std::string* input, int size)
 	while (!partnerStack.empty()) {
 		Token* t = partnerStack.top();
 		partnerStack.pop();
-		errorList.push_back(PartnerNotFoundException(t->getDescription(), t->getLineNumber(), t->getLinePosition()));
+		if (t->getTokenType() != TokenType::IfStatement) {
+			errorList.push_back(PartnerNotFoundException(t->getLineNumber(), t->getLinePosition(), getSyntaxValuesAsString(syntaxManager.getSyntax(t->getSyntaxID())->getPartners()), t->getDescription()));
+		}
 	}
 }
 
@@ -103,7 +107,7 @@ bool Tokenizer::tokenPartnerCheck(Syntax* syntax, Token* token, int& level, int&
 	if (syntax->getPartners().size() > 0){
 		if (partnerStack.size() == 0){
 			//throw PartnerNotFoundException(token->getDescription(), linenumber, lineposition);
-			errorList.push_back(PartnerNotFoundException(token->getDescription(), linenumber, lineposition));
+			errorList.push_back(PartnerNotFoundException(linenumber, lineposition, getSyntaxValuesAsString(syntax->getPartners()), token->getDescription()));
 			return false;
 		}
 		Token* stackToken = partnerStack.top();
@@ -154,4 +158,13 @@ const char* Tokenizer::trim(const char* str, int& lineposition)
 		end--;
 	}
 	return str;
+}
+
+const std::vector<std::string> Tokenizer::getSyntaxValuesAsString(std::vector<Syntax*> sVec) {
+	std::vector<std::string> strVec;
+	for each(Syntax* s in sVec) {
+		strVec.push_back(TokenType::TokenTypeNames[s->getTokenType()]);
+	}
+
+	return strVec;
 }

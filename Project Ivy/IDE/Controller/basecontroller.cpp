@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 
 #include "Tokenizer.h"
-#include "BadSyntaxException.h"
+#include "BaseException.h"
 #include "Compiler.h"
 #include "VirtualMachine.h"
 #include "Jzon.h"
@@ -46,7 +46,7 @@ void BaseController::startBuilding(bool onlyBuild)
 	}*/
 	tokenizer->tokenize(&list[0], list.size());
 	if (tokenizer->getErrorList().size() > 0) {
-		for each(BadSyntaxException e in tokenizer->getErrorList()) {
+		for each(BaseException e in tokenizer->getErrorList()) {
 			source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
 		}
 
