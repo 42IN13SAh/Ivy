@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 void ReadFile::Execute(std::vector<boost::any> arglist)
 {
@@ -9,13 +10,15 @@ void ReadFile::Execute(std::vector<boost::any> arglist)
 	std::string filepath = boost::any_cast<std::string>(arglist[0]);
 	std::ifstream file;
 	file.open(filepath);
-	std::string tempstring;
-	std::string resultstring;
-	while (std::getline(file, tempstring))
+	std::stringstream line;
+
+	char c = file.get();
+	while (!file.eof()) 
 	{
-		resultstring += tempstring + " ";
+		line << c;
+		c = file.get();
 	}
-	Result = resultstring;
+	Result = line.str();
 }
 
 boost::any ReadFile::GetResult()
