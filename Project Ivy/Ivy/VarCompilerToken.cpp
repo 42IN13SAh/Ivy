@@ -11,12 +11,12 @@ VarCompilerToken::~VarCompilerToken()
 {
 }
 
-void VarCompilerToken::setBackOperator(TokenType o) 
+void VarCompilerToken::setBackOperator(TokenType::TokenType o) 
 {
 	this->backOperator = o;
 }
 
-void VarCompilerToken::setFrontOperator(TokenType o) 
+void VarCompilerToken::setFrontOperator(TokenType::TokenType o) 
 {
 	this->frontOperator = o;
 }
@@ -26,12 +26,12 @@ std::string VarCompilerToken::getName()
 	return name;
 }
 
-TokenType VarCompilerToken::getBackOperator()
+TokenType::TokenType VarCompilerToken::getBackOperator()
 {
 	return this->backOperator;
 }
 
-TokenType VarCompilerToken::getFrontOperator()
+TokenType::TokenType VarCompilerToken::getFrontOperator()
 {
 	return this->frontOperator;
 }

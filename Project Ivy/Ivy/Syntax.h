@@ -7,14 +7,14 @@
 class Syntax
 {
 public:
-	Syntax(int id, boost::regex regexPattern, TokenType tokenType, ParentType parentType, std::vector<int> partnerIds,
+	Syntax(int id, boost::regex regexPattern, TokenType::TokenType tokenType, ParentType parentType, std::vector<int> partnerIds,
 		std::vector<int> possibleFollowUpIds, bool shouldPush);
 	virtual ~Syntax();
 	int getID();
 	const boost::regex getRegexPattern();
 	const std::vector<Syntax*> getPartners();
 	const std::vector<Syntax*> getPossibleFollowUps();
-	TokenType getTokenType();
+	TokenType::TokenType getTokenType();
 	ParentType getParentType();
 	bool getShouldPush();
 	void initPartners(std::map<int, Syntax*>& syntaxMap);
@@ -27,7 +27,7 @@ private:
 	std::vector<Syntax*> possibleFollowUps;
 	std::vector<int> partnerIds;
 	std::vector<int> possibleFollowUpIds;
-	TokenType tokenType;
+	TokenType::TokenType tokenType;
 	ParentType parentType;
 	bool shouldPush;
 };

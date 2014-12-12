@@ -8,15 +8,15 @@ public:
 	VarCompilerToken(std::string);
 	virtual ~VarCompilerToken();
 
-	void setFrontOperator(TokenType);
-	void setBackOperator(TokenType);
+	void setFrontOperator(TokenType::TokenType);
+	void setBackOperator(TokenType::TokenType);
 	std::string getName();
-	TokenType getFrontOperator();
-	TokenType getBackOperator();
+	TokenType::TokenType getFrontOperator();
+	TokenType::TokenType getBackOperator();
 private:
 	std::string name;
 
-	TokenType frontOperator;
-	TokenType backOperator;
+	TokenType::TokenType frontOperator;
+	TokenType::TokenType backOperator;
 };
 
