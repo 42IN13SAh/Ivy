@@ -23,6 +23,7 @@ public:
     int lineNumberAreaWidth();
     void moveCursor(int lineNumber, int linePosition);
 	std::vector<std::string> getEditorContent();
+	void underlineError(int lineNumber, int linePosition);
 
 protected:
     void resizeEvent(QResizeEvent *event);

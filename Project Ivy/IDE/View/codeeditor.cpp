@@ -49,6 +49,25 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
         updateLineNumberAreaWidth(0);
 }
 
+void CodeEditor::underlineError(int lineNumber, int linePosition)
+{
+	QTextCursor cursor = this->textCursor();
+	cursor.movePosition(QTextCursor::Start);
+	cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
+	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition);
+	cursor.movePosition(QTextCursor::WordRight, QTextCursor::KeepAnchor);
+	
+	QTextCharFormat defcharfmt = currentCharFormat();
+	QTextCharFormat newcharfmt = defcharfmt;
+	newcharfmt.setUnderlineColor(QColor(Qt::red));
+	newcharfmt.setUnderlineStyle(QTextCharFormat::WaveUnderline);
+	newcharfmt.setFontUnderline(true);
+
+	setCurrentCharFormat(newcharfmt);
+	setCurrentCharFormat(defcharfmt); // return default char format without underline
+}
+
+
 void CodeEditor::resizeEvent(QResizeEvent *e)
 {
     QPlainTextEdit::resizeEvent(e);
