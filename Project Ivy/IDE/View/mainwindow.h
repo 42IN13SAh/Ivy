@@ -3,15 +3,14 @@
 
 #include "syntaxhighlighter.h"
 #include "codeeditor.h"
-#include "keyinputcontroller.h"
 #include "buttonbar.h"
 #include "bottombar.h"
-
 #include <ctime>
 
 #include <QMainWindow>
 
 class QTextEdit;
+class KeyInputController;
 
 class MainWindow : public QMainWindow
 {
@@ -28,6 +27,8 @@ public slots:
     void newFile();
     void openFile(const QString &path = QString());
     void defaultKeyPressEvent(QKeyEvent* event);
+	void onClearBeforeBuilding();
+	void onAddError(int, int, QString);
 
 private:
     void setupEditor();

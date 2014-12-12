@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QLibrary>
 
 #include "keyinputcontroller.h"
@@ -20,7 +19,7 @@ KeyInputController::KeyInputController(MainWindow *source) : BaseController(sour
 void KeyInputController::handleKeyPressEvent(QKeyEvent *event){
     switch(event->key()){
     case Qt::Key_F6:
-		startBuilding(true);
+		startBuilding(true, true);
 		break;
 	case Qt::Key_F5:
 		startRunning();

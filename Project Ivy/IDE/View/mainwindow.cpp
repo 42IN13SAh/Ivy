@@ -33,6 +33,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     setWindowTitle(tr("Ivy IDE"));
 
+	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
+	connect(keyInputController, SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
+	connect(buttonBar->getButtonController(), SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
+	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
+
 	std::async(std::launch::async, [&]() {
 		while (true)
 		{
@@ -41,10 +46,22 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 			if (!hasBuild && (std::clock() - timeElapsedSinceTyping) / (double)CLOCKS_PER_SEC > 1 && timeElapsedSinceTyping > 0)
 			{
 				hasBuild = true;
-				keyInputController->startBuilding(true);
+				keyInputController->startBuilding(true, false);
 			}
 		}
 	});
+}
+
+void MainWindow::onClearBeforeBuilding()
+{
+	bottomBar->clearConsole();
+	bottomBar->clearErrorList();
+}
+
+void MainWindow::onAddError(int lineNumber, int linePosition, QString text)
+{
+	//editor->underlineError(lineNumber, linePosition);
+	bottomBar->addError(lineNumber, linePosition, text);
 }
 
 void MainWindow::about()
@@ -83,7 +100,6 @@ void MainWindow::openFile(const QString &path)
 
 void MainWindow::defaultKeyPressEvent(QKeyEvent *event){
 	QMainWindow::keyPressEvent(event);
-
 }
 
 void MainWindow::codeEditorKeyPressed()

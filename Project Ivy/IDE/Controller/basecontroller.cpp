@@ -9,7 +9,7 @@
 #include "VirtualMachine.h"
 #include "Jzon.h"
 
-BaseController::BaseController(MainWindow * source)
+BaseController::BaseController(MainWindow * source) : QObject()
 {
 	this->source = source;
 }
@@ -21,14 +21,15 @@ BaseController::~BaseController()
 	delete tokenizer;
 }
 
-bool BaseController::startBuilding(bool onlyBuild)
+bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 {
 	bool buildSucceeded = true;
 
-	source->getBottomBar()->clearConsole();
-	source->getBottomBar()->clearErrorList();
+	emit clearBeforeBuilding();
 
-	std::cout << "Build started.";
+	if (showConsoleOutput) {
+		std::cout << "Build started.";
+	}
 
 	std::vector<std::string> list = source->getCodeEditor()->getEditorContent();
 
@@ -38,11 +39,13 @@ bool BaseController::startBuilding(bool onlyBuild)
 	if (tokenizer->getErrorList().size() > 0) {
 		buildSucceeded = false;
 
-		std::cout << "Syntax error(s) found. See the Errors tab for specific infomation.";
-		std::cout << "Build failed.";
+		if (showConsoleOutput) {
+			std::cout << "Syntax error(s) found. See the Errors tab for specific infomation.";
+			std::cout << "Build failed.";
+		}
 
 		for each(BaseException e in tokenizer->getErrorList()) {
-			source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
+			emit addError(e.getLineNumber(), e.getLinePosition(), QString(e.what()));
 		}
 
 		delete tokenizer;
@@ -59,10 +62,12 @@ bool BaseController::startBuilding(bool onlyBuild)
 	{
 		buildSucceeded = false;
 
-		std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
-		std::cout << "Build failed.";
+		if (showConsoleOutput) {
+			std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
+			std::cout << "Build failed.";
+		}
 
-		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
+		emit addError(0, 0, QString(e.what())); //TODO: fix when compiler has better errorhandling
 
 		if (onlyBuild)
 		{
@@ -74,7 +79,9 @@ bool BaseController::startBuilding(bool onlyBuild)
 		return buildSucceeded;
 	}
 
-	std::cout << "Build succeeded.";
+	if (showConsoleOutput) {
+		std::cout << "Build succeeded.";
+	}
 
 	if (onlyBuild)
 	{
@@ -87,7 +94,7 @@ bool BaseController::startBuilding(bool onlyBuild)
 
 void BaseController::startRunning()
 {
-	bool buildSucceeded = startBuilding(false);
+	bool buildSucceeded = startBuilding(false, true);
 
 	if (buildSucceeded)
 	{

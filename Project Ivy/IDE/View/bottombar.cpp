@@ -40,9 +40,10 @@ void BottomBar::errorListItemDoubleClicked(QListWidgetItem* listItem)
 	parent->getCodeEditor()->moveCursor(errorListItem->getLineNumber(), errorListItem->getLinePosition());
 }
 
-void BottomBar::addError(int lineNumber, int linePosition, std::string text)
+void BottomBar::addError(int lineNumber, int linePosition, QString text)
 {
-	errorList->addItem(new ErrorListItem(lineNumber, linePosition, QString::fromStdString(text), errorList));
+	errorList->addItem(new ErrorListItem(lineNumber, linePosition, text, errorList));
+	setCurrentIndex(1);
 }
 
 void BottomBar::clearErrorList()

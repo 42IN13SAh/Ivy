@@ -129,7 +129,7 @@ void CodeEditor::moveCursor(int lineNumber, int linePosition)
     QTextCursor tmpCursor = this->textCursor();
 	tmpCursor.movePosition(QTextCursor::Start);
 	tmpCursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
-	tmpCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition);
+	tmpCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
     this->setTextCursor(tmpCursor);
 	this->setFocus();
 }

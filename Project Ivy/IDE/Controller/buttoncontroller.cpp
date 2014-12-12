@@ -12,5 +12,5 @@ void ButtonController::runButtonClicked()
 
 void ButtonController::buildButtonClicked()
 {
-    startBuilding(true);
+    startBuilding(true, true);
 }
