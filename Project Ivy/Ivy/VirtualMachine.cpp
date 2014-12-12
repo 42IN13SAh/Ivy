@@ -109,7 +109,7 @@ boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, S
 {
 	FunctionSymbol* fs = globalSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
 	if (fs->isInternal()){
-		executeInternalFunction(fs->getName(), compilerToken, symbolTable);
+		return executeInternalFunction(fs->getName(), compilerToken, symbolTable);
 	}
 	else{
 		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
@@ -170,7 +170,7 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 			throw std::exception();
 		}
 	}
-	TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
+	TokenType::TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
 	if (op != TokenType::Null) {
 		double val = boost::any_cast<double>(value);
 		bool isFrontOp = (compilerToken->getFrontOperator() != TokenType::Null);
@@ -192,8 +192,8 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 	while (!rpn.empty()) {
 		boost::any value = rpn.front();
 		rpn.pop();
-		if (value.type() == typeid(TokenType)){
-			TokenType op = boost::any_cast<TokenType>(value);
+		if (value.type() == typeid(TokenType::TokenType)){
+			TokenType::TokenType op = boost::any_cast<TokenType::TokenType>(value);
 			boost::any right = resultStack.top();
 			resultStack.pop();
 			boost::any left = resultStack.top();
@@ -220,7 +220,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 	return resultStack.top();
 }
 
-bool VirtualMachine::exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+bool VirtualMachine::exString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
 {
 	std::string lString;
 	std::string rString;
@@ -249,7 +249,7 @@ bool VirtualMachine::exString(boost::any left, boost::any right, TokenType op, s
 	return true;
 }
 
-bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
 {
 	double lDouble;
 	double rDouble;
@@ -302,7 +302,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType op, s
 	return true;
 }
 
-bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
 {
 	bool lBool;
 	bool rBool;

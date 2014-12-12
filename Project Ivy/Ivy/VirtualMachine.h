@@ -27,9 +27,9 @@ private:
 	void executeAction(VarCompilerToken* compilerToken, SymbolTable& symbolTable);
 	boost::any executeInternalFunction(std::string name, FunctionCompilerToken* compilerToken, SymbolTable& symbolTable);
 	bool executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable);
-	bool exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
-	bool exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
-	bool exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack);
+	bool exNumber(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
+	bool exString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
+	bool exBool(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*, SymbolTable& symbolTable);
 	boost::any getVarValue(VarCompilerToken*, SymbolTable& symbolTable);
 };

@@ -35,6 +35,7 @@ private:
 	void compileStatement();
 	void compileWhile();
 	void compileIf();
+	void compileElseIf();
 	Action* compileElse();
 	ReturnValueCompilerToken* compileReturnValue();
 	ConditionCompilerToken* compileCondition();

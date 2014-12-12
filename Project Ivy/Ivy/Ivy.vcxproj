@@ -74,6 +74,7 @@
     <ClInclude Include="Action.h" />
     <ClInclude Include="AssignCompilerToken.h" />
     <ClInclude Include="BadSyntaxException.h" />
+    <ClInclude Include="BaseException.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerToken.h" />
     <ClInclude Include="ConditionCompilerToken.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="TokenType.h" />
     <ClInclude Include="VarCompilerToken.h" />
+    <ClInclude Include="VectorUtils.h" />
     <ClInclude Include="VirtualMachine.h" />
     <ClInclude Include="WriteToEndOfFile.h" />
   </ItemGroup>

@@ -20,7 +20,7 @@ bool ReturnValueCompilerToken::isEmpty()
 	return operatorStack.empty();
 }
 
-void ReturnValueCompilerToken::pushOperatorToStack(TokenType op)
+void ReturnValueCompilerToken::pushOperatorToStack(TokenType::TokenType op)
 {
 	if (op == TokenType::OpenParenthesis){
 		openParenthisCounter++;
@@ -28,7 +28,7 @@ void ReturnValueCompilerToken::pushOperatorToStack(TokenType op)
 	operatorStack.push(op);
 }
 
-TokenType ReturnValueCompilerToken::peekOperatorStack()
+TokenType::TokenType ReturnValueCompilerToken::peekOperatorStack()
 {
 	if (!operatorStack.empty()) {
 		return operatorStack.top();

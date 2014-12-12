@@ -1,6 +1,6 @@
 #include "Syntax.h"
 
-Syntax::Syntax(int id, boost::regex regexPattern, TokenType tokenType, ParentType parentType, std::vector<int> partnerIds,
+Syntax::Syntax(int id, boost::regex regexPattern, TokenType::TokenType tokenType, ParentType parentType, std::vector<int> partnerIds,
 	std::vector<int> possibleFollowUpIds, bool shouldPush)
 {
 	this->id = id;
@@ -37,7 +37,7 @@ const std::vector<Syntax*> Syntax::getPossibleFollowUps()
 	return possibleFollowUps;
 }
 
-TokenType Syntax::getTokenType()
+TokenType::TokenType Syntax::getTokenType()
 {
 	return tokenType;
 }

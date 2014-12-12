@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 
 #include "Tokenizer.h"
-#include "BadSyntaxException.h"
+#include "BaseException.h"
 #include "Compiler.h"
 #include "VirtualMachine.h"
 #include "Jzon.h"
@@ -33,25 +33,19 @@ bool BaseController::startBuilding(bool onlyBuild)
 	std::vector<std::string> list = source->getCodeEditor()->getEditorContent();
 
 	tokenizer = new Tokenizer();
-	try
-	{
-		tokenizer->tokenize(&list[0], list.size());
-	}
-	catch (BadSyntaxException& e)
-	{
+
+	tokenizer->tokenize(&list[0], list.size());
+	if (tokenizer->getErrorList().size() > 0) {
 		buildSucceeded = false;
 
 		std::cout << "Syntax error(s) found. See the Errors tab for specific infomation.";
 		std::cout << "Build failed.";
 
-		source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
-
-		if (onlyBuild)
-		{
-			delete tokenizer;
+		for each(BaseException e in tokenizer->getErrorList()) {
+			source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
 		}
 
-		compiler = nullptr;
+		delete tokenizer;
 		return buildSucceeded;
 	}
 
