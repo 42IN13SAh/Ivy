@@ -1,8 +1,10 @@
 #include <QtWidgets>
 #include "codeeditor.h"
+#include "mainwindow.h"
 
-CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
+CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
 {
+	source = parent;
     lineNumberArea = new LineNumberArea(this);;
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
@@ -10,6 +12,12 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
+}
+
+void CodeEditor::keyPressEvent(QKeyEvent * event)
+{
+	source->codeEditorKeyPressed();
+	QPlainTextEdit::keyPressEvent(event);
 }
 
 int CodeEditor::lineNumberAreaWidth()

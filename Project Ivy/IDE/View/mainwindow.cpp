@@ -3,6 +3,10 @@
 #include "mainwindow.h"
 #include "keyinputcontroller.h"
 
+#include <chrono>
+#include <thread>
+#include <future>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     setupFileMenu();
@@ -11,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     setupButtonBar();
     setupBottomBar();
     setupControllers();
+
+	hasBuild = true;
 
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
     layout->addWidget(buttonBar);
@@ -26,6 +32,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
 
     setWindowTitle(tr("Ivy IDE"));
+
+	std::async(std::launch::async, [&]() {
+		while (true)
+		{
+			//Start building when there is the need to be builded and there has 1 second passed since the last keypress.
+			//The timeElapsedSinceTyping > 0 condition is there so this thread doesn't try building after the window is closed.
+			if (!hasBuild && (std::clock() - timeElapsedSinceTyping) / (double)CLOCKS_PER_SEC > 1 && timeElapsedSinceTyping > 0)
+			{
+				hasBuild = true;
+				keyInputController->startBuilding(true);
+			}
+		}
+	});
 }
 
 void MainWindow::about()
@@ -63,7 +82,14 @@ void MainWindow::openFile(const QString &path)
 }
 
 void MainWindow::defaultKeyPressEvent(QKeyEvent *event){
-    QMainWindow::keyPressEvent(event);
+	QMainWindow::keyPressEvent(event);
+
+}
+
+void MainWindow::codeEditorKeyPressed()
+{
+	hasBuild = false;
+	timeElapsedSinceTyping = std::clock();
 }
 
 void MainWindow::setupEditor()

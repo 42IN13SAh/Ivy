@@ -11,8 +11,9 @@ class BaseController
 public:
     BaseController(MainWindow *source);
 	virtual ~BaseController();
-protected:
 	void startBuilding(bool onlyBuild);
+
+protected:
     void startRunning();
 
 	MainWindow *source; //TODO: find better name?

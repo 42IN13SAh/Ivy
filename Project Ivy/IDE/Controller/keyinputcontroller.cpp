@@ -12,7 +12,7 @@ KeyInputController::KeyInputController(MainWindow *source) : BaseController(sour
 /**
  *  Supproted Keystrokes:
  *      - F6 - Start tokenizing & compiling
- *      -
+ *      - F5 - Start running
  *
  *  @brief KeyInputController::handleKeyPressEvent Handles all key-presses that have non-default behaviour
  * @param event The caught key event

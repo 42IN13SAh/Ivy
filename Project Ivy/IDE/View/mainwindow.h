@@ -7,6 +7,8 @@
 #include "buttonbar.h"
 #include "bottombar.h"
 
+#include <ctime>
+
 #include <QMainWindow>
 
 class QTextEdit;
@@ -19,6 +21,7 @@ public:
 	MainWindow(QWidget *parent = 0);
 	CodeEditor* getCodeEditor();
 	BottomBar* getBottomBar();
+	void codeEditorKeyPressed();
 
 public slots:
     void about();
@@ -39,6 +42,9 @@ private:
     ButtonBar *buttonBar;
     BottomBar *bottomBar;
     KeyInputController *keyInputController;
+
+	bool hasBuild;
+	std::clock_t timeElapsedSinceTyping;
 
 protected:
     void keyPressEvent(QKeyEvent* event);
