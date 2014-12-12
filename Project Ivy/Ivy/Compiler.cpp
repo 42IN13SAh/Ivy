@@ -107,7 +107,8 @@ void Compiler::addFunctionSignature()
 
 void Compiler::compileCodeBlock()
 {
-	while (getCurrentToken()->getTokenType() != TokenType::ClosingBracket) {
+	Token* start = getCurrentToken();
+	while (getCurrentToken()->getPartner() != start) {
 		Action* last = lastAction;
 		switch (getCurrentToken()->getTokenType()) {
 			case TokenType::WhileStatement:
@@ -190,6 +191,7 @@ void Compiler::compileIf()
 	compileCodeBlock();
 	lastAction->setNextAction(end);
 	if (start->getPartner() != nullptr && start->getPartner()->getTokenType() == TokenType::ElseStatement){
+		getNextToken();
 		ifAction->setFalseAction(compileElse());
 	}
 	else{
