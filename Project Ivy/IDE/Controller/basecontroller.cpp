@@ -1,8 +1,12 @@
-#include "basecontroller.h"
 #include <qdebug.h>
 #include <iostream>
-#include "mainwindow.h"
+#include <fstream>
+#include <windows.h>
 
+#include "qstring.h"
+#include "qfiledialog.h"
+#include "basecontroller.h"
+#include "mainwindow.h"
 #include "Tokenizer.h"
 #include "BaseException.h"
 #include "Compiler.h"
@@ -66,7 +70,7 @@ bool BaseController::startBuilding(bool onlyBuild)
 
 		if (onlyBuild)
 		{
-			delete tokenizer;			
+			delete tokenizer;
 			delete compiler;
 		}
 
@@ -109,4 +113,56 @@ void BaseController::startRunning()
 			}
 		}
 	}
+}
+
+void BaseController::saveCurrentFile(){
+	if (!this->currentFilePath.empty() && this->fileExists(this->currentFilePath)){
+		saveNewFile(this->currentFilePath);
+	}
+	else{
+		//No filepath detected or the old filepath doesn't exist anymore: prompt for new file location
+		this->currentFilePath = QFileDialog::getSaveFileName(this->source, "Save", QString::fromStdString(this->ExePath()), QString::fromStdString("Image Files (*.png *.jpg *.bmp)")).toStdString();
+	}
+}
+
+void BaseController::saveNewFile(std::string filePath){
+	std::vector<std::string> outputList = source->getCodeEditor()->getEditorContent();
+	std::ofstream file(filePath);
+
+	for (size_t i = 0; i < outputList.size(); i++)
+	{
+		file << outputList[i] << endl;
+	}
+
+	file.close();
+}
+
+#include <sys/stat.h>
+// Function: fileExists
+/**
+Check if a file exists
+@param[in] filename - the name of the file to check
+
+@return    true if the file exists, else false
+
+*/
+bool BaseController::fileExists(const std::string& filename)
+{
+	struct stat buf;
+	if (stat(filename.c_str(), &buf) != -1)
+	{
+		return true;
+	}
+	return false;
+}
+
+std::string BaseController::ExePath() {
+	wchar_t buffer[MAX_PATH];
+	char charBuffer[MAX_PATH];
+	char defChar = ' ';
+	GetModuleFileName(NULL, buffer, MAX_PATH);
+
+	WideCharToMultiByte(CP_ACP, 0, buffer, -1, charBuffer, 260, &defChar, NULL);
+	std::string::size_type pos = std::string(charBuffer).find_last_of("\\/");
+	return std::string(charBuffer).substr(0, pos);
 }
