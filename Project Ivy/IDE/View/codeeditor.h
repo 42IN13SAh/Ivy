@@ -24,6 +24,7 @@ public:
     void moveCursor(int lineNumber, int linePosition);
 	std::vector<std::string> getEditorContent();
 	void underlineError(int lineNumber, int linePosition);
+	void clearUnderlines();
 
 protected:
     void resizeEvent(QResizeEvent *event);

@@ -54,8 +54,9 @@ void CodeEditor::underlineError(int lineNumber, int linePosition)
 	QTextCursor cursor = this->textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
-	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition);
-	cursor.movePosition(QTextCursor::WordRight, QTextCursor::KeepAnchor);
+	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
+	cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
+	setTextCursor(cursor);
 	
 	QTextCharFormat defcharfmt = currentCharFormat();
 	QTextCharFormat newcharfmt = defcharfmt;
@@ -64,9 +65,31 @@ void CodeEditor::underlineError(int lineNumber, int linePosition)
 	newcharfmt.setFontUnderline(true);
 
 	setCurrentCharFormat(newcharfmt);
-	setCurrentCharFormat(defcharfmt); // return default char format without underline
+
+	cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
+	setTextCursor(cursor);
+
+	setCurrentCharFormat(defcharfmt);
 }
 
+void CodeEditor::clearUnderlines()
+{
+	QTextCursor cursor = this->textCursor();
+	QTextCursor oldCursor = cursor;
+	cursor.movePosition(QTextCursor::Start);
+	cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+	setTextCursor(cursor);
+
+	QTextCharFormat defcharfmt = currentCharFormat();
+	QTextCharFormat newcharfmt = defcharfmt;
+	newcharfmt.setFontUnderline(false);
+
+	setCurrentCharFormat(newcharfmt);
+
+	setTextCursor(oldCursor);
+
+	setCurrentCharFormat(defcharfmt);
+}
 
 void CodeEditor::resizeEvent(QResizeEvent *e)
 {

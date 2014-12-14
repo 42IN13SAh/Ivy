@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	connect(buttonBar->getButtonController(), SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
 	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
 
-	std::async(std::launch::async, [&]() {
+	/*std::async(std::launch::async, [&]() {
 		while (true)
 		{
 			//Start building when there is the need to be builded and there has 1 second passed since the last keypress.
@@ -49,18 +49,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 				keyInputController->startBuilding(true, false);
 			}
 		}
-	});
+	});*/
 }
 
 void MainWindow::onClearBeforeBuilding()
 {
 	bottomBar->clearConsole();
 	bottomBar->clearErrorList();
+	editor->clearUnderlines();
 }
 
 void MainWindow::onAddError(int lineNumber, int linePosition, QString text)
 {
-	//editor->underlineError(lineNumber, linePosition);
+	editor->underlineError(lineNumber, linePosition);
 	bottomBar->addError(lineNumber, linePosition, text);
 }
 

@@ -18,8 +18,7 @@ public:
 	void addError(int lineNumber, int linePosition, QString text);
 	void clearErrorList();
 	void clearConsole();
-
-signals:
+	std::vector<ErrorListItem*> getAllErrors();
 
 public slots:
     void errorListItemDoubleClicked(QListWidgetItem* listItem);

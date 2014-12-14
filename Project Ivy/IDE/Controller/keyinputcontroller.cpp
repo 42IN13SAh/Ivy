@@ -1,4 +1,5 @@
 #include <QLibrary>
+#include <future>
 
 #include "keyinputcontroller.h"
 #include "mainwindow.h"
@@ -19,10 +20,14 @@ KeyInputController::KeyInputController(MainWindow *source) : BaseController(sour
 void KeyInputController::handleKeyPressEvent(QKeyEvent *event){
     switch(event->key()){
     case Qt::Key_F6:
-		startBuilding(true, true);
+		//std::async(std::launch::async, [&]() {
+			startBuilding(true, true);
+		//});
 		break;
 	case Qt::Key_F5:
-		startRunning();
+		//std::async(std::launch::async, [&]() {
+			startRunning();
+		//});
 		break;
     default:
         //No shortcut(s) found; pass the event to the base class to continue default behaviour

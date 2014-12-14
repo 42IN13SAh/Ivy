@@ -70,3 +70,15 @@ void BottomBar::createRedirector()
 {
 	stdRedirector = new StdRedirector<>(std::cout, outcallback, textArea);
 }
+
+std::vector<ErrorListItem*> BottomBar::getAllErrors()
+{
+	std::vector<ErrorListItem*> errors;
+
+	for (int i = 0; i < errorList->count(); ++i)
+	{
+		errors.push_back((ErrorListItem*)errorList->item(i));
+	}
+
+	return errors;
+}
