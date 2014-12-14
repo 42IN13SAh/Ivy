@@ -4,6 +4,8 @@
 #include <QPlainTextEdit>
 #include <QObject>
 
+#include "KeyInputController.h"
+
 class QPaintEvent;
 class QResizeEvent;
 class QSize;
@@ -22,9 +24,12 @@ public:
     int lineNumberAreaWidth();
     void moveCursor(int lineNumber, int linePosition);
 	std::vector<std::string> getEditorContent();
+	void defaultKeyPressEvent(QKeyEvent *event);
+	void setKeyInputController(KeyInputController *keyInputController);
 
 protected:
     void resizeEvent(QResizeEvent *event);
+	void keyPressEvent(QKeyEvent* event);
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
@@ -33,6 +38,7 @@ private slots:
 
 private:
     QWidget *lineNumberArea;
+	KeyInputController *keyInputController;
 };
 
 

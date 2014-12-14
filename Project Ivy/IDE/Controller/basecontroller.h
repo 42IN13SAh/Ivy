@@ -1,6 +1,7 @@
 #ifndef BASECONTROLLER_H
 #define BASECONTROLLER_H
 #include <string>
+#include "qstring.h"
 
 class MainWindow;
 class Tokenizer;
@@ -10,25 +11,23 @@ class VirtualMachine;
 class BaseController
 {
 public:
-    BaseController(MainWindow *source);
+	BaseController(MainWindow *source);
 	virtual ~BaseController();
 protected:
 	bool startBuilding(bool onlyBuild);
-    void startRunning();
-	void saveCurrentFile();
-	void saveNewFile(std::string filePath);
+	void startRunning();
+	void saveCurrentFile(MainWindow *mainWindow);
+	virtual void saveFile(std::string *filePath);
 
-	bool fileExists(const std::string& filename);
-
-	std::string ExePath();
-	MainWindow *source; //TODO: find better name?
+	MainWindow *mainWindow;
+	std::string currentFilePath;
 
 private:
 	Tokenizer *tokenizer;
 	Compiler *compiler;
 	VirtualMachine *virtualMachine;
 
-	std::string currentFilePath;
+	QString makeDefaultIvyFolder();
 };
 
 #endif // BASECONTROLLER_H
