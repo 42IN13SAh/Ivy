@@ -16,14 +16,13 @@ public:
     BaseController(MainWindow *source);
 	virtual ~BaseController();
 	bool startBuilding(bool onlyBuild, bool showConsoleOutput);
+	void startRunning();
 
 signals:
 	void clearBeforeBuilding();
 	void addError(int, int, QString);
 
 protected:
-    void startRunning();
-
 	MainWindow *source;
 
 private:

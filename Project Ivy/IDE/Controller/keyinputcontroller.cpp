@@ -20,14 +20,14 @@ KeyInputController::KeyInputController(MainWindow *source) : BaseController(sour
 void KeyInputController::handleKeyPressEvent(QKeyEvent *event){
     switch(event->key()){
     case Qt::Key_F6:
-		//std::async(std::launch::async, [&]() {
+		std::async(std::launch::async, [&]() {
 			startBuilding(true, true);
-		//});
+		});
 		break;
 	case Qt::Key_F5:
-		//std::async(std::launch::async, [&]() {
+		std::async(std::launch::async, [&]() {
 			startRunning();
-		//});
+		});
 		break;
     default:
         //No shortcut(s) found; pass the event to the base class to continue default behaviour
