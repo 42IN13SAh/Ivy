@@ -189,6 +189,7 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 
 boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueCompilerToken, SymbolTable& symbolTable)
 {
+	Action* tempAction = currentAction;
 	std::queue<boost::any> rpn = returnValueCompilerToken->getRPN();
 	std::stack<boost::any> resultStack;
 	while (!rpn.empty()) {
@@ -212,10 +213,13 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			throw std::exception();
 		}
 		else{
-			if (value.type() == typeid(VarCompilerToken*))
+			if (value.type() == typeid(VarCompilerToken*)){
 				value = getVarValue(boost::any_cast<VarCompilerToken*>(value), symbolTable);
-			else if (value.type() == typeid(FunctionCompilerToken*))
+			}
+			else if (value.type() == typeid(FunctionCompilerToken*)){
 				value = executeAction(boost::any_cast<FunctionCompilerToken*>(value), symbolTable, currentAction);
+				currentAction = tempAction;
+			}
 			resultStack.push(value);
 		}
 	}
