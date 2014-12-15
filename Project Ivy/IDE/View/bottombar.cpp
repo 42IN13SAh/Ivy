@@ -40,9 +40,10 @@ void BottomBar::errorListItemDoubleClicked(QListWidgetItem* listItem)
 	parent->getCodeEditor()->moveCursor(errorListItem->getLineNumber(), errorListItem->getLinePosition());
 }
 
-void BottomBar::addError(int lineNumber, int linePosition, std::string text)
+void BottomBar::addError(int lineNumber, int linePosition, QString text)
 {
-	errorList->addItem(new ErrorListItem(lineNumber, linePosition, QString::fromStdString(text), errorList));
+	errorList->addItem(new ErrorListItem(lineNumber, linePosition, text, errorList));
+	setCurrentIndex(1);
 }
 
 void BottomBar::clearErrorList()
@@ -68,4 +69,16 @@ void outcallback(const char* ptr, std::streamsize count, void* textArea)
 void BottomBar::createRedirector()
 {
 	stdRedirector = new StdRedirector<>(std::cout, outcallback, textArea);
+}
+
+std::vector<ErrorListItem*> BottomBar::getAllErrors()
+{
+	std::vector<ErrorListItem*> errors;
+
+	for (int i = 0; i < errorList->count(); ++i)
+	{
+		errors.push_back((ErrorListItem*)errorList->item(i));
+	}
+
+	return errors;
 }

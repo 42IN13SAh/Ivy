@@ -5,13 +5,13 @@
 class Token
 {
 public:
-	Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, ParentType parentType, Token* partner);
+	Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType::TokenType tokenType, ParentType parentType, Token* partner);
 	virtual ~Token();
 	int getLineNumber();
 	int getLinePosition();
 	int getLevel();
 	std::string getDescription();
-	TokenType getTokenType();
+	TokenType::TokenType getTokenType();
 	ParentType getParentType();
 	Token* getPartner();
 	int getSyntaxID();
@@ -23,7 +23,7 @@ private:
 	int linePosition;
 	int level;
 	std::string description;
-	TokenType tokenType;
+	TokenType::TokenType tokenType;
 	ParentType parentType;
 	Token* partner;
 };

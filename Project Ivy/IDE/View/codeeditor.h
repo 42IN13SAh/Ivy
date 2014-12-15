@@ -8,6 +8,7 @@ class QPaintEvent;
 class QResizeEvent;
 class QSize;
 class QWidget;
+class MainWindow;
 
 class LineNumberArea;
 
@@ -16,12 +17,14 @@ class CodeEditor : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    CodeEditor(QWidget *parent = 0);
+	CodeEditor(MainWindow *parent = 0);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
     void moveCursor(int lineNumber, int linePosition);
 	std::vector<std::string> getEditorContent();
+	void underlineError(int lineNumber, int linePosition);
+	void clearUnderlines();
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -32,7 +35,9 @@ private slots:
     void updateLineNumberArea(const QRect &, int);
 
 private:
+	void keyPressEvent(QKeyEvent * event);
     QWidget *lineNumberArea;
+	MainWindow *source;
 };
 
 

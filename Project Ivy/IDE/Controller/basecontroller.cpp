@@ -4,12 +4,12 @@
 #include "mainwindow.h"
 
 #include "Tokenizer.h"
-#include "BadSyntaxException.h"
+#include "BaseException.h"
 #include "Compiler.h"
 #include "VirtualMachine.h"
 #include "Jzon.h"
 
-BaseController::BaseController(MainWindow * source)
+BaseController::BaseController(MainWindow * source) : QObject()
 {
 	this->source = source;
 }
@@ -21,38 +21,53 @@ BaseController::~BaseController()
 	delete tokenizer;
 }
 
-void BaseController::startBuilding(bool onlyBuild)
+bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 {
-	source->getBottomBar()->clearErrorList();
+	bool buildSucceeded = true;
+
+	emit clearBeforeBuilding();
+
+	if (showConsoleOutput) {
+		std::cout << "Build started.";
+	}
 
 	std::vector<std::string> list = source->getCodeEditor()->getEditorContent();
 
 	tokenizer = new Tokenizer();
-	try
-	{
-		tokenizer->tokenize(&list[0], list.size());
-	}
-	catch (BadSyntaxException& e)
-	{
-		source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
 
-		if (onlyBuild)
-		{
-			delete tokenizer;
+	tokenizer->tokenize(&list[0], list.size());
+	if (tokenizer->getErrorList().size() > 0) {
+		buildSucceeded = false;
+
+		if (showConsoleOutput) {
+			std::cout << "Syntax error(s) found. See the Errors tab for specific infomation.";
+			std::cout << "Build failed.";
 		}
 
-		compiler = nullptr;
-		return;
+		for each(BaseException e in tokenizer->getErrorList()) {
+			emit addError(e.getLineNumber(), e.getLinePosition(), QString(e.what()));
+		}
+
+		delete tokenizer;
+		return buildSucceeded;
 	}
 
 	compiler = new Compiler(tokenizer->getTokenList());
+
 	try
 	{
 		compiler->compile();
 	}
 	catch (std::exception& e)
 	{
-		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
+		buildSucceeded = false;
+
+		if (showConsoleOutput) {
+			std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
+			std::cout << "Build failed.";
+		}
+
+		emit addError(0, 0, QString(e.what())); //TODO: fix when compiler has better errorhandling
 
 		if (onlyBuild)
 		{
@@ -61,7 +76,11 @@ void BaseController::startBuilding(bool onlyBuild)
 		}
 
 		compiler = nullptr;
-		return;
+		return buildSucceeded;
+	}
+
+	if (showConsoleOutput) {
+		std::cout << "Build succeeded.";
 	}
 
 	if (onlyBuild)
@@ -69,25 +88,32 @@ void BaseController::startBuilding(bool onlyBuild)
 		delete compiler;
 		delete tokenizer;
 	}
+
+	return buildSucceeded;
 }
 
 void BaseController::startRunning()
 {
-	source->getBottomBar()->clearConsole();
+	bool buildSucceeded = startBuilding(false, true);
 
-	startBuilding(false);
-
-	VirtualMachine *virtualMachine = new VirtualMachine(compiler->getSymbolTable());
-
-	if (compiler != nullptr) //compiler is a nullptr when there are builderrors
+	if (buildSucceeded)
 	{
-		try
+		std::cout << "Running.\n";
+
+		VirtualMachine *virtualMachine = new VirtualMachine(compiler->getSymbolTable());
+
+		if (compiler != nullptr) //compiler is a nullptr when there are builderrors
 		{
-			virtualMachine->run(compiler->getFirstAction());
-		}
-		catch (std::exception e)
-		{
-			std::cout << e.what();
+			try
+			{
+				virtualMachine->run(compiler->getFirstAction());
+				std::cout << "\nProgram has finished successfully.";
+			}
+			catch (std::exception e)
+			{
+				std::cout << "\nA runtime error has occurred.";
+				std::cout << "Program has unexpectedly finished.";
+			}
 		}
 	}
 }

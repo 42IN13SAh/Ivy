@@ -1,5 +1,6 @@
 #include "buttoncontroller.h"
 #include <qdebug.h>
+#include <future>
 
 ButtonController::ButtonController(MainWindow * source) : BaseController(source)
 {
@@ -7,10 +8,14 @@ ButtonController::ButtonController(MainWindow * source) : BaseController(source)
 
 void ButtonController::runButtonClicked()
 {
-    startRunning();
+	//std::async(std::launch::async, [&]() {
+		startRunning();
+	//});
 }
 
 void ButtonController::buildButtonClicked()
 {
-    startBuilding(true);
+	//std::async(std::launch::async, [&]() {
+		startBuilding(true, true);
+	//});
 }

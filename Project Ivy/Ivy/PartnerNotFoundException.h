@@ -1,9 +1,11 @@
 #pragma once
-#include "BadSyntaxException.h"
-class PartnerNotFoundException :
-	public BadSyntaxException
+#include <string>
+#include <vector>
+#include "BaseException.h"
+#include "VectorUtils.h"
+class PartnerNotFoundException : public BaseException
 {
 public:
-	PartnerNotFoundException(std::string token, int lineNumber, int linePosition);
+	PartnerNotFoundException(int lineNumber, int linePosition, std::vector<std::string> followUps, std::string token);
 	virtual ~PartnerNotFoundException();
 };
