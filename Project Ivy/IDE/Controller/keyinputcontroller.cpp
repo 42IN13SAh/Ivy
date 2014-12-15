@@ -31,7 +31,7 @@ void KeyInputController::handleKeyPressEvent(QKeyEvent *event, MainWindow *mainW
 		break;
 	case Qt::Key_S:{
 					   if (QApplication::keyboardModifiers() == Qt::ControlModifier){ //note for future: never use event->modifiers(); it's unreliable 
-						   this->saveCurrentFile(this->mainWindow); //since parameter mainWindow can be a nullptr, and this is just for dialog placement
+						   this->saveCurrentCodeToExistingFile(this->mainWindow); //since parameter mainWindow can be a nullptr, and this is just for dialog placement
 					   }
 					   else{
 						   //S was pressed, bu no control along with it: pass it as a default event

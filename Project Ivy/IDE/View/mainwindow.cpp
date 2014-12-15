@@ -1,7 +1,9 @@
 #include <QtWidgets>
 #include <QBoxLayout>
+
 #include "mainwindow.h"
 #include "keyinputcontroller.h"
+#include "basecontroller.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -46,6 +48,19 @@ void MainWindow::setupBottomBar()
 void MainWindow::newFile()
 {
 	editor->clear();
+	keyInputController->resetCurrentFilePath();
+}
+
+void MainWindow::saveFile()
+{
+	//Since we already have access to the keyinputcontroller, we'll use that real quick.
+	keyInputController->saveCurrentCodeToExistingFile(this);
+}
+
+void MainWindow::saveFileAs()
+{
+	//Since we already have access to the keyinputcontroller, we'll use that real quick.
+	keyInputController->saveCurrentCodeToNewFile(this);
 }
 
 void MainWindow::openFile(const QString &path)
@@ -107,6 +122,8 @@ void MainWindow::setupFileMenu()
 	menuBar()->addMenu(fileMenu);
 
 	fileMenu->addAction(tr("&New"), this, SLOT(newFile()), QKeySequence::New);
+	fileMenu->addAction(tr("&Save"), this, SLOT(saveFile()), QKeySequence::Save);
+	fileMenu->addAction(tr("&Save As..."), this, SLOT(saveFileAs()), QKeySequence::SaveAs);
 	fileMenu->addAction(tr("&Open..."), this, SLOT(openFile()), QKeySequence::Open);
 	fileMenu->addAction(tr("E&xit"), qApp, SLOT(quit()), QKeySequence::Quit);
 

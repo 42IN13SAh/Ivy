@@ -15,7 +15,7 @@
 BaseController::BaseController(MainWindow * mainWindow)
 {
 	this->mainWindow = mainWindow;
-	this->currentFilePath = std::string();
+	this->resetCurrentFilePath();
 }
 
 BaseController::~BaseController()
@@ -115,32 +115,47 @@ void BaseController::startRunning()
 	}
 }
 
-void BaseController::saveCurrentFile(MainWindow *mainWindow){
+void BaseController::saveCurrentCodeToNewFile(MainWindow *mainWindow){
 	//First, make an Ivy folder for all files in the user's home directory
 	QString ivyFolderPath = makeDefaultIvyFolder();
 
-	//Now, determine where we need to open a save file dialog: the default or a user-specified directory (when file exists)
-	QString currentQStringFilePath = QString::fromStdString(this->currentFilePath);
-	QFileInfo fileInfo(currentQStringFilePath); //Gives access to easy check functions
-	if (!this->currentFilePath.empty() && fileInfo.exists() && fileInfo.isFile()){
-		//The currentFilePath is valid, meaning the user is working on a file that has already been saved before.
-		//Use that file as a starting point
-		ivyFolderPath = currentQStringFilePath;
+	//See if we need to change the starting directory for the dialog
+	if (this->fileHasBeenSavedBefore()){
+		ivyFolderPath = this->getCurrentFilePathAsQstring();
 	}
 
 	//open a save file dialog in that directory
 	std::string filePath = QFileDialog::getSaveFileName(mainWindow, "Save", ivyFolderPath, QString::fromStdString("Ivy File (*.ivy)")).toStdString();
 
-	if (!filePath.empty()){ //it can be empty if the user selected cancel
+	if (!filePath.empty()){ //it CAN be empty if the user selected cancel
 		//filePath is valid, so don't forget to save this filePath!
 		this->currentFilePath = filePath;
-		saveFile(&filePath);
+		saveFile(filePath);
 	}
 }
 
-void BaseController::saveFile(std::string *filePath){
+void BaseController::saveCurrentCodeToExistingFile(MainWindow *mainWindow){
+	//First, make an Ivy folder for all files in the user's home directory
+	QString ivyFolderPath = makeDefaultIvyFolder();
+
+	//Now, determine if the user actually has been working from an existing file (if he saved before).
+	if (this->fileHasBeenSavedBefore()){
+		ivyFolderPath = this->getCurrentFilePathAsQstring();
+		saveFile(ivyFolderPath.toStdString());
+	}
+	else{
+		//Invalid path, while the user did not select a save as option. We don't know where to save to, so just use the save as function instead
+		this->saveCurrentCodeToNewFile(mainWindow);
+	}
+}
+
+void BaseController::resetCurrentFilePath(){
+	this->currentFilePath = std::string();
+}
+
+void BaseController::saveFile(std::string filePath){
 	std::vector<std::string> outputList = mainWindow->getCodeEditor()->getEditorContent();
-	std::ofstream file(*filePath, std::ofstream::trunc);
+	std::ofstream file(filePath, std::ofstream::trunc);
 	//about std::ofstream::trunc: this moed overwrites the entire file, see http://www.cplusplus.com/reference/fstream/ofstream/ofstream/
 
 	for (size_t i = 0; i < outputList.size(); i++)
@@ -162,4 +177,19 @@ QString BaseController::makeDefaultIvyFolder(){
 
 	//return the full path so other functions can use it
 	return ivyFolderPath;
+}
+
+bool BaseController::fileHasBeenSavedBefore(){
+	QString currentQStringFilePath = getCurrentFilePathAsQstring();
+
+	QFileInfo fileInfo(currentQStringFilePath); //Gives access to easy check functions
+	if (!this->currentFilePath.empty() && fileInfo.exists() && fileInfo.isFile()){
+		//The currentFilePath is valid, meaning the user is working on a file that has already been saved before.
+		return true;
+	}
+	return false;
+}
+
+QString BaseController::getCurrentFilePathAsQstring() {
+	return QString::fromStdString(this->currentFilePath);
 }

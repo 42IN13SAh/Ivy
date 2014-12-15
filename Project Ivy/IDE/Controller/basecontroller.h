@@ -13,11 +13,14 @@ class BaseController
 public:
 	BaseController(MainWindow *source);
 	virtual ~BaseController();
+	void saveCurrentCodeToNewFile(MainWindow *mainWindow); //Two public functions since mainwindow needs to be able to access these directly
+	void saveCurrentCodeToExistingFile(MainWindow *mainWindow);
+
+	void resetCurrentFilePath();
 protected:
 	bool startBuilding(bool onlyBuild);
 	void startRunning();
-	void saveCurrentFile(MainWindow *mainWindow);
-	virtual void saveFile(std::string *filePath);
+	virtual void saveFile(std::string filePath);
 
 	MainWindow *mainWindow;
 	std::string currentFilePath;
@@ -28,6 +31,8 @@ private:
 	VirtualMachine *virtualMachine;
 
 	QString makeDefaultIvyFolder();
+	bool fileHasBeenSavedBefore();
+	QString getCurrentFilePathAsQstring();
 };
 
 #endif // BASECONTROLLER_H
