@@ -1,6 +1,6 @@
 #include "Token.h"
 
-Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType tokenType, ParentType parentType, Token* partner)
+Token::Token(int syntaxID, int lineNumber, int linePosition, int level, std::string description, TokenType::TokenType tokenType, ParentType parentType, Token* partner)
 {
 	this->syntaxID = syntaxID;
 	this->lineNumber = lineNumber;
@@ -39,7 +39,7 @@ std::string Token::getDescription()
 	return description;
 }
 
-TokenType Token::getTokenType()
+TokenType::TokenType Token::getTokenType()
 {
 	return tokenType;
 }

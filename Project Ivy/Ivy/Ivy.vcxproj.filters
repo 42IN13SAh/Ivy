@@ -189,6 +189,12 @@
     <ClInclude Include="Jzon.h">
       <Filter>Header Files\Tokenizer</Filter>
     </ClInclude>
+    <ClInclude Include="BaseException.h">
+      <Filter>Header Files\Tokenizer\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorUtils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp">

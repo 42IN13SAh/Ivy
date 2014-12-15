@@ -8,13 +8,13 @@ class AssignCompilerToken :
 	public CompilerToken
 {
 public:
-	AssignCompilerToken(std::string, ReturnValueCompilerToken*, TokenType tokenType);
+	AssignCompilerToken(std::string, ReturnValueCompilerToken*, TokenType::TokenType tokenType);
 	virtual ~AssignCompilerToken();
 	std::string getName();
 	ReturnValueCompilerToken* getReturnValue();
-	TokenType getAssignOp();
+	TokenType::TokenType getAssignOp();
 private:
 	std::string name;
 	ReturnValueCompilerToken* value;
-	TokenType assignOp;
+	TokenType::TokenType assignOp;
 };

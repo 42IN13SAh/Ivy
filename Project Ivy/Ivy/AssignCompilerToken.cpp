@@ -1,7 +1,7 @@
 #include <iostream>
 #include "AssignCompilerToken.h"
 
-AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerToken* value, TokenType assignOp)
+AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerToken* value, TokenType::TokenType assignOp)
 {
 	this->name = name;
 	this->value = value;
@@ -21,7 +21,7 @@ ReturnValueCompilerToken* AssignCompilerToken::getReturnValue() {
 	return value;
 }
 
-TokenType AssignCompilerToken::getAssignOp()
+TokenType::TokenType AssignCompilerToken::getAssignOp()
 {
 	return assignOp;
 }

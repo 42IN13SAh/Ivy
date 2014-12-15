@@ -1,9 +1,9 @@
 #pragma once
-#include "BadSyntaxException.h"
-class ReservedKeywordException :
-	public BadSyntaxException
+#include <string>
+#include "BaseException.h"
+class ReservedKeywordException : public BaseException
 {
 public:
-	ReservedKeywordException(std::string token, int lineNumber, int linePosition);
+	ReservedKeywordException(int lineNumber, int linePosition, std::string token);
 	virtual ~ReservedKeywordException();
 };
