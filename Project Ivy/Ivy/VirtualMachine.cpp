@@ -113,11 +113,11 @@ boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, S
 	}
 	else{
 		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
+		currentAction = fs->getStartAction()->getNextAction();
 		std::vector<std::string> argNames = fct->getArgumentNames();
 		for (int i = 0; i < argNames.size(); i++) {
 			fs->getSymbolTable()->addSymbolToTable(argNames[i], getReturnValue(compilerToken->getArguments()[i], symbolTable));
 		}
-		currentAction = fs->getStartAction()->getNextAction();
 		boost::any returnValue = nullptr;
 		while (currentAction != fs->getEndAction()){
 			if (currentAction->getCompilerToken() != nullptr  && typeid(*currentAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
@@ -140,7 +140,9 @@ boost::any VirtualMachine::executeInternalFunction(std::string name, FunctionCom
 	for each(ReturnValueCompilerToken* rvct in compilerToken->getArguments()) {
 		args.push_back(getReturnValue(rvct, symbolTable));
 	}
-	currentAction = currentAction->getNextAction();
+	if (currentAction->getNextAction() != NULL){
+		currentAction = currentAction->getNextAction();
+	}
 	fnc->Execute(args);
 	return fnc->GetResult();
 }
