@@ -12,6 +12,8 @@
 #include "VirtualMachine.h"
 #include "Jzon.h"
 
+const QString BaseController::IVY_FOLDER_NAME = "/Ivy";
+
 BaseController::BaseController(MainWindow * mainWindow)
 {
 	this->mainWindow = mainWindow;
@@ -156,7 +158,7 @@ void BaseController::resetCurrentFilePath(){
 void BaseController::saveFile(std::string filePath){
 	std::vector<std::string> outputList = mainWindow->getCodeEditor()->getEditorContent();
 	std::ofstream file(filePath, std::ofstream::trunc);
-	//about std::ofstream::trunc: this moed overwrites the entire file, see http://www.cplusplus.com/reference/fstream/ofstream/ofstream/
+	//about std::ofstream::trunc: this mode overwrites the entire file, see http://www.cplusplus.com/reference/fstream/ofstream/ofstream/
 
 	for (size_t i = 0; i < outputList.size(); i++)
 	{
@@ -170,9 +172,8 @@ void BaseController::saveFile(std::string filePath){
 }
 
 QString BaseController::makeDefaultIvyFolder(){
-	const QString IVY_FOLDER_NAME = "/Ivy";
 	QString ivyFolderPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-	ivyFolderPath.append(IVY_FOLDER_NAME);
+	ivyFolderPath.append(this->IVY_FOLDER_NAME);
 	QDir::home().mkdir(ivyFolderPath); //Returns false if the folder already exists, so no need to check for anything
 
 	//return the full path so other functions can use it

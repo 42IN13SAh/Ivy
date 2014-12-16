@@ -33,6 +33,8 @@ private:
 	QString makeDefaultIvyFolder();
 	bool fileHasBeenSavedBefore();
 	QString getCurrentFilePathAsQstring();
+
+	static const QString IVY_FOLDER_NAME; //Qstrings can't be initialized in the header, see the implementation file!
 };
 
 #endif // BASECONTROLLER_H
