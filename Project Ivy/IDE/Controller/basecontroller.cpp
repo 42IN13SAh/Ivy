@@ -1,17 +1,23 @@
-#include "basecontroller.h"
 #include <qdebug.h>
 #include <iostream>
-#include "mainwindow.h"
+#include <fstream>
 
+#include "qfiledialog.h"
+#include "qstandardpaths.h"
+#include "basecontroller.h"
+#include "mainwindow.h"
 #include "Tokenizer.h"
 #include "BaseException.h"
 #include "Compiler.h"
 #include "VirtualMachine.h"
 #include "Jzon.h"
 
-BaseController::BaseController(MainWindow * source)
+const QString BaseController::IVY_FOLDER_NAME = "/Ivy";
+
+BaseController::BaseController(MainWindow * mainWindow)
 {
-	this->source = source;
+	this->mainWindow = mainWindow;
+	this->resetCurrentFilePath();
 }
 
 BaseController::~BaseController()
@@ -25,12 +31,12 @@ bool BaseController::startBuilding(bool onlyBuild)
 {
 	bool buildSucceeded = true;
 
-	source->getBottomBar()->clearConsole();
-	source->getBottomBar()->clearErrorList();
+	mainWindow->getBottomBar()->clearConsole();
+	mainWindow->getBottomBar()->clearErrorList();
 
 	std::cout << "Build started.";
 
-	std::vector<std::string> list = source->getCodeEditor()->getEditorContent();
+	std::vector<std::string> list = mainWindow->getCodeEditor()->getEditorContent();
 
 	tokenizer = new Tokenizer();
 
@@ -42,7 +48,7 @@ bool BaseController::startBuilding(bool onlyBuild)
 		std::cout << "Build failed.";
 
 		for each(BaseException e in tokenizer->getErrorList()) {
-			source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
+			mainWindow->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
 		}
 
 		delete tokenizer;
@@ -62,11 +68,11 @@ bool BaseController::startBuilding(bool onlyBuild)
 		std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
 		std::cout << "Build failed.";
 
-		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
+		mainWindow->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
 
 		if (onlyBuild)
 		{
-			delete tokenizer;			
+			delete tokenizer;
 			delete compiler;
 		}
 
@@ -109,4 +115,82 @@ void BaseController::startRunning()
 			}
 		}
 	}
+}
+
+void BaseController::saveCurrentCodeToNewFile(MainWindow *mainWindow){
+	//First, make an Ivy folder for all files in the user's home directory
+	QString ivyFolderPath = makeDefaultIvyFolder();
+
+	//See if we need to change the starting directory for the dialog
+	if (this->fileHasBeenSavedBefore()){
+		ivyFolderPath = this->getCurrentFilePathAsQstring();
+	}
+
+	//open a save file dialog in that directory
+	std::string filePath = QFileDialog::getSaveFileName(mainWindow, "Save", ivyFolderPath, QString::fromStdString("Ivy File (*.ivy)")).toStdString();
+
+	if (!filePath.empty()){ //it CAN be empty if the user selected cancel
+		//filePath is valid, so don't forget to save this filePath!
+		this->currentFilePath = filePath;
+		saveFile(filePath);
+	}
+}
+
+void BaseController::saveCurrentCodeToExistingFile(MainWindow *mainWindow){
+	//First, make an Ivy folder for all files in the user's home directory
+	QString ivyFolderPath = makeDefaultIvyFolder();
+
+	//Now, determine if the user actually has been working from an existing file (if he saved before).
+	if (this->fileHasBeenSavedBefore()){
+		ivyFolderPath = this->getCurrentFilePathAsQstring();
+		saveFile(ivyFolderPath.toStdString());
+	}
+	else{
+		//Invalid path, while the user did not select a save as option. We don't know where to save to, so just use the save as function instead
+		this->saveCurrentCodeToNewFile(mainWindow);
+	}
+}
+
+void BaseController::resetCurrentFilePath(){
+	this->currentFilePath = std::string();
+}
+
+void BaseController::saveFile(std::string filePath){
+	std::vector<std::string> outputList = mainWindow->getCodeEditor()->getEditorContent();
+	std::ofstream file(filePath, std::ofstream::trunc);
+	//about std::ofstream::trunc: this mode overwrites the entire file, see http://www.cplusplus.com/reference/fstream/ofstream/ofstream/
+
+	for (size_t i = 0; i < outputList.size(); i++)
+	{
+		file << outputList[i];
+		if (i + 1 < outputList.size()){ //If it's not the second to last (since then we need to add a new line
+			file << std::endl; //TODO: Research alternative since this MIGHT give problems with Unix based systems, but not sure (conflicting info on google)
+		}
+	}
+
+	file.close();
+}
+
+QString BaseController::makeDefaultIvyFolder(){
+	QString ivyFolderPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+	ivyFolderPath.append(this->IVY_FOLDER_NAME);
+	QDir::home().mkdir(ivyFolderPath); //Returns false if the folder already exists, so no need to check for anything
+
+	//return the full path so other functions can use it
+	return ivyFolderPath;
+}
+
+bool BaseController::fileHasBeenSavedBefore(){
+	QString currentQStringFilePath = getCurrentFilePathAsQstring();
+
+	QFileInfo fileInfo(currentQStringFilePath); //Gives access to easy check functions
+	if (!this->currentFilePath.empty() && fileInfo.exists() && fileInfo.isFile()){
+		//The currentFilePath is valid, meaning the user is working on a file that has already been saved before.
+		return true;
+	}
+	return false;
+}
+
+QString BaseController::getCurrentFilePathAsQstring() {
+	return QString::fromStdString(this->currentFilePath);
 }

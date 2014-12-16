@@ -117,3 +117,15 @@ std::vector<std::string> CodeEditor::getEditorContent()
 
 	return list;
 }
+
+void CodeEditor::defaultKeyPressEvent(QKeyEvent *event){
+	QPlainTextEdit::keyPressEvent(event);
+}
+
+void CodeEditor::setKeyInputController(KeyInputController *keyInputController){
+	this->keyInputController = keyInputController;
+}
+
+void CodeEditor::keyPressEvent(QKeyEvent* event){
+	this->keyInputController->handleKeyPressEvent(event, nullptr, this);
+}
