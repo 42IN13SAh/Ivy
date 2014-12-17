@@ -5,6 +5,10 @@
 #include "keyinputcontroller.h"
 #include "basecontroller.h"
 
+#include <chrono>
+#include <thread>
+#include <future>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	setupFileMenu();
@@ -14,10 +18,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setupBottomBar();
 	setupControllers();
 
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-	layout->addWidget(buttonBar);
-	layout->addWidget(editor);
-	layout->addWidget(bottomBar);
+	hasBuild = true;
+
+    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    layout->addWidget(buttonBar);
+    layout->addWidget(editor);
+    layout->addWidget(bottomBar);
 
 	layout->setSpacing(0);
 
@@ -27,7 +33,38 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setCentralWidget(window);
 	centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
 
-	setWindowTitle(tr("Ivy IDE"));
+    setWindowTitle(tr("Ivy IDE"));
+
+	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
+	connect(keyInputController, SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
+	connect(buttonBar->getButtonController(), SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
+	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
+
+	/*std::async(std::launch::async, [&]() {
+		while (true)
+		{
+			if (!hasBuild)
+			{
+				hasBuild = true;
+				keyInputController->startBuilding(true, false);
+			}
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		}
+	});*/
+}
+
+void MainWindow::onClearBeforeBuilding()
+{
+	bottomBar->clearConsole();
+	bottomBar->clearErrorList();
+	editor->clearUnderlines();
+}
+
+void MainWindow::onAddError(int lineNumber, int linePosition, QString text)
+{
+	editor->underlineError(lineNumber, linePosition);
+	bottomBar->addError(lineNumber, linePosition, text);
 }
 
 void MainWindow::about()
@@ -79,6 +116,11 @@ void MainWindow::openFile(const QString &path)
 
 void MainWindow::defaultKeyPressEvent(QKeyEvent *event){
 	QMainWindow::keyPressEvent(event);
+}
+
+void MainWindow::codeEditorKeyPressed()
+{
+	hasBuild = false;
 }
 
 void MainWindow::setupEditor()

@@ -3,13 +3,14 @@
 
 #include "syntaxhighlighter.h"
 #include "codeeditor.h"
-#include "keyinputcontroller.h"
 #include "buttonbar.h"
 #include "bottombar.h"
+#include <ctime>
 
 #include <QMainWindow>
 
 class QTextEdit;
+class KeyInputController;
 
 class MainWindow : public QMainWindow
 {
@@ -19,6 +20,7 @@ public:
 	MainWindow(QWidget *parent = 0);
 	CodeEditor* getCodeEditor();
 	BottomBar* getBottomBar();
+	void codeEditorKeyPressed();
 
 public slots:
     void about();
@@ -27,6 +29,8 @@ public slots:
 	void saveFileAs();
     void openFile(const QString &path = QString());
     void defaultKeyPressEvent(QKeyEvent* event);
+	void onClearBeforeBuilding();
+	void onAddError(int, int, QString);
 
 private:
     void setupEditor();
@@ -41,6 +45,8 @@ private:
     ButtonBar *buttonBar;
     BottomBar *bottomBar;
     KeyInputController *keyInputController;
+
+	bool hasBuild;
 
 protected:
     void keyPressEvent(QKeyEvent* event);
