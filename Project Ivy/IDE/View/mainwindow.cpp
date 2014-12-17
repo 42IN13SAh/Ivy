@@ -41,13 +41,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	/*std::async(std::launch::async, [&]() {
 		while (true)
 		{
-			//Start building when there is the need to be builded and there has 1 second passed since the last keypress.
-			//The timeElapsedSinceTyping > 0 condition is there so this thread doesn't try building after the window is closed.
-			if (!hasBuild && (std::clock() - timeElapsedSinceTyping) / (double)CLOCKS_PER_SEC > 1 && timeElapsedSinceTyping > 0)
+			if (!hasBuild)
 			{
 				hasBuild = true;
 				keyInputController->startBuilding(true, false);
 			}
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
 	});*/
 }
@@ -106,7 +106,6 @@ void MainWindow::defaultKeyPressEvent(QKeyEvent *event){
 void MainWindow::codeEditorKeyPressed()
 {
 	hasBuild = false;
-	timeElapsedSinceTyping = std::clock();
 }
 
 void MainWindow::setupEditor()

@@ -45,7 +45,6 @@ private:
     KeyInputController *keyInputController;
 
 	bool hasBuild;
-	std::clock_t timeElapsedSinceTyping;
 
 protected:
     void keyPressEvent(QKeyEvent* event);

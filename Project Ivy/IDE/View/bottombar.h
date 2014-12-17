@@ -20,8 +20,12 @@ public:
 	void clearConsole();
 	std::vector<ErrorListItem*> getAllErrors();
 
+signals:
+	void stdOut(QString);
+
 public slots:
     void errorListItemDoubleClicked(QListWidgetItem* listItem);
+	void onStdOut(QString);
 
 private:
 	MainWindow *parent;
