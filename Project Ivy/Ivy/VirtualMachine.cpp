@@ -280,7 +280,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::Toke
 		resultStack.push(lDouble / rDouble);
 		break;
 	case TokenType::ModuloOperator:
-		resultStack.push((int)lDouble % (int)rDouble);
+		resultStack.push((double)((int)lDouble % (int)rDouble));
 		break;
 	case TokenType::IsStatement:
 		resultStack.push(lDouble == rDouble);
