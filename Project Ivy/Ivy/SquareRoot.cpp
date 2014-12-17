@@ -2,8 +2,8 @@
 
 void SquareRoot::Execute(std::vector<boost::any> arglist)
 {
-	double a = boost::any_cast<double>(arglist[0]);
-	Result = sqrt(a);
+	double x = boost::any_cast<double>(arglist[0]);
+	Result = std::sqrt(x);
 }
 
 boost::any SquareRoot::GetResult()

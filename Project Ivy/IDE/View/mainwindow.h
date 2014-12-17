@@ -25,6 +25,8 @@ public:
 public slots:
     void about();
     void newFile();
+	void saveFile();
+	void saveFileAs();
     void openFile(const QString &path = QString());
     void defaultKeyPressEvent(QKeyEvent* event);
 	void onClearBeforeBuilding();
