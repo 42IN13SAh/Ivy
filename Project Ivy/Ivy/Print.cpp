@@ -34,7 +34,12 @@ bool Print::boolean(boost::any value)
 {
 	try{
 		bool a = boost::any_cast<bool>(value);
-		stringToPrint = std::to_string(a);
+		if (a){
+			stringToPrint = "true";
+		}
+		else{
+			stringToPrint = "false";
+		}
 		return true;
 	}
 	catch (std::exception& e){
