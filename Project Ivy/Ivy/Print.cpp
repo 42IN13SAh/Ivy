@@ -4,14 +4,9 @@
 
 void Print::Execute(std::vector<boost::any> arglist)
 {
-	std::string r;
-	try {
-		r = std::to_string(boost::any_cast<double>(arglist[0]));
+	if (string(arglist[0]) || number(arglist[0]) || boolean(arglist[0])){
+		std::cout << stringToPrint;
 	}
-	catch (std::exception e) {
-		r = boost::any_cast<std::string>(arglist[0]);
-	}
-	std::cout << r;
 }
 
 boost::any Print::GetResult()
@@ -21,4 +16,40 @@ boost::any Print::GetResult()
 
 Print::~Print()
 {
+}
+
+bool Print::number(boost::any value)
+{
+	try{
+		double a = boost::any_cast<double>(value);
+		stringToPrint = std::to_string(a);
+		return true;
+	}
+	catch (std::exception& e){
+		return false;
+	}
+}
+
+bool Print::boolean(boost::any value)
+{
+	try{
+		bool a = boost::any_cast<bool>(value);
+		stringToPrint = std::to_string(a);
+		return true;
+	}
+	catch (std::exception& e){
+		return false;
+	}
+}
+
+bool Print::string(boost::any value)
+{
+	try{
+		std::string a = boost::any_cast<std::string>(value);
+		stringToPrint = a;
+		return true;
+	}
+	catch (std::exception& e){
+		return false;
+	}
 }
