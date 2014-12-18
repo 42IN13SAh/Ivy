@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include <QHBoxLayout>
 #include <QWidget>
+#include <qfont.h>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -13,7 +14,12 @@ BottomBar::BottomBar(QWidget *parent) :
 
     //console
     textArea = new QTextEdit();
-	textArea->setReadOnly(true);
+	QFont font;
+	font.setFamily("Courier");
+	font.setStyleHint(QFont::Monospace);
+	font.setFixedPitch(true);
+	font.setPointSize(10);
+	textArea->setFont(font);
     this->addTab(textArea, "Console");
 
     //errorlist
@@ -27,7 +33,7 @@ BottomBar::BottomBar(QWidget *parent) :
     setPalette(Pal);
 
     setFixedHeight(200);
-    setStyleSheet("QTextEdit, QListWidget { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; } QTabWidget::pane { background-color: #2D2D2F; } QTabBar::tab { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; padding: 3px;} QTabBar::tab:selected { background-color: black; }");
+	setStyleSheet("QTextEdit, QListWidget { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; } QTabWidget::pane { background-color: #2D2D2F; } QTabBar::tab { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; padding: 3px;} QTabBar::tab:selected { background-color: black; }");
 
     connect(errorList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(errorListItemDoubleClicked(QListWidgetItem*)));
 	connect(this, SIGNAL(stdOut(QString)), this, SLOT(onStdOut(QString)));

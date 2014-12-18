@@ -1,5 +1,7 @@
 #pragma once
 #include "IInternalFunction.h" 
+#include <string>
+#include <iostream>
 
 class Print : public IInternalFunction
 {
