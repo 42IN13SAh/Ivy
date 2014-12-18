@@ -4,14 +4,12 @@
 #include <QPlainTextEdit>
 #include <QObject>
 
-#include "KeyInputController.h"
-
 class QPaintEvent;
 class QResizeEvent;
 class QSize;
 class QWidget;
 class MainWindow;
-
+class KeyInputController;
 class LineNumberArea;
 
 class CodeEditor : public QPlainTextEdit

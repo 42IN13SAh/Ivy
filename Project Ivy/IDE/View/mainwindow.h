@@ -1,13 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include <ctime>
+#include <QMainWindow>
 
 #include "syntaxhighlighter.h"
 #include "codeeditor.h"
 #include "buttonbar.h"
 #include "bottombar.h"
-#include <ctime>
-
-#include <QMainWindow>
 
 class QTextEdit;
 class KeyInputController;
@@ -22,12 +21,15 @@ public:
 	BottomBar* getBottomBar();
 	void codeEditorKeyPressed();
 
+	int showUnsavedChangesDialog();
+	void resetEditor();
+
 public slots:
     void about();
     void newFile();
 	void saveFile();
 	void saveFileAs();
-    void openFile(const QString &path = QString());
+    void openFile();
     void defaultKeyPressEvent(QKeyEvent* event);
 	void onClearBeforeBuilding();
 	void onAddError(int, int, QString);

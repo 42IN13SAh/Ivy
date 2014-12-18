@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include "codeeditor.h"
 #include "mainwindow.h"
+#include "KeyInputController.h"
 
 CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
 {
