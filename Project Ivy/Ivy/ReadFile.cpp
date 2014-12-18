@@ -2,19 +2,10 @@
 
 void ReadFile::Execute(std::vector<boost::any> arglist)
 {
-	//D:\\local\\test.txt"
+	//"D:\\local\\test.txt"
 	std::string filepath = boost::any_cast<std::string>(arglist[0]);
-	std::ifstream file;
-	file.open(filepath);
-	std::stringstream line;
-
-	char c = file.get();
-	while (!file.eof()) 
-	{
-		line << c;
-		c = file.get();
-	}
-	Result = line.str();
+	std::ifstream file(filepath, std::ios::in | std::ios::binary);
+	Result = (std::string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>()));
 }
 
 boost::any ReadFile::GetResult()
