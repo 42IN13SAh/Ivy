@@ -21,7 +21,7 @@ FunctionSymbol::~FunctionSymbol()
 		while (nextActionPtr != nullptr && nextActionPtr != this->endAction){
 			nextActionPtr = currentActionPtr->getNextAction();
 			onFalseActionPtr = currentActionPtr->getFalseAction();
-			delete currentActionPtr; // Crash op while actions, goes back to begin which is already deleted
+			delete currentActionPtr; // Crash on while actions, goes back to begin which is already deleted
 			if (onFalseActionPtr != nullptr){
 				delete onFalseActionPtr;
 			}

@@ -5,7 +5,7 @@
 Compiler::Compiler(std::list<Token*> tokenList) {
 	hasFatalError = false;
 	this->tokenList = tokenList;
-	this->firstAction = new DoNothingAction();
+	this->firstAction = createDoNothing();
 	this->lastAction = firstAction;
 	this->globalSymbolTable = new SymbolTable();
 	resetTokenIter();
@@ -49,11 +49,11 @@ void Compiler::compile()
 	while (tokenIter != tokenList.end() && !hasFatalError) {
 		if (getCurrentToken()->getTokenType() == TokenType::Function){
 			addFunctionSignature();
-			if (hasFatalError) { return; }
+			if (hasFatalError) return;
 		}
 		else if (getCurrentToken()->getLevel() == 0 && (getCurrentToken()->getTokenType() == TokenType::Var || getCurrentToken()->getTokenType() == TokenType::Name)){
 			compileStatement();
-			if (hasFatalError) { return; }
+			if (hasFatalError) return;
 		}
 		else{
 			tokenIter++;
@@ -65,7 +65,7 @@ void Compiler::compile()
 	while (tokenIter != tokenList.end() && !hasFatalError) {
 		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == TokenType::Function){
 			compileFunction();
-			if (hasFatalError) { return; }
+			if (hasFatalError) return;
 		}
 		else{
 			tokenIter++;
@@ -76,25 +76,25 @@ void Compiler::compile()
 void Compiler::compileFunction() 
 {
 	// TODO: delete all new classes
-	Action* startFunction = new Action(); 
+	Action* startFunction = createAction(); 
 	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
 	Token* start = getNextToken();
-	if (start == nullptr) { delete startFunction; delete fct; return; }
+	if (start == nullptr) { delete fct; return; }
 	while (getCurrentToken()->getPartner() != start) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			fct->addArgumentName(getCurrentToken()->getDescription());
 		}
-		if (getNextToken() == nullptr) { delete startFunction; delete fct; return; }
+		if (getNextToken() == nullptr) { delete fct; return; }
 	}
-	if (getNextToken() == nullptr) { delete startFunction; delete fct; return; }
+	if (getNextToken() == nullptr) { delete fct; return; }
 	startFunction->setCompilerToken(fct);
-	startFunction->setNextAction(new DoNothingAction());
+	startFunction->setNextAction(createDoNothing());
 	lastAction = startFunction->getNextAction();
 	FunctionSymbol* functionSymbol = currentSymbolTable->getFunctionSymbol(fct->getName(), fct->getArgumentNames().size());
 	functionSymbol->setStartAction(startFunction);
 	currentSymbolTable = functionSymbol->getSymbolTable();
 	compileCodeBlock();
-	if (hasFatalError) { delete startFunction; delete fct; return; }
+	if (hasFatalError) { return; }
 	currentSymbolTable = globalSymbolTable;
 	functionSymbol->setEndAction(lastAction);
 }
@@ -127,11 +127,11 @@ void Compiler::compileCodeBlock()
 		switch (getCurrentToken()->getTokenType()) {
 			case TokenType::WhileStatement:
 				compileWhile();
-				if (hasFatalError) { return; }
+				if (hasFatalError) return;
 				break;
 			case TokenType::IfStatement:
 				compileIf();
-				if (hasFatalError) { return; }
+				if (hasFatalError) return;
 				break;
 			case TokenType::Function:
 				//throw std::exception();
@@ -139,7 +139,7 @@ void Compiler::compileCodeBlock()
 				break;
 			default:
 				compileStatement();
-				if (hasFatalError) { return; }
+				if (hasFatalError) return;
 				break;
 		}
 		if (last == lastAction){
@@ -150,7 +150,7 @@ void Compiler::compileCodeBlock()
 
 void Compiler::compileStatement() 
 {
-	Action* statement = new Action();
+	Action* statement = createAction();
 	switch (getCurrentToken()->getTokenType()) {
 		case TokenType::Var:
 			statement = compileStatementVar(statement);
@@ -161,7 +161,7 @@ void Compiler::compileStatement()
 		case TokenType::Return:
 			if (getNextToken() == nullptr) return;
 			statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
-			if (hasFatalError) { delete statement; return; }
+			if (hasFatalError) return;
 			break;
 		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
 			{
@@ -170,13 +170,13 @@ void Compiler::compileStatement()
 				VarCompilerToken* v = new VarCompilerToken(dTok->getDescription());
 				v->setFrontOperator(op);
 				statement->setCompilerToken(v);
-				if (getNextToken() == nullptr) { delete statement; return; }
+				if (getNextToken() == nullptr) return;
 				break;
 			}		
 	}
 	if (statement != nullptr && statement->getCompilerToken() != nullptr) {
 		lastAction->setNextAction(statement);
-		statement->setNextAction(new DoNothingAction());
+		statement->setNextAction(createDoNothing());
 		lastAction = statement->getNextAction();
 	}
 }
@@ -184,19 +184,19 @@ void Compiler::compileStatement()
 void Compiler::compileWhile() 
 {
 	// TODO: delete all new classes
-	Action* condition = new Action();
+	Action* condition = createAction();
 	Action* begin = condition;
-	if (getNextToken() == nullptr) { delete condition; return; }
+	if (getNextToken() == nullptr) return;
 	condition->setCompilerToken(compileCondition());
-	if (hasFatalError) { delete condition; return; }
+	if (hasFatalError) return;
 	lastAction->setNextAction(condition);
-	DoNothingAction* onTrue = new DoNothingAction();
+	DoNothingAction* onTrue = createDoNothing();
 	condition->setNextAction(onTrue);
 	lastAction = onTrue;
 	compileCodeBlock();
-	if (hasFatalError) { delete onTrue; delete condition; return; }
+	if (hasFatalError) return;
 	lastAction->setNextAction(begin);
-	DoNothingAction* onFalse = new DoNothingAction();
+	DoNothingAction* onFalse = createDoNothing();
 	condition->setFalseAction(onFalse);
 	lastAction = onFalse;
 }
@@ -206,37 +206,37 @@ void Compiler::compileIf()
 	// TODO: delete all new classes
 	Token* start = getCurrentToken();
 	if (start == nullptr) return;
-	Action* ifAction = new Action();
-	Action* end = new DoNothingAction();
-	if (getNextToken() == nullptr) { delete ifAction; delete end; return; }
+	Action* ifAction = createAction();
+	Action* end = createDoNothing();
+	if (getNextToken() == nullptr) return;
 	ifAction->setCompilerToken(compileCondition());
-	if (hasFatalError) { delete ifAction; delete end; return; }
-	ifAction->setNextAction(new DoNothingAction());
+	if (hasFatalError) return;
+	ifAction->setNextAction(createDoNothing());
 	lastAction->setNextAction(ifAction);
 	lastAction = ifAction->getNextAction();
 	compileCodeBlock();
-	if (hasFatalError) { delete ifAction; delete end; return; }
+	if (hasFatalError) return;
 	lastAction->setNextAction(end);
 	if (start->getPartner() != nullptr && start->getPartner()->getTokenType() == TokenType::ElseStatement){
-		if (getNextToken() == nullptr) { delete ifAction; delete end; return; }
+		if (getNextToken() == nullptr) return;
 		ifAction->setFalseAction(compileElse());
-		if (hasFatalError) { delete ifAction; delete end; return; }
+		if (hasFatalError) return;
 	}
 	else{
 		ifAction->setFalseAction(end);
 	}
 	lastAction->setNextAction(end);
 	lastAction = end;
-	if (getNextToken() == nullptr) { delete ifAction; delete end; return; }
+	if (getNextToken() == nullptr) return;
 }
 
 Action* Compiler::compileElse()
 {
-	DoNothingAction* elseAction = new DoNothingAction();
+	DoNothingAction* elseAction = createDoNothing();
 	lastAction = elseAction;
-	if (getNextToken() == nullptr) { delete elseAction; return nullptr; }
+	if (getNextToken() == nullptr) return nullptr;
 	compileCodeBlock();
-	if (hasFatalError) { delete elseAction; return nullptr; }
+	if (hasFatalError) return nullptr;
 	return elseAction;
 }
 
@@ -478,4 +478,16 @@ SymbolTable* Compiler::getSymbolTable()
 
 const std::vector<BaseException>& Compiler::getErrorList() {
 	return errorList;
+}
+
+Action* Compiler::createAction() {
+	Action* a = new Action();
+	actions.push_back(a);
+	return a;
+}
+
+DoNothingAction* Compiler::createDoNothing() {
+	DoNothingAction* a = new DoNothingAction();
+	actions.push_back(a);
+	return a;
 }
