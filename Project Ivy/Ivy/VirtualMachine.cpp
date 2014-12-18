@@ -109,15 +109,15 @@ boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, S
 {
 	FunctionSymbol* fs = globalSymbolTable->getFunctionSymbol(compilerToken->getName(), compilerToken->getArguments().size());
 	if (fs->isInternal()){
-		executeInternalFunction(fs->getName(), compilerToken, symbolTable);
+		return executeInternalFunction(fs->getName(), compilerToken, symbolTable);
 	}
 	else{
 		FunctionCompilerToken* fct = (FunctionCompilerToken*)fs->getStartAction()->getCompilerToken();
+		currentAction = fs->getStartAction()->getNextAction();
 		std::vector<std::string> argNames = fct->getArgumentNames();
 		for (int i = 0; i < argNames.size(); i++) {
 			fs->getSymbolTable()->addSymbolToTable(argNames[i], getReturnValue(compilerToken->getArguments()[i], symbolTable));
 		}
-		currentAction = fs->getStartAction()->getNextAction();
 		boost::any returnValue = nullptr;
 		while (currentAction != fs->getEndAction()){
 			if (currentAction->getCompilerToken() != nullptr  && typeid(*currentAction->getCompilerToken()) == typeid(ReturnCompilerToken)) {
@@ -140,7 +140,9 @@ boost::any VirtualMachine::executeInternalFunction(std::string name, FunctionCom
 	for each(ReturnValueCompilerToken* rvct in compilerToken->getArguments()) {
 		args.push_back(getReturnValue(rvct, symbolTable));
 	}
-	currentAction = currentAction->getNextAction();
+	if (currentAction->getNextAction() != NULL){
+		currentAction = currentAction->getNextAction();
+	}
 	fnc->Execute(args);
 	return fnc->GetResult();
 }
@@ -170,7 +172,7 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 			throw std::exception();
 		}
 	}
-	TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
+	TokenType::TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
 	if (op != TokenType::Null) {
 		double val = boost::any_cast<double>(value);
 		bool isFrontOp = (compilerToken->getFrontOperator() != TokenType::Null);
@@ -187,13 +189,14 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 
 boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueCompilerToken, SymbolTable& symbolTable)
 {
+	Action* tempAction = currentAction;
 	std::queue<boost::any> rpn = returnValueCompilerToken->getRPN();
 	std::stack<boost::any> resultStack;
 	while (!rpn.empty()) {
 		boost::any value = rpn.front();
 		rpn.pop();
-		if (value.type() == typeid(TokenType)){
-			TokenType op = boost::any_cast<TokenType>(value);
+		if (value.type() == typeid(TokenType::TokenType)){
+			TokenType::TokenType op = boost::any_cast<TokenType::TokenType>(value);
 			boost::any right = resultStack.top();
 			resultStack.pop();
 			boost::any left = resultStack.top();
@@ -210,17 +213,20 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			throw std::exception();
 		}
 		else{
-			if (value.type() == typeid(VarCompilerToken*))
+			if (value.type() == typeid(VarCompilerToken*)){
 				value = getVarValue(boost::any_cast<VarCompilerToken*>(value), symbolTable);
-			else if (value.type() == typeid(FunctionCompilerToken*))
+			}
+			else if (value.type() == typeid(FunctionCompilerToken*)){
 				value = executeAction(boost::any_cast<FunctionCompilerToken*>(value), symbolTable, currentAction);
+				currentAction = tempAction;
+			}
 			resultStack.push(value);
 		}
 	}
 	return resultStack.top();
 }
 
-bool VirtualMachine::exString(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+bool VirtualMachine::exString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
 {
 	std::string lString;
 	std::string rString;
@@ -249,7 +255,7 @@ bool VirtualMachine::exString(boost::any left, boost::any right, TokenType op, s
 	return true;
 }
 
-bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
 {
 	double lDouble;
 	double rDouble;
@@ -274,7 +280,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType op, s
 		resultStack.push(lDouble / rDouble);
 		break;
 	case TokenType::ModuloOperator:
-		resultStack.push((int)lDouble % (int)rDouble);
+		resultStack.push((double)((int)lDouble % (int)rDouble));
 		break;
 	case TokenType::IsStatement:
 		resultStack.push(lDouble == rDouble);
@@ -302,7 +308,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType op, s
 	return true;
 }
 
-bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType op, std::stack<boost::any>& resultStack)
+bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
 {
 	bool lBool;
 	bool rBool;

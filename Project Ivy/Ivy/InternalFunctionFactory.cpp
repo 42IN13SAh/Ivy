@@ -15,7 +15,7 @@ InternalFunctionFactory::InternalFunctionFactory()
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("pow", new Pow(), 2);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("random", new Random(), 2);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("sin", new Sin(), 1);
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction("squareRoot", new SquareRoot(), 1);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("sqrt", new SquareRoot(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("tan", new Tan(), 1);
 	//System
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("consoleInput", new ConsoleInput(), 0);

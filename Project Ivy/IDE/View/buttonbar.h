@@ -11,6 +11,7 @@ class ButtonBar : public QWidget
     Q_OBJECT
 public:
     explicit ButtonBar(QWidget *parent = 0);
+	ButtonController *getButtonController();
 
 private slots:
     void runButtonClicked();

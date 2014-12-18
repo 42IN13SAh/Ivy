@@ -1,8 +1,10 @@
 #include <QtWidgets>
 #include "codeeditor.h"
+#include "mainwindow.h"
 
-CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
+CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
 {
+	source = parent;
     lineNumberArea = new LineNumberArea(this);;
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
@@ -39,6 +41,48 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 
     if (rect.contains(viewport()->rect()))
         updateLineNumberAreaWidth(0);
+}
+
+void CodeEditor::underlineError(int lineNumber, int linePosition)
+{
+	QTextCursor cursor = this->textCursor();
+	cursor.movePosition(QTextCursor::Start);
+	cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
+	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
+	cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, 1);
+	setTextCursor(cursor);
+	
+	QTextCharFormat defcharfmt = currentCharFormat();
+	QTextCharFormat newcharfmt = defcharfmt;
+	newcharfmt.setUnderlineColor(QColor(Qt::red));
+	newcharfmt.setUnderlineStyle(QTextCharFormat::WaveUnderline);
+	newcharfmt.setFontUnderline(true);
+
+	setCurrentCharFormat(newcharfmt);
+
+	cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
+	setTextCursor(cursor);
+
+	setCurrentCharFormat(defcharfmt);
+}
+
+void CodeEditor::clearUnderlines()
+{
+	QTextCursor cursor = this->textCursor();
+	QTextCursor oldCursor = cursor;
+	cursor.movePosition(QTextCursor::Start);
+	cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+	setTextCursor(cursor);
+
+	QTextCharFormat defcharfmt = currentCharFormat();
+	QTextCharFormat newcharfmt = defcharfmt;
+	newcharfmt.setFontUnderline(false);
+
+	setCurrentCharFormat(newcharfmt);
+
+	setTextCursor(oldCursor);
+
+	setCurrentCharFormat(defcharfmt);
 }
 
 void CodeEditor::resizeEvent(QResizeEvent *e)
@@ -102,7 +146,7 @@ void CodeEditor::moveCursor(int lineNumber, int linePosition)
     QTextCursor tmpCursor = this->textCursor();
 	tmpCursor.movePosition(QTextCursor::Start);
 	tmpCursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
-	tmpCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition);
+	tmpCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
     this->setTextCursor(tmpCursor);
 	this->setFocus();
 }
@@ -116,4 +160,17 @@ std::vector<std::string> CodeEditor::getEditorContent()
 	}
 
 	return list;
+}
+
+void CodeEditor::defaultKeyPressEvent(QKeyEvent *event){
+	QPlainTextEdit::keyPressEvent(event);
+}
+
+void CodeEditor::setKeyInputController(KeyInputController *keyInputController){
+	this->keyInputController = keyInputController;
+}
+
+void CodeEditor::keyPressEvent(QKeyEvent* event){
+	this->keyInputController->handleKeyPressEvent(event, nullptr, this);
+	source->codeEditorKeyPressed();
 }

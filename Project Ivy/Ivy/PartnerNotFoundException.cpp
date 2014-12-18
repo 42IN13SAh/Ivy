@@ -1,12 +1,10 @@
 #include "PartnerNotFoundException.h"
 
 
-PartnerNotFoundException::PartnerNotFoundException(std::string token, int lineNumber, int linePosition) : BadSyntaxException(lineNumber, linePosition)
+PartnerNotFoundException::PartnerNotFoundException(int lineNumber, int linePosition, std::vector<std::string> followUps, std::string token) : BaseException(lineNumber, linePosition)
 {
-	this->exceptionMessage = "Partner not found for token \"" + token + "\" on linenumber " + std::to_string(lineNumber) + " and lineposition " + std::to_string(linePosition);
-	this->lineNumber = lineNumber;
-	this->linePosition = linePosition;
-	this->token = token;
+	exceptionMessage = "Partner not found for token \"" + token + "\" on linenumber " + std::to_string(lineNumber) + " and lineposition " + std::to_string(linePosition) + ", possible partners: '" + VectorUtils::JoinVector(followUps, "' '") + "'";
+	//this->token = token;
 }
 
 

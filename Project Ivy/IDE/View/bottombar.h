@@ -15,14 +15,17 @@ class BottomBar : public QTabWidget
     Q_OBJECT
 public:
     explicit BottomBar(QWidget *parent = 0);
-	void addError(int lineNumber, int linePosition, std::string text);
+	void addError(int lineNumber, int linePosition, QString text);
 	void clearErrorList();
 	void clearConsole();
+	std::vector<ErrorListItem*> getAllErrors();
 
 signals:
+	void stdOut(QString);
 
 public slots:
     void errorListItemDoubleClicked(QListWidgetItem* listItem);
+	void onStdOut(QString);
 
 private:
 	MainWindow *parent;
