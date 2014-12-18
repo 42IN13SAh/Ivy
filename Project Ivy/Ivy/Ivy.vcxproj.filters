@@ -207,6 +207,9 @@
     <ClInclude Include="UnexpectedEndOfFileException.h">
       <Filter>Header Files\Exceptions\Compiler</Filter>
     </ClInclude>
+    <ClInclude Include="SymbolAlreadyExistsException.h">
+      <Filter>Header Files\Exceptions\Compiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp">

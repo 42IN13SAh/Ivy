@@ -11,10 +11,10 @@ public:
 	SymbolTable(int level, std::string functionName);
 	SymbolTable();
 	~SymbolTable();
-	void addSymbolToTable(std::string name);
-	void addSymbolToTable(std::string name, boost::any value);
+	bool addSymbolToTable(std::string name);
+	bool addSymbolToTable(std::string name, boost::any value);
 	void updateExistingSymbol(std::string name, boost::any value);
-	void addFunctionSymbol(FunctionSymbol*);
+	bool addFunctionSymbol(FunctionSymbol*);
 	FunctionSymbol* getFunctionSymbol(std::string, int);
 	bool hasSymbol(std::string);
 	boost::any getValue(std::string);
