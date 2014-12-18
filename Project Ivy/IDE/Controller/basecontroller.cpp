@@ -292,7 +292,7 @@ int BaseController::promptActionForLeavingCurrentFile(CodeEditor *editor, MainWi
 
 bool BaseController::contentsDiffer(std::vector<std::string> currentContents, std::vector<std::string> contentToCompareTo){
 	/*	Notes:	- If editor is empty, there will still be 1 string element in the currentContents vector: an empty string object.
-				- The default value for lastSavedEditorContents (usually passed in contentToCompareTo)
+				- The default value for lastSavedEditorContents (usually passed in contentToCompareTo) is an empty vector
 	*/
 	if (currentContents.size() != contentToCompareTo.size()){ //If sizes are not the same, there is no way the contents are.
 		return true;
