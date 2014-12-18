@@ -2,15 +2,17 @@
 #include "codeeditor.h"
 #include "mainwindow.h"
 
+QStringList CodeEditor::defaultKeywords;
+
 CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
 {
 	source = parent;
     lineNumberArea = new LineNumberArea(this);;
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect, int)), this, SLOT(updateLineNumberArea(QRect, int)));
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
-	defaultKeywords << "function" << "var" << "if" << "else" << "is" << "or" << "while" << "and" << "not" << "return";
+	CodeEditor::defaultKeywords << "function" << "var" << "if" << "else" << "is" << "or" << "while" << "and" << "not" << "return";
 
 	completer = new QCompleter(); //anti crash
 	setCompleterModel(QList<QString>());

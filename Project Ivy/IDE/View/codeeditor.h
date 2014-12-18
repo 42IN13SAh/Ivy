@@ -21,6 +21,7 @@ class CodeEditor : public QPlainTextEdit
 
 public:
 	CodeEditor(MainWindow *parent = 0);
+	static QStringList defaultKeywords;
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
@@ -47,7 +48,6 @@ private:
 	MainWindow *source;
 	KeyInputController *keyInputController;
 	QCompleter *completer;
-	QStringList defaultKeywords;
 };
 
 
