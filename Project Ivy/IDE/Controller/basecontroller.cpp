@@ -50,29 +50,42 @@ bool BaseController::startBuilding(bool onlyBuild)
 	}
 
 	compiler = new Compiler(tokenizer->getTokenList());
-
-	try
-	{
-		compiler->compile();
-	}
-	catch (std::exception& e)
-	{
+	compiler->compile();
+	if (compiler->getErrorList().size() > 0) {
 		buildSucceeded = false;
 
 		std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
 		std::cout << "Build failed.";
 
-		source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
-
-		if (onlyBuild)
-		{
-			delete tokenizer;			
-			delete compiler;
+		for each(BaseException e in compiler->getErrorList()) {
+			source->getBottomBar()->addError(e.getLineNumber(), e.getLinePosition(), e.what());
 		}
 
-		compiler = nullptr;
+		delete compiler;
 		return buildSucceeded;
 	}
+	//try
+	//{
+	//	compiler->compile();
+	//}
+	//catch (std::exception& e)
+	//{
+	//	buildSucceeded = false;
+
+	//	std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
+	//	std::cout << "Build failed.";
+
+	//	source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
+
+	//	if (onlyBuild)
+	//	{
+	//		delete tokenizer;			
+	//		delete compiler;
+	//	}
+
+	//	compiler = nullptr;
+	//	return buildSucceeded;
+	//}
 
 	std::cout << "Build succeeded.";
 

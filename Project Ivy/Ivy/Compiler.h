@@ -14,6 +14,9 @@
 #include "ConditionCompilerToken.h"
 #include "ReturnCompilerToken.h"
 
+// Exceptions
+#include "UnexpectedEndOfFileException.h"
+
 class Compiler
 {
 public:
@@ -22,7 +25,11 @@ public:
 	void compile();
 	Action* getFirstAction();
 	SymbolTable* getSymbolTable();
+	const std::vector<BaseException>& getErrorList();
 private:
+	bool hasFatalError;
+	Token* dTok;
+	std::vector<BaseException> errorList;
 	std::list<Token*> tokenList;
 	Action* firstAction;
 	Action* lastAction;
