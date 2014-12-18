@@ -1,4 +1,8 @@
 #pragma once
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <sstream>
 #include "IInternalFunction.h" 
 
 class ReadFile : public IInternalFunction
