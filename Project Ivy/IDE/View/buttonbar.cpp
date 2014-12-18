@@ -52,3 +52,8 @@ void ButtonBar::runButtonClicked(){
 void ButtonBar::buildButtonClicked(){
     controller->buildButtonClicked();
 }
+
+ButtonController* ButtonBar::getButtonController()
+{
+	return controller;
+}
