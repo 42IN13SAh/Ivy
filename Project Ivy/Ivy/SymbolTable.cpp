@@ -88,6 +88,14 @@ bool SymbolTable::addFunctionSymbol(FunctionSymbol* fs)
 	return false;
 }
 
+bool SymbolTable::hasFunctionSymbolWithName(std::string name) {
+	for each(FunctionSymbol* fs in fSymbols) {
+		if (fs->getName() == name)
+			return true;
+	}
+	return false;
+}
+
 FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) 
 {
 	for each(FunctionSymbol* fs in fSymbols) {

@@ -17,6 +17,7 @@
 // Exceptions
 #include "UnexpectedEndOfFileException.h"
 #include "SymbolAlreadyExistsException.h"
+#include "UndefinedSymbolException.h"
 
 class Compiler
 {

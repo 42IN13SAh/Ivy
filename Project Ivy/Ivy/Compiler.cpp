@@ -293,7 +293,14 @@ ConditionCompilerToken* Compiler::compileCondition()
 
 FunctionCompilerToken* Compiler::compileFunctionCall() 
 {
-	FunctionCompilerToken* fct = new FunctionCompilerToken(getCurrentToken()->getDescription());
+	// check if function exists with name
+	bool hasException = false;
+	if (!globalSymbolTable->hasFunctionSymbolWithName(getCurrentToken()->getDescription())) {
+		errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Function"));
+		hasException = true;
+	}
+	Token* fTok = getCurrentToken();
+	FunctionCompilerToken* fct = new FunctionCompilerToken(fTok->getDescription());
 	Token* start = getNextToken();
 	if (start == nullptr) { delete fct; return nullptr; }
 	while (getCurrentToken()->getPartner() != start) {
@@ -302,6 +309,10 @@ FunctionCompilerToken* Compiler::compileFunctionCall()
 			fct->addArgument(compileReturnValue());
 			if (hasFatalError) { delete fct; return nullptr; }
 		}
+	}
+	// check if nr of params is correct
+	if (!hasException && globalSymbolTable->getFunctionSymbol(fct->getName(), fct->getArguments().size()) == nullptr) {
+		errorList.push_back(UndefinedSymbolException(fTok->getLineNumber(), fTok->getLinePosition(), fTok->getDescription(), "Function"));
 	}
 	return fct;
 }
@@ -334,13 +345,18 @@ Action* Compiler::compileStatementVar(Action* statement)
 
 Action* Compiler::compileStatementName(Action* statement) 
 {
-	std::string name = getCurrentToken()->getDescription();
+	Token* nTok = getCurrentToken();
+	std::string name = nTok->getDescription();
 	if ((dTok = peekNextToken()) == nullptr) return nullptr;
 	if (dTok->getTokenType() == TokenType::OpenParenthesis){
 		statement->setCompilerToken(compileFunctionCall());
 		if (hasFatalError) return nullptr;
 	}
-	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) { // TODO: symboltable exception handling
+	else {
+		// TODO: symboltable exception handling
+		if (!(currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name))) {
+			errorList.push_back(UndefinedSymbolException(nTok->getLineNumber(), nTok->getLinePosition(), name, "Var"));
+		}
 		if ((dTok = getNextToken()) == nullptr) return nullptr;
 		TokenType::TokenType op = dTok->getTokenType();
 		if (getNextToken() == nullptr) return nullptr;
@@ -368,6 +384,10 @@ void Compiler::compileReturnValueName(ReturnValueCompilerToken* rt)
 		if (hasFatalError) return;
 	}
 	else {
+		// Check symbol table if var exists
+		if (!(currentSymbolTable->hasSymbol(getCurrentToken()->getDescription()) || globalSymbolTable->hasSymbol(getCurrentToken()->getDescription()))) {
+			errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Var"));
+		}
 		VarCompilerToken* v = new VarCompilerToken(getCurrentToken()->getDescription());
 		if (dTok->getTokenType() == TokenType::IncreaseOperator || dTok->getTokenType() == TokenType::DecreaseOperator){
 			if (getNextToken() == nullptr) { delete v; return; }
