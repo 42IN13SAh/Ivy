@@ -63,10 +63,13 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 	try
 	{
 		compiler->compile();
+		makeCompleterModel(compiler->getAllFunctionAndVariableNames());
 	}
 	catch (std::exception& e)
 	{
 		buildSucceeded = false;
+
+		makeCompleterModel(compiler->getAllFunctionAndVariableNames());
 
 		if (showConsoleOutput) {
 			std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
@@ -200,4 +203,17 @@ bool BaseController::fileHasBeenSavedBefore(){
 
 QString BaseController::getCurrentFilePathAsQstring() {
 	return QString::fromStdString(this->currentFilePath);
+}
+
+
+void BaseController::makeCompleterModel(std::vector<std::string> list)
+{
+	QList<QString> wordList;
+
+	for each (std::string s in list)
+	{
+		wordList << QString::fromStdString(s);
+	}
+
+	emit setCompleterModel(wordList);
 }
