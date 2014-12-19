@@ -13,7 +13,6 @@ Compiler::Compiler(std::list<Token*> tokenList) {
 
 Compiler::~Compiler() 
 {
-	//if (firstAction != nullptr) delete firstAction;
 	Action *currentActionPtr = this->getFirstAction();
 	Action *nextActionPtr = currentActionPtr->getNextAction();
 	Action *onFalseActionPtr;
@@ -75,7 +74,6 @@ void Compiler::compile()
 
 void Compiler::compileFunction() 
 {
-	// TODO: delete all new classes
 	Action* startFunction = createAction(); 
 	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
 	Token* start = getNextToken();
@@ -101,7 +99,6 @@ void Compiler::compileFunction()
 
 void Compiler::addFunctionSignature()
 {
-	//if ((dTok = getNextToken()) == nullptr) return;
 	Token* fTok = getNextToken();
 	if (fTok == nullptr) return;
 	std::string name = fTok->getDescription();
@@ -134,7 +131,6 @@ void Compiler::compileCodeBlock()
 				if (hasFatalError) return;
 				break;
 			case TokenType::Function:
-				//throw std::exception();
 				errorList.push_back(BaseException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), "Bad syntax exception, new Function not allowed here"));
 				break;
 			default:
@@ -183,7 +179,6 @@ void Compiler::compileStatement()
 
 void Compiler::compileWhile() 
 {
-	// TODO: delete all new classes
 	Action* condition = createAction();
 	Action* begin = condition;
 	if (getNextToken() == nullptr) return;
@@ -203,7 +198,6 @@ void Compiler::compileWhile()
 
 void Compiler::compileIf()
 {
-	// TODO: delete all new classes
 	Token* start = getCurrentToken();
 	if (start == nullptr) return;
 	Action* ifAction = createAction();
@@ -293,7 +287,6 @@ ConditionCompilerToken* Compiler::compileCondition()
 
 FunctionCompilerToken* Compiler::compileFunctionCall() 
 {
-	// check if function exists with name
 	bool hasException = false;
 	if (!globalSymbolTable->hasFunctionSymbolWithName(getCurrentToken()->getDescription())) {
 		errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Function"));
@@ -310,7 +303,6 @@ FunctionCompilerToken* Compiler::compileFunctionCall()
 			if (hasFatalError) { delete fct; return nullptr; }
 		}
 	}
-	// check if nr of params is correct
 	if (!hasException && globalSymbolTable->getFunctionSymbol(fct->getName(), fct->getArguments().size()) == nullptr) {
 		errorList.push_back(UndefinedSymbolException(fTok->getLineNumber(), fTok->getLinePosition(), fTok->getDescription(), "Function"));
 	}
@@ -319,7 +311,6 @@ FunctionCompilerToken* Compiler::compileFunctionCall()
 
 Action* Compiler::compileStatementVar(Action* statement) 
 {
-	//if ((dTok = getNextToken())== nullptr) return nullptr;
 	Token* sTok = getNextToken();
 	if (sTok == nullptr) return nullptr;
 	std::string name = sTok->getDescription();
@@ -332,14 +323,8 @@ Action* Compiler::compileStatementVar(Action* statement)
 	else{
 		statement = nullptr;
 	}
-	//if (currentSymbolTable->hasSymbol(name)){
-		//throw new std::exception; // TODO: better exception handling
-		//errorList.push_back(SymbolAlreadyExistsException(sTok->getLineNumber(), sTok->getLinePosition(), name, "Var"));
-	//}
-	//else{
 	if(!currentSymbolTable->addSymbolToTable(name))
 		errorList.push_back(SymbolAlreadyExistsException(sTok->getLineNumber(), sTok->getLinePosition(), name, "Var"));
-	//}
 	return statement;
 }
 
@@ -353,7 +338,6 @@ Action* Compiler::compileStatementName(Action* statement)
 		if (hasFatalError) return nullptr;
 	}
 	else {
-		// TODO: symboltable exception handling
 		if (!(currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name))) {
 			errorList.push_back(UndefinedSymbolException(nTok->getLineNumber(), nTok->getLinePosition(), name, "Var"));
 		}
@@ -384,7 +368,6 @@ void Compiler::compileReturnValueName(ReturnValueCompilerToken* rt)
 		if (hasFatalError) return;
 	}
 	else {
-		// Check symbol table if var exists
 		if (!(currentSymbolTable->hasSymbol(getCurrentToken()->getDescription()) || globalSymbolTable->hasSymbol(getCurrentToken()->getDescription()))) {
 			errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Var"));
 		}
