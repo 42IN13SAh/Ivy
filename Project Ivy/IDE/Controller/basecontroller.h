@@ -26,6 +26,7 @@ public:
 signals:
 	void clearBeforeBuilding();
 	void addError(int, int, QString);
+	void setCompleterModel(QList<QString>);
 
 protected:
 	MainWindow *mainWindow;
@@ -41,6 +42,8 @@ private:
 	QString getCurrentFilePathAsQstring();
 
 	static const QString IVY_FOLDER_NAME; //Qstrings can't be initialized in the header, see the implementation file!
+
+	void makeCompleterModel(std::vector<std::string>);
 };
 
 #endif // BASECONTROLLER_H

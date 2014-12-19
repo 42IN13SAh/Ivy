@@ -1,14 +1,12 @@
 #pragma once
-#include <fstream>
-#include <iostream>
+#include "IInternalFunction.h"
 #include <string>
-#include <sstream>
-#include "IInternalFunction.h" 
+#include <iostream>
 
-class ReadFile : public IInternalFunction
+class SummonSupremeLord : public IInternalFunction
 {
 public:
-	~ReadFile();
+	~SummonSupremeLord();
 	virtual void Execute(std::vector<boost::any> arglist);
 	virtual boost::any GetResult();
 private:

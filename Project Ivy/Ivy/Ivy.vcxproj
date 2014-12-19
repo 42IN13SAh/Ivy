@@ -104,6 +104,8 @@
     <ClInclude Include="SaveFile.h" />
     <ClInclude Include="Sin.h" />
     <ClInclude Include="SquareRoot.h" />
+    <ClInclude Include="SummonSupremeCommander.h" />
+    <ClInclude Include="SummonSupremeLord.h" />
     <ClInclude Include="Symbol.h" />
     <ClInclude Include="SymbolAlreadyExistsException.h" />
     <ClInclude Include="SymbolTable.h" />
@@ -147,6 +149,8 @@
     <ClCompile Include="SaveFile.cpp" />
     <ClCompile Include="Sin.cpp" />
     <ClCompile Include="SquareRoot.cpp" />
+    <ClCompile Include="SummonSupremeCommander.cpp" />
+    <ClCompile Include="SummonSupremeLord.cpp" />
     <ClCompile Include="Symbol.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
     <ClCompile Include="SymbolTableItemsToBeDeleted.cpp" />

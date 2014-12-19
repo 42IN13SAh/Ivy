@@ -60,6 +60,7 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 
 	compiler = new Compiler(tokenizer->getTokenList());
 	compiler->compile();
+	makeCompleterModel(compiler->getAllFunctionAndVariableNames());
 	if (compiler->getErrorList().size() > 0) {
 		buildSucceeded = false;
 
@@ -75,28 +76,6 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 		delete compiler;
 		return buildSucceeded;
 	}
-	//try
-	//{
-	//	compiler->compile();
-	//}
-	//catch (std::exception& e)
-	//{
-	//	buildSucceeded = false;
-
-	//	std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
-	//	std::cout << "Build failed.";
-
-	//	source->getBottomBar()->addError(0, 0, e.what()); //TODO: fix when compiler has better errorhandling
-
-	//	if (onlyBuild)
-	//	{
-	//		delete tokenizer;			
-	//		delete compiler;
-	//	}
-
-	//	compiler = nullptr;
-	//	return buildSucceeded;
-	//}
 
 	if (showConsoleOutput) {
 		std::cout << "Build succeeded.";
@@ -213,4 +192,17 @@ bool BaseController::fileHasBeenSavedBefore(){
 
 QString BaseController::getCurrentFilePathAsQstring() {
 	return QString::fromStdString(this->currentFilePath);
+}
+
+
+void BaseController::makeCompleterModel(std::vector<std::string> list)
+{
+	QList<QString> wordList;
+
+	for each (std::string s in list)
+	{
+		wordList << QString::fromStdString(s);
+	}
+
+	emit setCompleterModel(wordList);
 }

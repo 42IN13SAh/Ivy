@@ -212,6 +212,12 @@
     </ClInclude>
     <ClInclude Include="UndefinedSymbolException.h">
       <Filter>Header Files\Exceptions\Compiler</Filter>
+	</ClInclude>  
+    <ClInclude Include="SummonSupremeLord.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SummonSupremeCommander.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -322,6 +328,12 @@
     </ClCompile>
     <ClCompile Include="Jzon.cpp">
       <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="SummonSupremeLord.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SummonSupremeCommander.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

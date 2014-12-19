@@ -28,6 +28,7 @@ public:
 	Action* getFirstAction();
 	SymbolTable* getSymbolTable();
 	const std::vector<BaseException>& getErrorList();
+	std::vector<std::string> getAllFunctionAndVariableNames();
 private:
 	bool hasFatalError;
 	Token* dTok;

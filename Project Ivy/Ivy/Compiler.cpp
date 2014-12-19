@@ -494,3 +494,20 @@ DoNothingAction* Compiler::createDoNothing() {
 	actions.push_back(a);
 	return a;
 }
+
+std::vector<std::string> Compiler::getAllFunctionAndVariableNames()
+{
+	std::vector<std::string> list;
+
+	for each (FunctionSymbol* functionSymbol in globalSymbolTable->getAllFunctionSymbols())
+	{
+		list.push_back(functionSymbol->getName());
+	}
+
+	for each (Symbol* symbol in globalSymbolTable->getAllSymbols())
+	{
+		list.push_back(symbol->getName());
+	}
+
+	return list;
+}
