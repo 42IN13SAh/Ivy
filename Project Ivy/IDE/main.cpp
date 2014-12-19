@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+	qRegisterMetaType<QList<QString>>("QList<QString>");
 
     MainWindow window;
     window.showMaximized();
