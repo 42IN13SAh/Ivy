@@ -206,6 +206,7 @@ void BaseController::startNewFile(MainWindow *parentWindow){
 	parentWindow->resetEditor();
 	this->currentFilePath = "";
 	this->setLastSavedEditorContents(mainWindow->getCodeEditor()->getEditorContent());
+	parentWindow->setAndSaveWindowTitle("New File - " + parentWindow->getDefaultWindowTitle());
 }
 
 void BaseController::saveFile(std::string filePath){
@@ -277,6 +278,7 @@ void BaseController::showOpenFileDialog(MainWindow *parentWindow){
 
 	if (!filePath.isEmpty()){
 		this->openFile(filePath.toStdString(), parentWindow->getCodeEditor());
+		parentWindow->setAndSaveWindowTitle(filePath + " - " + parentWindow->getDefaultWindowTitle());
 	}
 }
 

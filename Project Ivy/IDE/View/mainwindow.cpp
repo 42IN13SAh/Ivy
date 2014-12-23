@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setCentralWidget(window);
 	centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
 
-	setWindowTitle(tr("Ivy IDE"));
+	setAndSaveWindowTitle("New File - " + this->getDefaultWindowTitle()); //Default is always a new file (for now)
 
 	//make sure to always conenct both controllers to the same slot!
 	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
@@ -133,6 +133,15 @@ int MainWindow::showUnsavedChangesDialog(){
 
 void MainWindow::resetEditor(){
 	this->editor->clear();
+}
+
+QString MainWindow::getCurrentWindowTitle(){
+	return this->currentWindowTitle;
+}
+
+void MainWindow::setAndSaveWindowTitle(QString windowTitle){
+	this->currentWindowTitle = windowTitle;
+	MainWindow::setWindowTitle(this->currentWindowTitle);
 }
 
 void MainWindow::setupEditor()
