@@ -20,10 +20,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	hasBuild = true;
 
-    QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-    layout->addWidget(buttonBar);
-    layout->addWidget(editor);
-    layout->addWidget(bottomBar);
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+	layout->addWidget(buttonBar);
+	layout->addWidget(editor);
+	layout->addWidget(bottomBar);
 
 	layout->setSpacing(0);
 
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setCentralWidget(window);
 	centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
 
-    setWindowTitle(tr("Ivy IDE"));
+	setAndSaveWindowTitle("New File - " + this->getDefaultWindowTitle()); //Default is always a new file (for now)
 
 	//make sure to always conenct both controllers to the same slot!
 	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
@@ -46,15 +46,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	/*std::async(std::launch::async, [&]() {
 		while (true)
 		{
-			if (!hasBuild)
-			{
-				hasBuild = true;
-				keyInputController->startBuilding(true, false);
-			}
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		if (!hasBuild)
+		{
+		hasBuild = true;
+		keyInputController->startBuilding(true, false);
 		}
-	});*/
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		}
+		});*/
 }
 
 void MainWindow::onSetCompleterModel(QList<QString> list)
@@ -92,8 +92,8 @@ void MainWindow::setupBottomBar()
 
 void MainWindow::newFile()
 {
-	editor->clear();
-	keyInputController->resetCurrentFilePath();
+	//Since we already have access to the keyinputcontroller, we'll use that real quick.
+	keyInputController->startNewFile(this);
 }
 
 void MainWindow::saveFile()
@@ -108,18 +108,10 @@ void MainWindow::saveFileAs()
 	keyInputController->saveCurrentCodeToNewFile(this);
 }
 
-void MainWindow::openFile(const QString &path)
+void MainWindow::openFile()
 {
-	QString fileName = path;
-
-	if (fileName.isNull())
-		fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", "Ivy File (*.ivy)");
-
-	if (!fileName.isEmpty()) {
-		QFile file(fileName);
-		if (file.open(QFile::ReadOnly | QFile::Text))
-			editor->setPlainText(file.readAll());
-	}
+	//Since we already have access to the keyinputcontroller, we'll use that real quick.
+	keyInputController->openFileAction(this->editor, this);
 }
 
 void MainWindow::defaultKeyPressEvent(QKeyEvent *event){
@@ -129,6 +121,27 @@ void MainWindow::defaultKeyPressEvent(QKeyEvent *event){
 void MainWindow::codeEditorKeyPressed()
 {
 	hasBuild = false;
+}
+
+int MainWindow::showUnsavedChangesDialog(){
+	return QMessageBox::warning(this, tr("File has changed"),
+		tr("The file has been modified.\n"
+		"Do you want to save your changes?"),
+		QMessageBox::Yes | QMessageBox::No
+		| QMessageBox::Cancel);
+}
+
+void MainWindow::resetEditor(){
+	this->editor->clear();
+}
+
+QString MainWindow::getCurrentWindowTitle(){
+	return this->currentWindowTitle;
+}
+
+void MainWindow::setAndSaveWindowTitle(QString windowTitle){
+	this->currentWindowTitle = windowTitle;
+	MainWindow::setWindowTitle(this->currentWindowTitle);
 }
 
 void MainWindow::setupEditor()
@@ -172,9 +185,9 @@ void MainWindow::setupFileMenu()
 	menuBar()->addMenu(fileMenu);
 
 	fileMenu->addAction(tr("&New"), this, SLOT(newFile()), QKeySequence::New);
+	fileMenu->addAction(tr("&Open..."), this, SLOT(openFile()), QKeySequence::Open);
 	fileMenu->addAction(tr("&Save"), this, SLOT(saveFile()), QKeySequence::Save);
 	fileMenu->addAction(tr("&Save As..."), this, SLOT(saveFileAs()), QKeySequence::SaveAs);
-	fileMenu->addAction(tr("&Open..."), this, SLOT(openFile()), QKeySequence::Open);
 	fileMenu->addAction(tr("E&xit"), qApp, SLOT(quit()), QKeySequence::Quit);
 
 	setStyleSheet("QMenuBar { background-color: #323232; border-bottom: 1px solid black; } QMenuBar::item { background-color: #323232; color: white; } QMenuBar::item:selected { background-color: #1E1E1F; } QMenuItem { background-color: #323232; color: white; } QMenu::item { background-color: #323232; color: white; } QMenu::item:selected { background-color: #1E1E1F; } QMenu { background-color: #323232; }");
