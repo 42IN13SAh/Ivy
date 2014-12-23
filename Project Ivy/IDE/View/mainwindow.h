@@ -11,6 +11,8 @@
 class QTextEdit;
 class KeyInputController;
 
+Q_DECLARE_METATYPE(QList<QString*>);
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -33,6 +35,7 @@ public slots:
     void defaultKeyPressEvent(QKeyEvent* event);
 	void onClearBeforeBuilding();
 	void onAddError(int, int, QString);
+	void onSetCompleterModel(QList<QString>);
 
 private:
     void setupEditor();

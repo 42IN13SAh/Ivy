@@ -21,6 +21,9 @@ InternalFunctionFactory::InternalFunctionFactory()
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("consoleInput", new ConsoleInput(), 0);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("formatString", new FormatString(), 100);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("print", new Print(), 1);
+	//Easteregg
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("summonSupremeLord", new SummonSupremeLord(), 0);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("summonSupremeCommander", new SummonSupremeCommander(), 0);
 }
 
 InternalFunctionFactory::~InternalFunctionFactory() 

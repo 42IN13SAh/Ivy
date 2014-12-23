@@ -22,6 +22,7 @@ public:
 	void compile();
 	Action* getFirstAction();
 	SymbolTable* getSymbolTable();
+	std::vector<std::string> getAllFunctionAndVariableNames();
 private:
 	std::list<Token*> tokenList;
 	Action* firstAction;

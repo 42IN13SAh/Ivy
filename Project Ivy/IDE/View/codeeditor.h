@@ -3,6 +3,7 @@
 
 #include <QPlainTextEdit>
 #include <QObject>
+#include <QCompleter>
 
 class QPaintEvent;
 class QResizeEvent;
@@ -18,6 +19,7 @@ class CodeEditor : public QPlainTextEdit
 
 public:
 	CodeEditor(MainWindow *parent = 0);
+	static QStringList defaultKeywords;
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
@@ -25,22 +27,25 @@ public:
 	std::vector<std::string> getEditorContent();
 	void underlineError(int lineNumber, int linePosition);
 	void clearUnderlines();
-	void defaultKeyPressEvent(QKeyEvent *event);
+	void defaultKeyPressEvent(QKeyEvent *e);
 	void setKeyInputController(KeyInputController *keyInputController);
+	void setCompleterModel(QList<QString>);
 
 protected:
     void resizeEvent(QResizeEvent *event);
-	void keyPressEvent(QKeyEvent* event);
+	void keyPressEvent(QKeyEvent* e);
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &, int);
+	void insertCompletion(const QString&);
 
 private:
     QWidget *lineNumberArea;
 	MainWindow *source;
 	KeyInputController *keyInputController;
+	QCompleter *completer;
 };
 
 
