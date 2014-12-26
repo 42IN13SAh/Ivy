@@ -199,6 +199,7 @@ std::vector<std::string> CodeEditor::getEditorContent()
 void CodeEditor::defaultKeyPressEvent(QKeyEvent *e)
 {
 	QPlainTextEdit::keyPressEvent(e);
+	autocomplete(e);
 }
 
 void CodeEditor::setKeyInputController(KeyInputController *keyInputController){
@@ -259,4 +260,88 @@ void CodeEditor::keyPressEvent(QKeyEvent* e)
 	QRect cr = cursorRect();
 	cr.setWidth(completer->popup()->sizeHintForColumn(0) + completer->popup()->verticalScrollBar()->sizeHint().width());
 	completer->complete(cr); // popup it up!
+}
+
+void CodeEditor::autocomplete(QKeyEvent *e)
+{
+	switch (e->key())
+	{
+	case Qt::Key_BraceLeft: // {
+	{
+								QString currentLine = getCurrentLine(this->textCursor());
+								insertPlainText("\n" + getLineToInsert(currentLine) + "\t" + getLineToInsert(currentLine) + "\n}");
+								QTextCursor oldCursor = this->textCursor();
+								oldCursor.movePosition(QTextCursor::Up, QTextCursor::MoveAnchor, 1);
+								oldCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 1);
+								this->setTextCursor(oldCursor);
+								break;
+	}
+	case Qt::Key_ParenLeft: // (
+	{
+								insertPlainText(")");
+								QTextCursor oldCursor = this->textCursor();
+								oldCursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
+								this->setTextCursor(oldCursor);
+								break;
+	}
+	case Qt::Key_Return:
+	{
+								QTextCursor oldCursor = this->textCursor();
+								QString currentLine = getCurrentLine(oldCursor, -1);
+								if (currentLine.endsWith("{"))
+								{
+									insertPlainText(getLineToInsert(currentLine) + "\t");
+								}
+								else
+								{
+									insertPlainText(getLineToInsert(currentLine));
+								}
+								break;
+	}
+	default:
+		break;
+	}
+}
+
+//startPos needs to be -1 when pressing return, this way you get the previous line
+QString CodeEditor::getCurrentLine(QTextCursor cursor, int startCount)
+{
+	int lineNumber = startCount;
+	while (cursor.positionInBlock() > 0)
+	{
+		cursor.movePosition(QTextCursor::Up);
+		lineNumber++;
+	}
+	QTextBlock block = cursor.block().previous();
+
+	while (block.isValid())
+	{
+		lineNumber += block.lineCount();
+		block = block.previous();
+	}
+
+	QString plainTextEditContents = this->toPlainText();
+	QStringList lines = plainTextEditContents.split("\n");
+
+	return lines[lineNumber];
+}
+
+QString CodeEditor::getLineToInsert(QString line)
+{
+	QString lineToInsert;
+	while (line.startsWith("\t") || line.startsWith(" "))
+	{
+		if (line.startsWith("\t"))
+		{
+			lineToInsert.append("\t");
+		}
+		else
+		{
+			lineToInsert.append(" ");
+		}
+
+		line.remove(0, 1);
+	}
+
+	return lineToInsert;
 }
