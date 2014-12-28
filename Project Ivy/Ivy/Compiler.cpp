@@ -3,8 +3,9 @@
 #include "SymbolTableItemsToBeDeleted.h"
 
 Compiler::Compiler(std::list<Token*> tokenList) {
+	hasFatalError = false;
 	this->tokenList = tokenList;
-	this->firstAction = new DoNothingAction();
+	this->firstAction = createDoNothing();
 	this->lastAction = firstAction;
 	this->globalSymbolTable = new SymbolTable();
 	resetTokenIter();
@@ -44,21 +45,26 @@ void Compiler::compile()
 {
 	currentSymbolTable = globalSymbolTable;
 	addInternalFunctions();
-	while (tokenIter != tokenList.end()) {
+	while (tokenIter != tokenList.end() && !hasFatalError) {
 		if (getCurrentToken()->getTokenType() == TokenType::Function){
 			addFunctionSignature();
+			if (hasFatalError) return;
 		}
 		else if (getCurrentToken()->getLevel() == 0 && (getCurrentToken()->getTokenType() == TokenType::Var || getCurrentToken()->getTokenType() == TokenType::Name)){
 			compileStatement();
+			if (hasFatalError) return;
 		}
 		else{
 			tokenIter++;
 		}
 	}
 	resetTokenIter();
-	while (tokenIter != tokenList.end()) {
+	if (hasFatalError)
+		return;
+	while (tokenIter != tokenList.end() && !hasFatalError) {
 		if (getCurrentToken()->getLevel() == 0 && getCurrentToken()->getTokenType() == TokenType::Function){
 			compileFunction();
+			if (hasFatalError) return;
 		}
 		else{
 			tokenIter++;
@@ -68,41 +74,46 @@ void Compiler::compile()
 
 void Compiler::compileFunction() 
 {
-
-	Action* startFunction = new Action(); 
+	Action* startFunction = createAction(); 
 	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
 	Token* start = getNextToken();
+	if (start == nullptr) { delete fct; return; }
 	while (getCurrentToken()->getPartner() != start) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			fct->addArgumentName(getCurrentToken()->getDescription());
 		}
-		getNextToken();
+		if (getNextToken() == nullptr) { delete fct; return; }
 	}
-	getNextToken();
+	if (getNextToken() == nullptr) { delete fct; return; }
 	startFunction->setCompilerToken(fct);
-	startFunction->setNextAction(new DoNothingAction());
+	startFunction->setNextAction(createDoNothing());
 	lastAction = startFunction->getNextAction();
 	FunctionSymbol* functionSymbol = currentSymbolTable->getFunctionSymbol(fct->getName(), fct->getArgumentNames().size());
 	functionSymbol->setStartAction(startFunction);
 	currentSymbolTable = functionSymbol->getSymbolTable();
 	compileCodeBlock();
+	if (hasFatalError) { return; }
 	currentSymbolTable = globalSymbolTable;
 	functionSymbol->setEndAction(lastAction);
 }
 
 void Compiler::addFunctionSignature()
 {
-	std::string name = getNextToken()->getDescription();
-	Token* start = getNextToken();
+	Token* fTok = getNextToken();
+	if (fTok == nullptr) return;
+	std::string name = fTok->getDescription();
+	if ((dTok = getNextToken()) == nullptr) return;
+	Token* start = dTok;
 	int params = 0;
 	while (getCurrentToken()->getPartner() != start) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			params++;
 		}
-		getNextToken();
+		if (getNextToken() == nullptr) return;
 	}
-	getNextToken();
-	currentSymbolTable->addFunctionSymbol(new FunctionSymbol(name, params, nullptr, nullptr, false));
+	if (getNextToken() == nullptr) return;
+	if(!currentSymbolTable->addFunctionSymbol(new FunctionSymbol(name, params, nullptr, nullptr, false)))
+		errorList.push_back(SymbolAlreadyExistsException(fTok->getLineNumber(), fTok->getLinePosition(), name, "Function"));
 }
 
 void Compiler::compileCodeBlock()
@@ -113,26 +124,29 @@ void Compiler::compileCodeBlock()
 		switch (getCurrentToken()->getTokenType()) {
 			case TokenType::WhileStatement:
 				compileWhile();
+				if (hasFatalError) return;
 				break;
 			case TokenType::IfStatement:
 				compileIf();
+				if (hasFatalError) return;
 				break;
 			case TokenType::Function:
-				throw new std::exception;
+				errorList.push_back(BaseException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), "Bad syntax exception, new Function not allowed here"));
 				break;
 			default:
 				compileStatement();
+				if (hasFatalError) return;
 				break;
 		}
 		if (last == lastAction){
-			getNextToken();
+			if (getNextToken() == nullptr) return;
 		}
 	}
 }
 
 void Compiler::compileStatement() 
 {
-	Action* statement = new Action();
+	Action* statement = createAction();
 	switch (getCurrentToken()->getTokenType()) {
 		case TokenType::Var:
 			statement = compileStatementVar(statement);
@@ -141,39 +155,43 @@ void Compiler::compileStatement()
 			statement = compileStatementName(statement);
 			break;
 		case TokenType::Return:
-			getNextToken();
+			if (getNextToken() == nullptr) return;
 			statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
+			if (hasFatalError) return;
 			break;
 		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
 			{
 				TokenType::TokenType op = getCurrentToken()->getTokenType();
-				VarCompilerToken* v = new VarCompilerToken(getNextToken()->getDescription());
+				if ((dTok = getNextToken()) == nullptr) return;
+				VarCompilerToken* v = new VarCompilerToken(dTok->getDescription());
 				v->setFrontOperator(op);
 				statement->setCompilerToken(v);
-				getNextToken();
+				if (getNextToken() == nullptr) return;
 				break;
 			}		
 	}
 	if (statement != nullptr && statement->getCompilerToken() != nullptr) {
 		lastAction->setNextAction(statement);
-		statement->setNextAction(new DoNothingAction());
+		statement->setNextAction(createDoNothing());
 		lastAction = statement->getNextAction();
 	}
 }
 
 void Compiler::compileWhile() 
 {
-	Action* condition = new Action();
+	Action* condition = createAction();
 	Action* begin = condition;
-	getNextToken();
+	if (getNextToken() == nullptr) return;
 	condition->setCompilerToken(compileCondition());
+	if (hasFatalError) return;
 	lastAction->setNextAction(condition);
-	DoNothingAction* onTrue = new DoNothingAction();
+	DoNothingAction* onTrue = createDoNothing();
 	condition->setNextAction(onTrue);
 	lastAction = onTrue;
 	compileCodeBlock();
+	if (hasFatalError) return;
 	lastAction->setNextAction(begin);
-	DoNothingAction* onFalse = new DoNothingAction();
+	DoNothingAction* onFalse = createDoNothing();
 	condition->setFalseAction(onFalse);
 	lastAction = onFalse;
 }
@@ -181,52 +199,59 @@ void Compiler::compileWhile()
 void Compiler::compileIf()
 {
 	Token* start = getCurrentToken();
-	Action* ifAction = new Action();
-	Action* end = new DoNothingAction();
-	getNextToken();
+	if (start == nullptr) return;
+	Action* ifAction = createAction();
+	Action* end = createDoNothing();
+	if (getNextToken() == nullptr) return;
 	ifAction->setCompilerToken(compileCondition());
-	ifAction->setNextAction(new DoNothingAction());
+	if (hasFatalError) return;
+	ifAction->setNextAction(createDoNothing());
 	lastAction->setNextAction(ifAction);
 	lastAction = ifAction->getNextAction();
 	compileCodeBlock();
+	if (hasFatalError) return;
 	lastAction->setNextAction(end);
 	if (start->getPartner() != nullptr && start->getPartner()->getTokenType() == TokenType::ElseStatement){
-		getNextToken();
+		if (getNextToken() == nullptr) return;
 		ifAction->setFalseAction(compileElse());
+		if (hasFatalError) return;
 	}
 	else{
 		ifAction->setFalseAction(end);
 	}
 	lastAction->setNextAction(end);
 	lastAction = end;
-	getNextToken();
+	if (getNextToken() == nullptr) return;
 }
 
 Action* Compiler::compileElse()
 {
-	DoNothingAction* elseAction = new DoNothingAction();
+	DoNothingAction* elseAction = createDoNothing();
 	lastAction = elseAction;
-	getNextToken();
+	if (getNextToken() == nullptr) return nullptr;
 	compileCodeBlock();
+	if (hasFatalError) return nullptr;
 	return elseAction;
 }
 
 ReturnValueCompilerToken* Compiler::compileReturnValue() 
 {
-	int openParenthisCounter = 0;
 	std::vector<TokenType::TokenType> endTypes = { TokenType::LineEnd, TokenType::ParameterOperator, TokenType::OpenBracket };
 	Token* cToken = getCurrentToken();
 	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
 	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end() && !(getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis && !rt->hasOpenParenthisOnStack())) {
 		if (cToken->getTokenType() == TokenType::Name){
 			compileReturnValueName(rt);
+			if (hasFatalError) { delete rt; return nullptr; }
 		}
 		else if (cToken->getTokenType() == TokenType::IncreaseOperator || cToken->getTokenType() == TokenType::DecreaseOperator){
 			compileReturnValueIncreaseDecrease(rt);
+			if (hasFatalError) { delete rt; return nullptr; }
 		}
 		else if (cToken->getParentType() == ParentType::MathOperator || cToken->getParentType() == ParentType::ConditionOperator || cToken->getParentType() == ParentType::SubConditionOperator
 			|| cToken->getTokenType() == TokenType::OpenParenthesis || cToken->getTokenType() == TokenType::ClosingParenthesis){
 			compileReturnValueMath(rt);
+			if (hasFatalError) { delete rt; return nullptr; }
 		}
 		else{
 			switch (cToken->getTokenType()){
@@ -241,6 +266,7 @@ ReturnValueCompilerToken* Compiler::compileReturnValue()
 			}
 		}
 		cToken = getNextToken();
+		if (cToken == nullptr) { delete rt; return nullptr; }
 	}
 	rt->completeRPNVector();
 	return rt;
@@ -252,54 +278,76 @@ ConditionCompilerToken* Compiler::compileCondition()
 	if (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis){
 		start = getCurrentToken();
 	}
-	getNextToken();
+	if (getNextToken() == nullptr) return nullptr;
 	ConditionCompilerToken* cct = new ConditionCompilerToken(compileReturnValue());
-	getNextToken();
+	if (hasFatalError) { delete cct; return nullptr; }
+	if (getNextToken() == nullptr) { delete cct; return nullptr; }
 	return cct;
 }
 
 FunctionCompilerToken* Compiler::compileFunctionCall() 
 {
-	FunctionCompilerToken* fct = new FunctionCompilerToken(getCurrentToken()->getDescription());
+	bool hasException = false;
+	if (!globalSymbolTable->hasFunctionSymbolWithName(getCurrentToken()->getDescription())) {
+		errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Function"));
+		hasException = true;
+	}
+	Token* fTok = getCurrentToken();
+	FunctionCompilerToken* fct = new FunctionCompilerToken(fTok->getDescription());
 	Token* start = getNextToken();
+	if (start == nullptr) { delete fct; return nullptr; }
 	while (getCurrentToken()->getPartner() != start) {
-		if (getNextToken()->getPartner() != start)
+		if ((dTok = getNextToken()) == nullptr) { delete fct; return nullptr; }
+		if (dTok->getPartner() != start) {
 			fct->addArgument(compileReturnValue());
+			if (hasFatalError) { delete fct; return nullptr; }
+		}
+	}
+	if (!hasException && globalSymbolTable->getFunctionSymbol(fct->getName(), fct->getArguments().size()) == nullptr) {
+		errorList.push_back(UndefinedSymbolException(fTok->getLineNumber(), fTok->getLinePosition(), fTok->getDescription(), "Function"));
 	}
 	return fct;
 }
 
 Action* Compiler::compileStatementVar(Action* statement) 
 {
-	std::string name = getNextToken()->getDescription();
-	if (getNextToken()->getTokenType() == TokenType::AssignmentOperator) {
-		getNextToken();
+	Token* sTok = getNextToken();
+	if (sTok == nullptr) return nullptr;
+	std::string name = sTok->getDescription();
+	if ((dTok = getNextToken()) == nullptr) return nullptr;
+	if (dTok->getTokenType() == TokenType::AssignmentOperator) {
+		if (getNextToken() == nullptr) return nullptr;
 		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), TokenType::AssignmentOperator));
+		if (hasFatalError) return nullptr;
 	}
 	else{
 		statement = nullptr;
 	}
-	if (currentSymbolTable->hasSymbol(name)){
-		throw new std::exception;
-	}
-	else{
-		currentSymbolTable->addSymbolToTable(name);
-	}
+	if(!currentSymbolTable->addSymbolToTable(name))
+		errorList.push_back(SymbolAlreadyExistsException(sTok->getLineNumber(), sTok->getLinePosition(), name, "Var"));
 	return statement;
 }
 
 Action* Compiler::compileStatementName(Action* statement) 
 {
-	std::string name = getCurrentToken()->getDescription();
-	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis){
+	Token* nTok = getCurrentToken();
+	std::string name = nTok->getDescription();
+	if ((dTok = peekNextToken()) == nullptr) return nullptr;
+	if (dTok->getTokenType() == TokenType::OpenParenthesis){
 		statement->setCompilerToken(compileFunctionCall());
+		if (hasFatalError) return nullptr;
 	}
-	else if (currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name)) {
-		TokenType::TokenType op = getNextToken()->getTokenType();
-		getNextToken();
+	else {
+		if (!(currentSymbolTable->hasSymbol(name) || globalSymbolTable->hasSymbol(name))) {
+			errorList.push_back(UndefinedSymbolException(nTok->getLineNumber(), nTok->getLinePosition(), name, "Var"));
+		}
+		if ((dTok = getNextToken()) == nullptr) return nullptr;
+		TokenType::TokenType op = dTok->getTokenType();
+		if (getNextToken() == nullptr) return nullptr;
 		switch (op) {
 			case TokenType::AssignmentOperator: case TokenType::AddThenAssignOperator: case TokenType::MinusThenAssignOperator: case TokenType::DivideThenAssignOperator: case TokenType::MultiplyThenAssignOperator:
 				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), op));
+				if (hasFatalError) return nullptr;
 				break;
 			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:{
 				VarCompilerToken* v = new VarCompilerToken(name);
@@ -314,13 +362,19 @@ Action* Compiler::compileStatementName(Action* statement)
 
 void Compiler::compileReturnValueName(ReturnValueCompilerToken* rt)
 {
-	if (peekNextToken()->getTokenType() == TokenType::OpenParenthesis){
+	if ((dTok = peekNextToken()) == nullptr) return;
+	if (dTok->getTokenType() == TokenType::OpenParenthesis){
 		rt->addValueToVector(compileFunctionCall());
+		if (hasFatalError) return;
 	}
 	else {
+		if (!(currentSymbolTable->hasSymbol(getCurrentToken()->getDescription()) || globalSymbolTable->hasSymbol(getCurrentToken()->getDescription()))) {
+			errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Var"));
+		}
 		VarCompilerToken* v = new VarCompilerToken(getCurrentToken()->getDescription());
-		if (peekNextToken()->getTokenType() == TokenType::IncreaseOperator || peekNextToken()->getTokenType() == TokenType::DecreaseOperator){
-			v->setBackOperator(getNextToken()->getTokenType());
+		if (dTok->getTokenType() == TokenType::IncreaseOperator || dTok->getTokenType() == TokenType::DecreaseOperator){
+			if (getNextToken() == nullptr) { delete v; return; }
+			v->setBackOperator(dTok->getTokenType());
 		}
 		rt->addValueToVector(v);
 	}
@@ -328,7 +382,8 @@ void Compiler::compileReturnValueName(ReturnValueCompilerToken* rt)
 
 void Compiler::compileReturnValueIncreaseDecrease(ReturnValueCompilerToken* rt) 
 {
-	VarCompilerToken* v = new VarCompilerToken(peekNextToken()->getDescription());
+	if ((dTok = peekNextToken()) == nullptr) return;
+	VarCompilerToken* v = new VarCompilerToken(dTok->getDescription());
 	v->setFrontOperator(getCurrentToken()->getTokenType());
 	rt->addValueToVector(v);
 	getNextToken();
@@ -392,7 +447,14 @@ Token* Compiler::getCurrentToken()
 }
 Token* Compiler::getNextToken()
 { 
-	return (tokenIter != tokenList.end()) ? *++tokenIter : nullptr; 
+	Token* tmp = (++tokenIter != tokenList.end()) ? *tokenIter : nullptr;
+	if (tmp == nullptr) {
+		Token* last = *--tokenIter;
+		errorList.push_back(UnexpectedEndOfFileException(last->getLineNumber(), last->getLinePosition(), last->getSyntaxID(), last->getDescription()));
+		++tokenIter;
+		hasFatalError = true;
+	}
+	return tmp;
 }
 
 Token* Compiler::peekNextToken() 
@@ -415,6 +477,22 @@ Action* Compiler::getFirstAction()
 SymbolTable* Compiler::getSymbolTable() 
 { 
 	return globalSymbolTable; 
+}
+
+const std::vector<BaseException>& Compiler::getErrorList() {
+	return errorList;
+}
+
+Action* Compiler::createAction() {
+	Action* a = new Action();
+	actions.push_back(a);
+	return a;
+}
+
+DoNothingAction* Compiler::createDoNothing() {
+	DoNothingAction* a = new DoNothingAction();
+	actions.push_back(a);
+	return a;
 }
 
 std::vector<std::string> Compiler::getAllFunctionAndVariableNames()

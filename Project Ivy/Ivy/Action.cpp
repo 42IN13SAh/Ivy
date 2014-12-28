@@ -35,6 +35,9 @@ void Action::setCompilerToken(CompilerToken* ct)
 
 Action::~Action()
 {
+	/*if (nextAction != nullptr) delete nextAction;
+	if (onFalseAction != nullptr) delete onFalseAction;*/
+	
 	if (compilerToken != nullptr){
 		delete compilerToken;
 	}

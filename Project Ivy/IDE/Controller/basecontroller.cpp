@@ -60,32 +60,21 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 	}
 
 	compiler = new Compiler(tokenizer->getTokenList());
-
-	try
-	{
-		compiler->compile();
-		makeCompleterModel(compiler->getAllFunctionAndVariableNames());
-	}
-	catch (std::exception& e)
-	{
+	compiler->compile();
+	makeCompleterModel(compiler->getAllFunctionAndVariableNames());
+	if (compiler->getErrorList().size() > 0) {
 		buildSucceeded = false;
-
-		makeCompleterModel(compiler->getAllFunctionAndVariableNames());
 
 		if (showConsoleOutput) {
 			std::cout << "Compile time error(s) found. See the Errors tab for specific infomation.";
 			std::cout << "Build failed.";
 		}
 
-		emit addError(0, 0, QString(e.what())); //TODO: fix when compiler has better errorhandling
-
-		if (onlyBuild)
-		{
-			delete tokenizer;
-			delete compiler;
+		for each(BaseException e in compiler->getErrorList()) {
+			emit addError(e.getLineNumber(), e.getLinePosition(), e.what());
 		}
 
-		compiler = nullptr;
+		delete compiler;
 		return buildSucceeded;
 	}
 
