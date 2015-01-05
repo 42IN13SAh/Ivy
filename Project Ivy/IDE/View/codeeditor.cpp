@@ -268,62 +268,49 @@ void CodeEditor::autocomplete(QKeyEvent *e)
 	{
 	case Qt::Key_BraceLeft: // {
 	{
-								QString currentLine = getCurrentLine(this->textCursor());
-								insertPlainText("\n" + getLineToInsert(currentLine) + "\t" + getLineToInsert(currentLine) + "\n}");
-								QTextCursor oldCursor = this->textCursor();
-								oldCursor.movePosition(QTextCursor::Up, QTextCursor::MoveAnchor, 1);
-								oldCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 1);
-								this->setTextCursor(oldCursor);
-								break;
+		QString currentLine = getCurrentLine(this->textCursor());
+		insertPlainText("\n" + getLineToInsert(currentLine) + "\t\n" + getLineToInsert(currentLine) + "}");
+		QTextCursor oldCursor = this->textCursor();
+		oldCursor.movePosition(QTextCursor::Up, QTextCursor::MoveAnchor, 1);
+		oldCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(oldCursor);
+		break;
 	}
 	case Qt::Key_ParenLeft: // (
 	{
-								insertPlainText(")");
-								QTextCursor oldCursor = this->textCursor();
-								oldCursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
-								this->setTextCursor(oldCursor);
-								break;
+		insertPlainText(")");
+		QTextCursor oldCursor = this->textCursor();
+		oldCursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(oldCursor);
+		break;
 	}
 	case Qt::Key_Return:
 	{
-								QTextCursor oldCursor = this->textCursor();
-								QString currentLine = getCurrentLine(oldCursor, -1);
-								if (currentLine.endsWith("{"))
-								{
-									insertPlainText(getLineToInsert(currentLine) + "\t");
-								}
-								else
-								{
-									insertPlainText(getLineToInsert(currentLine));
-								}
-								break;
+		QTextCursor oldCursor = this->textCursor();
+		QString currentLine = getCurrentLine(oldCursor, -1);
+		if (currentLine.endsWith("{"))
+		{
+			insertPlainText(getLineToInsert(currentLine) + "\t");
+		}
+		else
+		{
+			insertPlainText(getLineToInsert(currentLine));
+		}
+		break;
 	}
 	default:
 		break;
 	}
 }
 
-//startPos needs to be -1 when pressing return, this way you get the previous line
-QString CodeEditor::getCurrentLine(QTextCursor cursor, int startCount)
+//extraLines needs to be -1 when pressing return, this way you get the previous line
+QString CodeEditor::getCurrentLine(QTextCursor cursor, int extraLines)
 {
-	int lineNumber = startCount;
-	while (cursor.positionInBlock() > 0)
-	{
-		cursor.movePosition(QTextCursor::Up);
-		lineNumber++;
-	}
-	QTextBlock block = cursor.block().previous();
+	int lineNumber = cursor.blockNumber() + extraLines;
 
-	while (block.isValid())
-	{
-		lineNumber += block.lineCount();
-		block = block.previous();
-	}
+	std::vector<std::string> lines = getEditorContent();
 
-	QString plainTextEditContents = this->toPlainText();
-	QStringList lines = plainTextEditContents.split("\n");
-
-	return lines[lineNumber];
+	return QString::fromStdString(lines[lineNumber]);
 }
 
 QString CodeEditor::getLineToInsert(QString line)

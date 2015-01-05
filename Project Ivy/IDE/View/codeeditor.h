@@ -50,7 +50,7 @@ private:
 	QCompleter *completer;
 
 	void autocomplete(QKeyEvent *e);
-	QString getCurrentLine(QTextCursor cursor, int startCount = 0);
+	QString getCurrentLine(QTextCursor cursor, int extraLines = 0);
 	QString getLineToInsert(QString line);
 };
 
