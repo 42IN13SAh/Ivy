@@ -56,6 +56,9 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 		}
 
 		delete tokenizer;
+
+		emit finishedBuilding();
+
 		return buildSucceeded;
 	}
 
@@ -75,6 +78,9 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 		}
 
 		delete compiler;
+
+		emit finishedBuilding();
+
 		return buildSucceeded;
 	}
 
@@ -87,6 +93,8 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 		delete compiler;
 		delete tokenizer;
 	}
+
+	emit finishedBuilding();
 
 	return buildSucceeded;
 }

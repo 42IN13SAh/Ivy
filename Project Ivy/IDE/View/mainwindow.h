@@ -29,6 +29,7 @@ public:
 	QString getCurrentWindowTitle();
 	const QString const getDefaultWindowTitle() { return tr("Ivy IDE"); }
 	void setAndSaveWindowTitle(QString windowTitle);
+	void setFocusOnEditor();
 
 	public slots:
 	void about();
@@ -40,6 +41,7 @@ public:
 	void onClearBeforeBuilding();
 	void onAddError(int, int, QString);
 	void onSetCompleterModel(QList<QString>);
+	void onFinishedBuilding();
 
 private:
 	void setupEditor();

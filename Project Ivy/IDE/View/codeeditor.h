@@ -46,6 +46,11 @@ private:
 	MainWindow *source;
 	KeyInputController *keyInputController;
 	QCompleter *completer;
+
+	void autocomplete(QKeyEvent *e);
+	QString getCurrentLine(QTextCursor cursor, int extraLines = 0);
+	QString getLineToInsert(QString line);
+
 };
 
 

@@ -82,6 +82,7 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 void CodeEditor::underlineError(int lineNumber, int linePosition)
 {
 	QTextCursor cursor = this->textCursor();
+	QTextCursor oldCursor = this->textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
 	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
@@ -100,12 +101,13 @@ void CodeEditor::underlineError(int lineNumber, int linePosition)
 	setTextCursor(cursor);
 
 	setCurrentCharFormat(defcharfmt);
+	setTextCursor(oldCursor);
 }
 
 void CodeEditor::clearUnderlines()
 {
 	QTextCursor cursor = this->textCursor();
-	QTextCursor oldCursor = cursor;
+	QTextCursor oldCursor = this->textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
 	setTextCursor(cursor);
@@ -200,6 +202,7 @@ std::vector<std::string> CodeEditor::getEditorContent()
 void CodeEditor::defaultKeyPressEvent(QKeyEvent *e)
 {
 	QPlainTextEdit::keyPressEvent(e);
+	autocomplete(e);
 }
 
 void CodeEditor::setKeyInputController(KeyInputController *keyInputController){
@@ -260,4 +263,75 @@ void CodeEditor::keyPressEvent(QKeyEvent* e)
 	QRect cr = cursorRect();
 	cr.setWidth(completer->popup()->sizeHintForColumn(0) + completer->popup()->verticalScrollBar()->sizeHint().width());
 	completer->complete(cr); // popup it up!
+}
+
+void CodeEditor::autocomplete(QKeyEvent *e)
+{
+	switch (e->key())
+	{
+	case Qt::Key_BraceLeft: // {
+	{
+		QString currentLine = getCurrentLine(this->textCursor());
+		insertPlainText("\n" + getLineToInsert(currentLine) + "\t\n" + getLineToInsert(currentLine) + "}");
+		QTextCursor oldCursor = this->textCursor();
+		oldCursor.movePosition(QTextCursor::Up, QTextCursor::MoveAnchor, 1);
+		oldCursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(oldCursor);
+		break;
+	}
+	case Qt::Key_ParenLeft: // (
+	{
+		insertPlainText(")");
+		QTextCursor oldCursor = this->textCursor();
+		oldCursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
+		this->setTextCursor(oldCursor);
+		break;
+	}
+	case Qt::Key_Return:
+	{
+		QTextCursor oldCursor = this->textCursor();
+		QString currentLine = getCurrentLine(oldCursor, -1);
+		if (currentLine.endsWith("{"))
+		{
+			insertPlainText(getLineToInsert(currentLine) + "\t");
+		}
+		else
+		{
+			insertPlainText(getLineToInsert(currentLine));
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+//extraLines needs to be -1 when pressing return, this way you get the previous line
+QString CodeEditor::getCurrentLine(QTextCursor cursor, int extraLines)
+{
+	int lineNumber = cursor.blockNumber() + extraLines;
+
+	std::vector<std::string> lines = getEditorContent();
+
+	return QString::fromStdString(lines[lineNumber]);
+}
+
+QString CodeEditor::getLineToInsert(QString line)
+{
+	QString lineToInsert;
+	while (line.startsWith("\t") || line.startsWith(" "))
+	{
+		if (line.startsWith("\t"))
+		{
+			lineToInsert.append("\t");
+		}
+		else
+		{
+			lineToInsert.append(" ");
+		}
+
+		line.remove(0, 1);
+	}
+
+	return lineToInsert;
 }
