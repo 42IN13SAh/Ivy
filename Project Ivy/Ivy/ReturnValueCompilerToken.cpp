@@ -8,6 +8,7 @@ ReturnValueCompilerToken::ReturnValueCompilerToken()
 
 ReturnValueCompilerToken::~ReturnValueCompilerToken()
 {
+	// TODO: delete pointers in rpnvector;
 }
 
 void ReturnValueCompilerToken::addValueToVector(boost::any value)

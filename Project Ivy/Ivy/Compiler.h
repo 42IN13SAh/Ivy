@@ -14,6 +14,11 @@
 #include "ConditionCompilerToken.h"
 #include "ReturnCompilerToken.h"
 
+// Exceptions
+#include "UnexpectedEndOfFileException.h"
+#include "SymbolAlreadyExistsException.h"
+#include "UndefinedSymbolException.h"
+
 class Compiler
 {
 public:
@@ -22,13 +27,20 @@ public:
 	void compile();
 	Action* getFirstAction();
 	SymbolTable* getSymbolTable();
+	const std::vector<BaseException>& getErrorList();
+	std::vector<std::string> getAllFunctionAndVariableNames();
 private:
+	bool hasFatalError;
+	Token* dTok;
+	std::vector<BaseException> errorList;
 	std::list<Token*> tokenList;
 	Action* firstAction;
 	Action* lastAction;
 	SymbolTable* globalSymbolTable;
 	SymbolTable* currentSymbolTable;
 	std::list<Token*>::iterator tokenIter;
+	std::vector<Action*> actions;
+
 	void compileFunction();
 	void addFunctionSignature();
 	void compileCodeBlock();
@@ -50,5 +62,7 @@ private:
 	Token* peekNextToken();
 	void resetTokenIter();
 	void addInternalFunctions();
+	Action* createAction();
+	DoNothingAction* createDoNothing();
 };
 

@@ -82,6 +82,7 @@
     <ClInclude Include="Cos.h" />
     <ClInclude Include="DoNothingAction.h" />
     <ClInclude Include="ExceptionCodes.h" />
+    <ClInclude Include="BadMatchException.h" />
     <ClInclude Include="FormatString.h" />
     <ClInclude Include="FunctionCompilerToken.h" />
     <ClInclude Include="FunctionSymbol.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="SummonSupremeCommander.h" />
     <ClInclude Include="SummonSupremeLord.h" />
     <ClInclude Include="Symbol.h" />
+    <ClInclude Include="SymbolAlreadyExistsException.h" />
     <ClInclude Include="SymbolTable.h" />
     <ClInclude Include="SymbolTableItemsToBeDeleted.h" />
     <ClInclude Include="Syntax.h" />
@@ -114,6 +116,9 @@
     <ClInclude Include="Token.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="TokenType.h" />
+    <ClInclude Include="TypeMismatchException.h" />
+    <ClInclude Include="UndefinedSymbolException.h" />
+    <ClInclude Include="UnexpectedEndOfFileException.h" />
     <ClInclude Include="VarCompilerToken.h" />
     <ClInclude Include="VectorUtils.h" />
     <ClInclude Include="VirtualMachine.h" />
@@ -122,7 +127,6 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="AssignCompilerToken.cpp" />
-    <ClCompile Include="BadSyntaxException.cpp" />
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="CompilerToken.cpp" />
     <ClCompile Include="ConditionCompilerToken.cpp" />
@@ -136,13 +140,11 @@
     <ClCompile Include="Invert.cpp" />
     <ClCompile Include="Jzon.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="PartnerNotFoundException.cpp" />
     <ClCompile Include="Pow.cpp" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="ReadFile.cpp" />
     <ClCompile Include="ReadFileLines.cpp" />
-    <ClCompile Include="ReservedKeyWordException.cpp" />
     <ClCompile Include="ReturnCompilerToken.cpp" />
     <ClCompile Include="ReturnValueCompilerToken.cpp" />
     <ClCompile Include="SaveFile.cpp" />

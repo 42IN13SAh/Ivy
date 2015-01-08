@@ -1,12 +1,15 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "BaseException.h"
+#include "BadMatchException.h"
 #include "VectorUtils.h"
-class BadSyntaxException : public BaseException
+
+class BadSyntaxException : public BadMatchException
 {
 public:
 
-	BadSyntaxException(int lnr, int lps, std::vector<std::string> followUps, std::string);
-	~BadSyntaxException();
+	BadSyntaxException(int lnr, int lps, int sid, std::string token) : BadMatchException(lnr, lps, sid) {
+		exceptionMessage = "Bad syntax on linenumber " + std::to_string(lnr) + " and lineposition " + std::to_string(lps) + " after '" + token + "' possible followups: '" + VectorUtils::JoinVector(getFollowUps(sid), "' '") + "'";
+	}
+	~BadSyntaxException() {}
 };

@@ -17,6 +17,6 @@ namespace TokenType
 		"or", "<=", ">=", "<", ">",
 		"=", "+=", "++", "--", "+",
 		"*=", "-=", "/=", "-", "/", "*",
-		"%", "Undefined", ";", "function", "var", "return", "#", ",", "Number", "String", "true", "false", "Name"
+		"%", "none", ";", "function", "var", "return", "#", ",", "Number", "String", "true", "false", "Name"
 	};
 };

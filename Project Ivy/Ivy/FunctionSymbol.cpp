@@ -13,16 +13,17 @@ FunctionSymbol::FunctionSymbol(std::string name, int argNr, Action* startAction,
 
 FunctionSymbol::~FunctionSymbol()
 {
-	if (!this->isInternal()){ 
+	if (!this->isInternal() && startAction != nullptr && endAction != nullptr){ 
+		//delete startAction;
 		Action *currentActionPtr = this->startAction;
 		Action *nextActionPtr = currentActionPtr->getNextAction();
 		Action *onFalseActionPtr;
 		while (nextActionPtr != nullptr && nextActionPtr != this->endAction){
 			nextActionPtr = currentActionPtr->getNextAction();
 			onFalseActionPtr = currentActionPtr->getFalseAction();
-			delete currentActionPtr;
+			//delete currentActionPtr; // Crash on while actions, goes back to begin which is already deleted, use compiler actions list to fix this
 			if (onFalseActionPtr != nullptr){
-				delete onFalseActionPtr;
+				//delete onFalseActionPtr;
 			}
 			currentActionPtr = nextActionPtr;
 		}
@@ -52,6 +53,10 @@ std::string FunctionSymbol::getName()
 int FunctionSymbol::getArgumentNr() 
 { 
 	return argNr; 
+}
+
+void FunctionSymbol::setArgumentNr(const int& args) {
+	argNr = args;
 }
 
 void FunctionSymbol::setStartAction(Action* startAction) 

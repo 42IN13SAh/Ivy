@@ -8,6 +8,9 @@
 #include "Compiler.h"
 #include "TokenType.h"
 
+// Exceptions
+#include "TypeMismatchException.h"
+
 class VirtualMachine
 {
 public:
