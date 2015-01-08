@@ -2,8 +2,15 @@
 
 void Invert::Execute(std::vector<boost::any> arglist)
 {
-	double a = boost::any_cast<double>(arglist[0]);
-	Result = -a;
+	if (number(arglist[0])){
+		return;
+	}
+	if (boolean(arglist[0])){
+		return;
+	}
+	if (string(arglist[0])){
+		return;
+	}
 }
 
 boost::any Invert::GetResult()
@@ -13,4 +20,41 @@ boost::any Invert::GetResult()
 
 Invert::~Invert()
 {
+}
+
+bool Invert::number(boost::any value)
+{
+	try{
+		double a = boost::any_cast<double>(value);
+		Result = -a;
+		return true;
+	}
+	catch (std::exception& e){
+		return false;
+	}
+}
+
+bool Invert::boolean(boost::any value)
+{
+	try{
+		bool a = boost::any_cast<bool>(value);
+		Result = !a;
+		return true;
+	}
+	catch (std::exception& e){
+		return false;
+	}
+}
+
+bool Invert::string(boost::any value)
+{
+	try{
+		std::string a = boost::any_cast<std::string>(value);
+		std::reverse(a.begin(), a.end());
+		Result = a;
+		return true;
+	}
+	catch (std::exception& e){
+		return false;
+	}
 }

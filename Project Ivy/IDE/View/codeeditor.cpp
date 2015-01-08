@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include "codeeditor.h"
 #include "mainwindow.h"
+#include "KeyInputController.h"
 
 QStringList CodeEditor::defaultKeywords;
 
@@ -81,6 +82,7 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 void CodeEditor::underlineError(int lineNumber, int linePosition)
 {
 	QTextCursor cursor = this->textCursor();
+	QTextCursor oldCursor = this->textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
 	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
@@ -99,12 +101,13 @@ void CodeEditor::underlineError(int lineNumber, int linePosition)
 	setTextCursor(cursor);
 
 	setCurrentCharFormat(defcharfmt);
+	setTextCursor(oldCursor);
 }
 
 void CodeEditor::clearUnderlines()
 {
 	QTextCursor cursor = this->textCursor();
-	QTextCursor oldCursor = cursor;
+	QTextCursor oldCursor = this->textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
 	setTextCursor(cursor);

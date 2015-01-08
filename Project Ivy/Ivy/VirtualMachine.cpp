@@ -169,7 +169,7 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 	if (value.type() == typeid(ExceptionCodes)) {
 		value = globalSymbolTable->getValue(compilerToken->getName());
 		if (value.type() == typeid(ExceptionCodes)){
-			throw std::exception();
+			throw std::exception(); // Check exceptioncode and give exception
 		}
 	}
 	TokenType::TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
@@ -210,7 +210,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			if (exBool(left, right, op, resultStack)){
 				continue;
 			}
-			throw std::exception();
+			throw TypeMismatchException(); // Invalid value type expected 2 of the same types
 		}
 		else{
 			if (value.type() == typeid(VarCompilerToken*)){
@@ -223,7 +223,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			resultStack.push(value);
 		}
 	}
-	return resultStack.top();
+	return resultStack.top(); // Error on empty stack (Code: return;)
 }
 
 bool VirtualMachine::exString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
@@ -280,7 +280,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::Toke
 		resultStack.push(lDouble / rDouble);
 		break;
 	case TokenType::ModuloOperator:
-		resultStack.push((int)lDouble % (int)rDouble);
+		resultStack.push((double)((int)lDouble % (int)rDouble));
 		break;
 	case TokenType::IsStatement:
 		resultStack.push(lDouble == rDouble);

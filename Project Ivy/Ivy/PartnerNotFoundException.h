@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "BaseException.h"
+#include "BadMatchException.h"
 #include "VectorUtils.h"
-class PartnerNotFoundException : public BaseException
+
+class PartnerNotFoundException : public BadMatchException
 {
 public:
-	PartnerNotFoundException(int lineNumber, int linePosition, std::vector<std::string> followUps, std::string token);
-	virtual ~PartnerNotFoundException();
+	PartnerNotFoundException(int lineNumber, int linePosition, int sid, std::string token) : BadMatchException(lineNumber, linePosition, sid) {
+		exceptionMessage = "Partner not found for token \"" + token + "\" on linenumber " + std::to_string(lineNumber) + " and lineposition " + std::to_string(linePosition) + ", possible partners: '" + VectorUtils::JoinVector(getPartners(sid), "' '") + "'";
+	}
+	virtual ~PartnerNotFoundException() {}
 };

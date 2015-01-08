@@ -5,14 +5,12 @@
 #include <QObject>
 #include <QCompleter>
 
-#include "KeyInputController.h"
-
 class QPaintEvent;
 class QResizeEvent;
 class QSize;
 class QWidget;
 class MainWindow;
-
+class KeyInputController;
 class LineNumberArea;
 
 class CodeEditor : public QPlainTextEdit
@@ -52,6 +50,7 @@ private:
 	void autocomplete(QKeyEvent *e);
 	QString getCurrentLine(QTextCursor cursor, int extraLines = 0);
 	QString getLineToInsert(QString line);
+
 };
 
 

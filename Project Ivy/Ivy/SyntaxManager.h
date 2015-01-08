@@ -17,6 +17,8 @@ public:
 	std::map<int, Syntax*>* getSyntaxMap();
 	Syntax* getSyntax(int id);
 	bool hasKeyWord(std::string keyWord);
+
+	static SyntaxManager* Instance() { static SyntaxManager instance; return &instance; }
 private:
 	std::vector<std::string> reservedKeyWords;
 	std::map<int, Syntax*> syntaxMap;

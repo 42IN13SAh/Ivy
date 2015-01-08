@@ -17,28 +17,32 @@ SymbolTable::~SymbolTable()
 }
 
 
-void SymbolTable::addSymbolToTable(std::string name)
+bool SymbolTable::addSymbolToTable(std::string name)
 {
 	for each (Symbol* symbol in symbols)
 	{
 		if (symbol->getName() == name)
 		{
-			throw new std::exception;
+			//throw new std::exception;
+			return false;
 		}
 	}
 	symbols.push_back(new Symbol(name));
+	return true;
 }
 
-void SymbolTable::addSymbolToTable(std::string name, boost::any value)
+bool SymbolTable::addSymbolToTable(std::string name, boost::any value)
 {
 	for each (Symbol* symbol in symbols)
 	{
 		if (symbol->getName() == name)
 		{
-			throw new std::exception;
+			//throw new std::exception;
+			return false;
 		}
 	}
 	symbols.push_back(new Symbol(name, value));
+	return true;
 }
 
 
@@ -72,17 +76,24 @@ boost::any SymbolTable::getValue(std::string name)
 		if (symbol->getName() == name)
 			return symbol->getValue();
 	}
-	return ExceptionCodes::NotFound;
+	return ExceptionCodes::VarNotFound;
 }
 
-void SymbolTable::addFunctionSymbol(FunctionSymbol* fs) 
+bool SymbolTable::addFunctionSymbol(FunctionSymbol* fs) 
 {
 	if (getFunctionSymbol(fs->getName(), fs->getArgumentNr()) == nullptr) {
 		fSymbols.push_back(fs);
+		return true;
 	}
-	else {
-		throw new std::exception;
+	return false;
+}
+
+bool SymbolTable::hasFunctionSymbolWithName(std::string name) {
+	for each(FunctionSymbol* fs in fSymbols) {
+		if (fs->getName() == name)
+			return true;
 	}
+	return false;
 }
 
 FunctionSymbol* SymbolTable::getFunctionSymbol(std::string name, int argNr) 

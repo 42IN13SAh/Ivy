@@ -9,5 +9,8 @@ public:
 	virtual boost::any GetResult();
 private:
 	boost::any Result;
+	bool number(boost::any value);
+	bool string(boost::any value);
+	bool boolean(boost::any value);
 };
 

@@ -14,7 +14,6 @@ KeyInputController::KeyInputController(MainWindow *mainWindow) : BaseController(
  *  Supproted Keystrokes:
  *      - F6 -			Start tokenizing & compiling
  *      - F5 -			Start tokenizing, compiling and running
- *		- ctrl + s -	Save the current source code to a local file
  *
  *  @brief KeyInputController::handleKeyPressEvent Handles all key-presses that have non-default behaviour
  *	@param event The caught key event
@@ -34,17 +33,6 @@ void KeyInputController::handleKeyPressEvent(QKeyEvent *event, MainWindow *mainW
 			startRunning();
 		});
 		break;
-	case Qt::Key_S:{
-		if (QApplication::keyboardModifiers() == Qt::ControlModifier){ //note for future: never use event->modifiers(); it's unreliable 
-			this->saveCurrentCodeToExistingFile(this->mainWindow); //since parameter mainWindow can be a nullptr, and this is just for dialog placement
-		}
-		else
-		{
-			//S was pressed, bu no control along with it: pass it as a default event
-			defaultEventOccured(event, mainWindow, editor);
-		}
-		break;
-	}
 	default:
 		defaultEventOccured(event, mainWindow, editor);
 		break;

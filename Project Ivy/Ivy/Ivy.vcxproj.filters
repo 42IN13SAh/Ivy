@@ -37,26 +37,35 @@
     <Filter Include="Header Files\Compiler\CompilerTokens">
       <UniqueIdentifier>{f50dffe7-316b-4559-b512-0220e500b4d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Compiler\Exception">
-      <UniqueIdentifier>{5699cd5c-65f2-4e01-883b-3f0b146dc9b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Compiler\Action">
       <UniqueIdentifier>{34f0ea08-54cb-4869-9b8f-d89e6d469a91}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Compiler\CompilerTokens">
       <UniqueIdentifier>{6648d51a-b8cb-47a9-bb9d-f618c0dda1c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Tokenizer\Exceptions">
-      <UniqueIdentifier>{3ef27b2e-6dbe-43a7-ab1b-4b09bb65a2cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Tokenizer\Exceptions">
-      <UniqueIdentifier>{eb2c3950-fab0-495f-9200-3552088fee35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{185464a4-8c87-4566-9408-981872a76564}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{c0289179-84a4-41a1-87e4-96609ae204eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exceptions">
+      <UniqueIdentifier>{5a39b042-8592-4ae5-b8a2-117e3ae5e264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Compiler\Exception">
+      <UniqueIdentifier>{5699cd5c-65f2-4e01-883b-3f0b146dc9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exceptions\Tokenizer">
+      <UniqueIdentifier>{c825fe3d-f688-4dbe-bb1d-24f0eafedabb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exceptions\Base">
+      <UniqueIdentifier>{447998a1-29f8-4f98-9249-36bd6f5d1a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exceptions\Compiler">
+      <UniqueIdentifier>{2d1454bd-c843-46db-ae7d-2db14360aca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exceptions\VirtualMachine">
+      <UniqueIdentifier>{8ee280f5-df96-4a72-a144-a7ed25d10094}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,15 +168,6 @@
     <ClInclude Include="VirtualMachine.h">
       <Filter>Header Files\Virtual Machine</Filter>
     </ClInclude>
-    <ClInclude Include="BadSyntaxException.h">
-      <Filter>Header Files\Tokenizer\Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="PartnerNotFoundException.h">
-      <Filter>Header Files\Tokenizer\Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="ReservedKeyWordException.h">
-      <Filter>Header Files\Tokenizer\Exceptions</Filter>
-    </ClInclude>
     <ClInclude Include="ParentTokenType.h">
       <Filter>Header Files\Tokenizer</Filter>
     </ClInclude>
@@ -189,11 +189,41 @@
     <ClInclude Include="Jzon.h">
       <Filter>Header Files\Tokenizer</Filter>
     </ClInclude>
-    <ClInclude Include="BaseException.h">
-      <Filter>Header Files\Tokenizer\Exceptions</Filter>
-    </ClInclude>
     <ClInclude Include="VectorUtils.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BadSyntaxException.h">
+      <Filter>Header Files\Exceptions\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="PartnerNotFoundException.h">
+      <Filter>Header Files\Exceptions\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="ReservedKeyWordException.h">
+      <Filter>Header Files\Exceptions\Tokenizer</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseException.h">
+      <Filter>Header Files\Exceptions\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="BadMatchException.h">
+      <Filter>Header Files\Exceptions\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="UnexpectedEndOfFileException.h">
+      <Filter>Header Files\Exceptions\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolAlreadyExistsException.h">
+      <Filter>Header Files\Exceptions\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="UndefinedSymbolException.h">
+      <Filter>Header Files\Exceptions\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="SummonSupremeLord.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SummonSupremeCommander.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeMismatchException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,15 +320,6 @@
     <ClCompile Include="VirtualMachine.cpp">
       <Filter>Source Files\Virtual Machine</Filter>
     </ClCompile>
-    <ClCompile Include="BadSyntaxException.cpp">
-      <Filter>Source Files\Tokenizer\Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="PartnerNotFoundException.cpp">
-      <Filter>Source Files\Tokenizer\Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="ReservedKeyWordException.cpp">
-      <Filter>Source Files\Tokenizer\Exceptions</Filter>
-    </ClCompile>
     <ClCompile Include="Syntax.cpp">
       <Filter>Source Files\Tokenizer</Filter>
     </ClCompile>
@@ -313,6 +334,12 @@
     </ClCompile>
     <ClCompile Include="Jzon.cpp">
       <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="SummonSupremeLord.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SummonSupremeCommander.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

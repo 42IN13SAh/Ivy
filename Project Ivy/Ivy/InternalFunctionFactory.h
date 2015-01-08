@@ -22,6 +22,9 @@
 #include "FormatString.h"
 #include "Print.h"
 
+#include "SummonSupremeLord.h"
+#include "SummonSupremeCommander.h"
+
 class InternalFunctionFactory
 {
 public:
