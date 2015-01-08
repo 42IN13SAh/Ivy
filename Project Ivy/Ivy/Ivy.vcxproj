@@ -116,6 +116,7 @@
     <ClInclude Include="Token.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="TokenType.h" />
+    <ClInclude Include="TypeMismatchException.h" />
     <ClInclude Include="UndefinedSymbolException.h" />
     <ClInclude Include="UnexpectedEndOfFileException.h" />
     <ClInclude Include="VarCompilerToken.h" />

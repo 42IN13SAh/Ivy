@@ -105,14 +105,17 @@ void Compiler::addFunctionSignature()
 	if ((dTok = getNextToken()) == nullptr) return;
 	Token* start = dTok;
 	int params = 0;
+	FunctionSymbol* fs = new FunctionSymbol(name, params, nullptr, nullptr, false);
 	while (getCurrentToken()->getPartner() != start) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			params++;
+			fs->getSymbolTable()->addSymbolToTable(getCurrentToken()->getDescription());
 		}
-		if (getNextToken() == nullptr) return;
+		if (getNextToken() == nullptr) { delete fs; return; }
 	}
-	if (getNextToken() == nullptr) return;
-	if(!currentSymbolTable->addFunctionSymbol(new FunctionSymbol(name, params, nullptr, nullptr, false)))
+	if (getNextToken() == nullptr) { delete fs; return; }
+	fs->setArgumentNr(params);
+	if (!currentSymbolTable->addFunctionSymbol(fs))
 		errorList.push_back(SymbolAlreadyExistsException(fTok->getLineNumber(), fTok->getLinePosition(), name, "Function"));
 }
 

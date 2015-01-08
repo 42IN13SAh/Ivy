@@ -64,6 +64,9 @@
     <Filter Include="Header Files\Exceptions\Compiler">
       <UniqueIdentifier>{2d1454bd-c843-46db-ae7d-2db14360aca8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Exceptions\VirtualMachine">
+      <UniqueIdentifier>{8ee280f5-df96-4a72-a144-a7ed25d10094}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h">
@@ -212,12 +215,15 @@
     </ClInclude>
     <ClInclude Include="UndefinedSymbolException.h">
       <Filter>Header Files\Exceptions\Compiler</Filter>
-	</ClInclude>  
+    </ClInclude>
     <ClInclude Include="SummonSupremeLord.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="SummonSupremeCommander.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeMismatchException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

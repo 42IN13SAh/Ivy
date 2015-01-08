@@ -55,6 +55,10 @@ int FunctionSymbol::getArgumentNr()
 	return argNr; 
 }
 
+void FunctionSymbol::setArgumentNr(const int& args) {
+	argNr = args;
+}
+
 void FunctionSymbol::setStartAction(Action* startAction) 
 { 
 	this->startAction = startAction;
