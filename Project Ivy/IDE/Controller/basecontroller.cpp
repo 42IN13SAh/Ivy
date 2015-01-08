@@ -108,8 +108,9 @@ void BaseController::startRunning()
 				virtualMachine->run(compiler->getFirstAction());
 				std::cout << "\nProgram has finished successfully.";
 			}
-			catch (std::exception e)
+			catch (std::exception& e)
 			{
+				std::cout << e.what();
 				std::cout << "\nA runtime error has occurred.";
 				std::cout << "Program has unexpectedly finished.";
 			}

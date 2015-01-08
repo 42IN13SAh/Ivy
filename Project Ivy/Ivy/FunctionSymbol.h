@@ -14,6 +14,7 @@ public:
 	SymbolTable* getSymbolTable();
 	std::string getName();
 	int getArgumentNr();
+	void setArgumentNr(const int&);
 	void setStartAction(Action*);
 	void setEndAction(Action*);
 	bool isInternal();

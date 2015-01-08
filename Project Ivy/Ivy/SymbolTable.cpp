@@ -76,7 +76,7 @@ boost::any SymbolTable::getValue(std::string name)
 		if (symbol->getName() == name)
 			return symbol->getValue();
 	}
-	return ExceptionCodes::NotFound;
+	return ExceptionCodes::VarNotFound;
 }
 
 bool SymbolTable::addFunctionSymbol(FunctionSymbol* fs) 
