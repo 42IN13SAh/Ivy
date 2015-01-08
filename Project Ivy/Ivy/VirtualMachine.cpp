@@ -116,7 +116,7 @@ boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, S
 		currentAction = fs->getStartAction()->getNextAction();
 		std::vector<std::string> argNames = fct->getArgumentNames();
 		for (int i = 0; i < argNames.size(); i++) {
-			fs->getSymbolTable()->addSymbolToTable(argNames[i], getReturnValue(compilerToken->getArguments()[i], symbolTable));
+			fs->getSymbolTable()->updateExistingSymbol(argNames[i], getReturnValue(compilerToken->getArguments()[i], symbolTable));
 		}
 		boost::any returnValue = nullptr;
 		while (currentAction != fs->getEndAction()){
