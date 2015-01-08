@@ -262,7 +262,7 @@ void CodeEditor::keyPressEvent(QKeyEvent* e)
 
 	QRect cr = cursorRect();
 	cr.setWidth(completer->popup()->sizeHintForColumn(0) + completer->popup()->verticalScrollBar()->sizeHint().width());
-	completer->complete(cr); // popup it up!
+	completer->complete(cr); // pop it up!
 }
 
 void CodeEditor::autocomplete(QKeyEvent *e)

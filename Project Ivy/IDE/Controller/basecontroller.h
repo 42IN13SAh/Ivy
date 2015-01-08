@@ -31,7 +31,7 @@ signals:
 	void clearBeforeBuilding();
 	void addError(int, int, QString);
 	void setCompleterModel(QList<QString>);
-	void finishedBuilding();
+	void finishedBuilding(bool);
 
 protected:
 	MainWindow *mainWindow;

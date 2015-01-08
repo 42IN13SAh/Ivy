@@ -41,7 +41,7 @@ public:
 	void onClearBeforeBuilding();
 	void onAddError(int, int, QString);
 	void onSetCompleterModel(QList<QString>);
-	void onFinishedBuilding();
+	void onFinishedBuilding(bool);
 
 private:
 	void setupEditor();
