@@ -56,7 +56,7 @@ void SymbolTable::updateExistingSymbol(std::string name, boost::any value)
 			return;
 		}
 	}
-	throw new std::exception;
+	throw std::exception();
 }
 
 bool SymbolTable::hasSymbol(std::string name)
