@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
 	bool connected = connect(buttonBar->getButtonController(), SIGNAL(setCompleterModel(QList<QString>)), this, SLOT(onSetCompleterModel(QList<QString>)));
 
-	/*std::async(std::launch::async, [&]() {
+	std::async(std::launch::async, [&]() {
 		while (true)
 		{
 			if (!hasBuild)
@@ -54,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
-	});*/
+	});
 }
 
 void MainWindow::onSetCompleterModel(QList<QString> list)
