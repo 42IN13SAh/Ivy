@@ -120,9 +120,6 @@
     <ClInclude Include="Cos.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="FormatString.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="IinternalFunction.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
@@ -145,9 +142,6 @@
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="ReadFile.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadFileLines.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="SaveFile.h">
@@ -225,6 +219,12 @@
     <ClInclude Include="TypeMismatchException.h">
       <Filter>Header Files\Exceptions\VirtualMachine</Filter>
     </ClInclude>
+    <ClInclude Include="RandomWithRange.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomWithPara.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp">
@@ -275,9 +275,6 @@
     <ClCompile Include="Cos.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FormatString.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="InternalFunctionFactory.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
@@ -297,9 +294,6 @@
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="ReadFile.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadFileLines.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="SaveFile.cpp">
@@ -339,6 +333,12 @@
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="SummonSupremeCommander.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomWithPara.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomWithRange.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
