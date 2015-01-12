@@ -1,10 +1,11 @@
 #pragma once
-#include "IInternalFunction.h" 
-
-class FormatString : public IInternalFunction
+#include <vector>
+#include "IInternalFunction.h"
+#include "RandomWithPara.h"
+class RandomWithPara : public IInternalFunction
 {
 public:
-	~FormatString();
+	~RandomWithPara();
 	virtual void Execute(std::vector<boost::any> arglist);
 	virtual boost::any GetResult();
 private:

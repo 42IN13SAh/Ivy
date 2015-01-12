@@ -33,6 +33,8 @@ private:
 	bool exNumber(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
 	bool exString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
 	bool exBool(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
+	bool exStringNumber(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
+	bool exNumberString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*, SymbolTable& symbolTable);
 	boost::any getVarValue(VarCompilerToken*, SymbolTable& symbolTable);
 };
