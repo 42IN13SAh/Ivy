@@ -18,6 +18,7 @@ public:
 	bool hasFunctionSymbolWithName(std::string);
 	FunctionSymbol* getFunctionSymbol(std::string, int);
 	bool hasSymbol(std::string);
+	void clearSymbolTable();
 	boost::any getValue(std::string);
 	std::vector<Symbol *>getAllSymbols();
 	std::vector<FunctionSymbol *>getAllFunctionSymbols();

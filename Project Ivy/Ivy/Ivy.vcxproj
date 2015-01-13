@@ -127,7 +127,7 @@
     <ClInclude Include="VariableNotFoundException.h" />
     <ClInclude Include="VectorUtils.h" />
     <ClInclude Include="VirtualMachine.h" />
-    <ClInclude Include="WriteToEndOfFile.h" />
+    <ClInclude Include="WriteToFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
@@ -167,7 +167,7 @@
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="VarCompilerToken.cpp" />
     <ClCompile Include="VirtualMachine.cpp" />
-    <ClCompile Include="WriteToEndOfFile.cpp" />
+    <ClCompile Include="WriteToFile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,7 +6,6 @@
 
 #include "ReadFile.h"
 #include "SaveFile.h"
-#include "WriteToEndOfFile.h"
 
 #include "Cos.h"
 #include "Log.h"
@@ -20,7 +19,7 @@
 #include "RandomWithRange.h"
 #include "ConsoleInput.h"
 #include "Print.h"
-
+#include "WriteToFile.h"
 #include "SummonSupremeLord.h"
 #include "SummonSupremeCommander.h"
 

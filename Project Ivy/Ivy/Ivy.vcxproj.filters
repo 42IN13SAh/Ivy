@@ -156,9 +156,6 @@
     <ClInclude Include="Tan.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="WriteToEndOfFile.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="VirtualMachine.h">
       <Filter>Header Files\Virtual Machine</Filter>
     </ClInclude>
@@ -239,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="BadCastException.h">
       <Filter>Header Files\Exceptions\VirtualMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteToFile.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -323,9 +323,6 @@
     <ClCompile Include="Tan.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="WriteToEndOfFile.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="VirtualMachine.cpp">
       <Filter>Source Files\Virtual Machine</Filter>
     </ClCompile>
@@ -354,6 +351,9 @@
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="RandomWithRange.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteToFile.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
