@@ -131,6 +131,7 @@ boost::any VirtualMachine::executeAction(FunctionCompilerToken* compilerToken, S
 			}
 		}
 		currentAction = fAction->getNextAction();
+		fs->getSymbolTable()->clearSymbolTable();
 		return returnValue;
 	}
 	return nullptr;
