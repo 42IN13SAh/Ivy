@@ -16,7 +16,7 @@
 
 Tokenizer::Tokenizer()
 {
-	SyntaxManager::Instance()->jsonToSyntaxMap();
+	//SyntaxManager::Instance()->jsonToSyntaxMap();
 }
 
 Tokenizer::~Tokenizer()
@@ -84,7 +84,7 @@ void Tokenizer::tokenize(std::string* input, int size)
 			}
 			if (!hasMatch){
 				//throw BadSyntaxException(lineNumber, linePosition);
-				errorList.push_back(BadSyntaxException(lineNumber, linePosition, syntaxId, tokenList.back()->getDescription()));
+				errorList.push_back(BadSyntaxException(lineNumber, linePosition, syntaxId, (tokenList.size()) ? tokenList.back()->getDescription() : unprocessedInput));
 				// Check until space, if found chars is a name or word, skip that much positions
 				unprocessedInput = trim(++unprocessedInput, linePosition);
 			}
