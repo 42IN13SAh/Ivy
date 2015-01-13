@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="AssignCompilerToken.h" />
+    <ClInclude Include="BadCastException.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="Compiler.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Cos.h" />
     <ClInclude Include="DivideByZeroException.h" />
     <ClInclude Include="DoNothingAction.h" />
+    <ClInclude Include="EmptyResultStackException.h" />
     <ClInclude Include="ExceptionCodes.h" />
     <ClInclude Include="BadMatchException.h" />
     <ClInclude Include="FunctionCompilerToken.h" />
@@ -120,7 +122,9 @@
     <ClInclude Include="TypeMismatchException.h" />
     <ClInclude Include="UndefinedSymbolException.h" />
     <ClInclude Include="UnexpectedEndOfFileException.h" />
+    <ClInclude Include="UnexpectedOperatorException.h" />
     <ClInclude Include="VarCompilerToken.h" />
+    <ClInclude Include="VariableNotFoundException.h" />
     <ClInclude Include="VectorUtils.h" />
     <ClInclude Include="VirtualMachine.h" />
     <ClInclude Include="WriteToEndOfFile.h" />

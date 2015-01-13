@@ -221,12 +221,24 @@
     </ClInclude>
     <ClInclude Include="DivideByZeroException.h">
       <Filter>Header Files\Exceptions\VirtualMachine</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="RandomWithRange.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="RandomWithPara.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="UnexpectedOperatorException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="EmptyResultStackException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableNotFoundException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="BadCastException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

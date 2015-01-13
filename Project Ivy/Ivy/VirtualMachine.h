@@ -11,6 +11,10 @@
 // Exceptions
 #include "TypeMismatchException.h"
 #include "DivideByZeroException.h"
+#include "UnexpectedOperatorException.h"
+#include "EmptyResultStackException.h"
+#include "VariableNotFoundException.h"
+#include "BadCastException.h"
 
 class VirtualMachine
 {
@@ -38,5 +42,14 @@ private:
 	bool exNumberString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(ReturnValueCompilerToken*, SymbolTable& symbolTable);
 	boost::any getVarValue(VarCompilerToken*, SymbolTable& symbolTable);
+
+	template<class T>
+	T cast(boost::any val) {
+		try {
+			return boost::any_cast<T>(val);
+		} catch (std::exception& e) {
+			throw BadCastException(typeid(T).name(), val.type().name());
+		}
+	}
 };
 
