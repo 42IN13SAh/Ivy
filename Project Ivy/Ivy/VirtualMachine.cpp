@@ -2,7 +2,6 @@
 #include "InternalFunctionFactory.h"
 #include "ExceptionCodes.h"
 #include "VirtualMachine.h"
-#include "Time.h"
 VirtualMachine::VirtualMachine()
 {
 }
@@ -18,7 +17,6 @@ VirtualMachine::~VirtualMachine()
 
 void VirtualMachine::run(Action *firstAction)
 {
-	srand(time(NULL));
 	currentAction = firstAction;
 	while (currentAction != nullptr)
 	{
