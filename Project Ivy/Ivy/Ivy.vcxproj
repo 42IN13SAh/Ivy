@@ -84,7 +84,6 @@
     <ClInclude Include="DoNothingAction.h" />
     <ClInclude Include="ExceptionCodes.h" />
     <ClInclude Include="BadMatchException.h" />
-    <ClInclude Include="FormatString.h" />
     <ClInclude Include="FunctionCompilerToken.h" />
     <ClInclude Include="FunctionSymbol.h" />
     <ClInclude Include="IinternalFunction.h" />
@@ -97,8 +96,9 @@
     <ClInclude Include="Pow.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RandomWithPara.h" />
+    <ClInclude Include="RandomWithRange.h" />
     <ClInclude Include="ReadFile.h" />
-    <ClInclude Include="ReadFileLines.h" />
     <ClInclude Include="ReservedKeyWordException.h" />
     <ClInclude Include="ReturnCompilerToken.h" />
     <ClInclude Include="ReturnValueCompilerToken.h" />
@@ -134,7 +134,6 @@
     <ClCompile Include="ConsoleInput.cpp" />
     <ClCompile Include="Cos.cpp" />
     <ClCompile Include="DoNothingAction.cpp" />
-    <ClCompile Include="FormatString.cpp" />
     <ClCompile Include="FunctionCompilerToken.cpp" />
     <ClCompile Include="FunctionSymbol.cpp" />
     <ClCompile Include="InternalFunctionFactory.cpp" />
@@ -144,8 +143,9 @@
     <ClCompile Include="Pow.cpp" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RandomWithPara.cpp" />
+    <ClCompile Include="RandomWithRange.cpp" />
     <ClCompile Include="ReadFile.cpp" />
-    <ClCompile Include="ReadFileLines.cpp" />
     <ClCompile Include="ReturnCompilerToken.cpp" />
     <ClCompile Include="ReturnValueCompilerToken.cpp" />
     <ClCompile Include="SaveFile.cpp" />

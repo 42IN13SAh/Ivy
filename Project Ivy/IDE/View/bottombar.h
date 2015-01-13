@@ -19,6 +19,7 @@ public:
 	void clearErrorList();
 	void clearConsole();
 	std::vector<ErrorListItem*> getAllErrors();
+	void showConsole();
 
 signals:
 	void stdOut(QString);

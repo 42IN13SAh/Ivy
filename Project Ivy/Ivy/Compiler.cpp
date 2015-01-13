@@ -43,8 +43,8 @@ Compiler::~Compiler()
 
 void Compiler::compile() 
 {
-	currentSymbolTable = globalSymbolTable;
-	addInternalFunctions();
+ 	currentSymbolTable = globalSymbolTable;
+  	addInternalFunctions();
 	while (tokenIter != tokenList.end() && !hasFatalError) {
 		if (getCurrentToken()->getTokenType() == TokenType::Function){
 			addFunctionSignature();

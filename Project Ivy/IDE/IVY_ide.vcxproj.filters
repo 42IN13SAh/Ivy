@@ -189,4 +189,7 @@
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Icon.ico" />
+  </ItemGroup>
 </Project>

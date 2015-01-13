@@ -211,6 +211,14 @@ void CodeEditor::setKeyInputController(KeyInputController *keyInputController){
 
 void CodeEditor::keyPressEvent(QKeyEvent* e)
 {
+	// Ignore function keys entirely.
+	bool isFunctionKey = (e->key() == Qt::Key_F5 || e->key() == Qt::Key_F6);
+	if (isFunctionKey)
+	{
+		e->ignore();
+		return;
+	}
+
 	//let the completer do its behaviour if the popup is visible
 	if (completer->popup()->isVisible())
 	{
@@ -238,6 +246,7 @@ void CodeEditor::keyPressEvent(QKeyEvent* e)
 	const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
 	if (ctrlOrShift && e->text().isEmpty())
 	{
+		e->ignore();
 		return;
 	}
 
@@ -251,6 +260,7 @@ void CodeEditor::keyPressEvent(QKeyEvent* e)
 	if (!isShortcut && (hasModifier || e->text().isEmpty() || completionPrefix.length() < 3 || eow.contains(e->text().right(1))))
 	{
 		completer->popup()->hide();
+		e->ignore();
 		return;
 	}
 
@@ -262,7 +272,7 @@ void CodeEditor::keyPressEvent(QKeyEvent* e)
 
 	QRect cr = cursorRect();
 	cr.setWidth(completer->popup()->sizeHintForColumn(0) + completer->popup()->verticalScrollBar()->sizeHint().width());
-	completer->complete(cr); // popup it up!
+	completer->complete(cr); // pop it up!
 }
 
 void CodeEditor::autocomplete(QKeyEvent *e)

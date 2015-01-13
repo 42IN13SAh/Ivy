@@ -31,8 +31,7 @@ BottomBar::BottomBar(QWidget *parent) :
     Pal.setColor(QPalette::Background, "#323232");
     setAutoFillBackground(true);
     setPalette(Pal);
-
-    setFixedHeight(200);
+	
 	setStyleSheet("QTextEdit, QListWidget { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; } QTabWidget::pane { background-color: #2D2D2F; } QTabBar::tab { color: white; background-color: #2D2D2F; border-style: solid; border-width: 1px; border-color: black; padding: 3px;} QTabBar::tab:selected { background-color: black; }");
 
     connect(errorList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(errorListItemDoubleClicked(QListWidgetItem*)));
@@ -51,6 +50,11 @@ void BottomBar::addError(int lineNumber, int linePosition, QString text)
 {
 	errorList->addItem(new ErrorListItem(lineNumber, linePosition, text, errorList));
 	setCurrentIndex(1);
+}
+
+void BottomBar::showConsole()
+{
+	setCurrentIndex(0);
 }
 
 void BottomBar::clearErrorList()

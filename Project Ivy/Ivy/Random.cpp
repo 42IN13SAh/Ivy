@@ -2,7 +2,7 @@
 
 void Random::Execute(std::vector<boost::any> arglist)
 {
-
+	Result = (double) rand();
 }
 
 boost::any Random::GetResult()

@@ -2,7 +2,7 @@
 #include "InternalFunctionFactory.h"
 #include "ExceptionCodes.h"
 #include "VirtualMachine.h"
-
+#include "Time.h"
 VirtualMachine::VirtualMachine()
 {
 }
@@ -18,6 +18,7 @@ VirtualMachine::~VirtualMachine()
 
 void VirtualMachine::run(Action *firstAction)
 {
+	srand(time(NULL));
 	currentAction = firstAction;
 	while (currentAction != nullptr)
 	{
@@ -208,6 +209,12 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			if (exString(left, right, op, resultStack)){
 				continue;
 			}
+			if (exStringNumber(left, right, op, resultStack)){
+				continue;
+			}
+			if (exNumberString(left, right, op, resultStack)){
+				continue;
+			}
 			if (exBool(left, right, op, resultStack)){
 				continue;
 			}
@@ -337,6 +344,50 @@ bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType::TokenT
 		break;
 	case TokenType::AndStatement:
 		resultStack.push(lBool && rBool);
+		break;
+	default:
+		throw std::exception();
+		return false;
+		break;
+	}
+	return true;
+}
+
+bool VirtualMachine::exStringNumber(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack){
+	std::string lString;
+	double rNumber;
+	try{
+		lString = boost::any_cast<std::string>(left);
+		rNumber = boost::any_cast<double>(right);
+	}
+	catch (std::exception& e){
+		return false;
+	}
+	switch (op){
+	case TokenType::AddOperator:
+		resultStack.push(lString + std::to_string(rNumber));
+		break;
+	default:
+		throw std::exception();
+		return false;
+		break;
+	}
+	return true;
+}
+
+bool VirtualMachine::exNumberString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack){
+	double lNumber;
+	std::string rString;
+	try{
+		lNumber = boost::any_cast<double>(left);
+		rString = boost::any_cast<std::string>(right);
+	}
+	catch (std::exception& e){
+		return false;
+	}
+	switch (op){
+	case TokenType::AddOperator:
+		resultStack.push(std::to_string(lNumber) + rString);
 		break;
 	default:
 		throw std::exception();
