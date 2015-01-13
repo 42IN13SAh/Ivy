@@ -86,21 +86,22 @@ void VirtualMachine::executeAction(AssignCompilerToken* compilerToken, SymbolTab
 	case TokenType::AddThenAssignOperator:
 	{
 											 if (val.type() == typeid(std::string)){
-												 val = boost::any_cast<std::string>(val)+boost::any_cast<std::string>(newVal);
+												 val = cast<std::string>(val)+cast<std::string>(newVal);
 											 }
 											 else{
-												 val = boost::any_cast<double>(val)+boost::any_cast<double>(newVal);
+												 val = cast<double>(val)+cast<double>(newVal);
 											 }
 											 break;
 	}
 	case TokenType::MinusThenAssignOperator:
-		val = boost::any_cast<double>(val)-boost::any_cast<double>(newVal);
+		val = cast<double>(val)-cast<double>(newVal);
 		break;
 	case TokenType::DivideThenAssignOperator:
-		val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal);
+		if (cast<double>(newVal) == 0) throw DivideByZeroException();
+		val = cast<double>(val) / cast<double>(newVal);
 		break;
 	case TokenType::MultiplyThenAssignOperator:
-		val = boost::any_cast<double>(val)* boost::any_cast<double>(newVal);
+		val = cast<double>(val)* cast<double>(newVal);
 		break;
 	}
 	updateVariable(compilerToken->getName(), val, symbolTable);
@@ -150,12 +151,7 @@ boost::any VirtualMachine::executeInternalFunction(std::string name, FunctionCom
 
 bool VirtualMachine::executeAction(ConditionCompilerToken* compilerToken, SymbolTable& symbolTable)
 {
-	if (boost::any_cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable))){
-		return true;
-	}
-	else{
-		return false;
-	}
+	return (cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable)));
 }
 
 void VirtualMachine::executeAction(VarCompilerToken* compilerToken, SymbolTable& symbolTable)
@@ -170,12 +166,13 @@ boost::any VirtualMachine::getVarValue(VarCompilerToken* compilerToken, SymbolTa
 	if (value.type() == typeid(ExceptionCodes)) {
 		value = globalSymbolTable->getValue(compilerToken->getName());
 		if (value.type() == typeid(ExceptionCodes)){
-			throw std::exception(); // Check exceptioncode and give exception
+			if (boost::any_cast<ExceptionCodes>(value) == ExceptionCodes::VarNotFound)
+				throw VariableNotFoundException(compilerToken->getName());
 		}
 	}
 	TokenType::TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
 	if (op != TokenType::Null) {
-		double val = boost::any_cast<double>(value);
+		double val = cast<double>(value);
 		bool isFrontOp = (compilerToken->getFrontOperator() != TokenType::Null);
 		if (isFrontOp) {
 			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? ++val : --val, symbolTable);
@@ -197,7 +194,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 		boost::any value = rpn.front();
 		rpn.pop();
 		if (value.type() == typeid(TokenType::TokenType)){
-			TokenType::TokenType op = boost::any_cast<TokenType::TokenType>(value);
+			TokenType::TokenType op = cast<TokenType::TokenType>(value);
 			boost::any right = resultStack.top();
 			resultStack.pop();
 			boost::any left = resultStack.top();
@@ -217,7 +214,7 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			if (exBool(left, right, op, resultStack)){
 				continue;
 			}
-			throw TypeMismatchException(); // Invalid value type expected 2 of the same types
+			throw TypeMismatchException(TokenType::TokenTypeNames[op], left.type().name(), right.type().name()); // Invalid value type
 		}
 		else{
 			if (value.type() == typeid(VarCompilerToken*)){
@@ -230,7 +227,8 @@ boost::any VirtualMachine::getReturnValue(ReturnValueCompilerToken* returnValueC
 			resultStack.push(value);
 		}
 	}
-	return resultStack.top(); // Error on empty stack (Code: return;)
+	if (resultStack.empty()) throw EmptyResultStackException();
+	return resultStack.top();
 }
 
 bool VirtualMachine::exString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
@@ -255,9 +253,8 @@ bool VirtualMachine::exString(boost::any left, boost::any right, TokenType::Toke
 		resultStack.push(lString.compare(rString) != 0);
 		break;
 	default:
-		throw std::exception();
+		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "String");
 		return false;
-		break;
 	}
 	return true;
 }
@@ -284,6 +281,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::Toke
 		resultStack.push(lDouble * rDouble);
 		break;
 	case TokenType::DivideOperator:
+		if (rDouble == 0) throw DivideByZeroException();
 		resultStack.push(lDouble / rDouble);
 		break;
 	case TokenType::ModuloOperator:
@@ -308,9 +306,8 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::Toke
 		resultStack.push(lDouble <= rDouble);
 		break;
 	default:
-		throw std::exception();
+		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "Double");
 		return false;
-		break;
 	}
 	return true;
 }
@@ -344,9 +341,8 @@ bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType::TokenT
 		resultStack.push(lBool && rBool);
 		break;
 	default:
-		throw std::exception();
+		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "Boolean");
 		return false;
-		break;
 	}
 	return true;
 }
@@ -366,9 +362,8 @@ bool VirtualMachine::exStringNumber(boost::any left, boost::any right, TokenType
 		resultStack.push(lString + std::to_string(rNumber));
 		break;
 	default:
-		throw std::exception();
+		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "String", "Double");
 		return false;
-		break;
 	}
 	return true;
 }
@@ -388,9 +383,8 @@ bool VirtualMachine::exNumberString(boost::any left, boost::any right, TokenType
 		resultStack.push(std::to_string(lNumber) + rString);
 		break;
 	default:
-		throw std::exception();
+		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "Double", "String");
 		return false;
-		break;
 	}
 	return true;
 }
