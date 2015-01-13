@@ -225,6 +225,9 @@
     <ClInclude Include="TypeMismatchException.h">
       <Filter>Header Files\Exceptions\VirtualMachine</Filter>
     </ClInclude>
+    <ClInclude Include="DivideByZeroException.h">
+      <Filter>Header Files\Exceptions\VirtualMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp">

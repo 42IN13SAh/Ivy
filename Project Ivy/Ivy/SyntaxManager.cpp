@@ -5,6 +5,7 @@ SyntaxManager::SyntaxManager()
 {
 	initTokenDictionary();
 	initParentDictionary();
+	jsonToSyntaxMap();
 }
 
 SyntaxManager::~SyntaxManager()

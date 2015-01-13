@@ -80,6 +80,7 @@
     <ClInclude Include="ConditionCompilerToken.h" />
     <ClInclude Include="ConsoleInput.h" />
     <ClInclude Include="Cos.h" />
+    <ClInclude Include="DivideByZeroException.h" />
     <ClInclude Include="DoNothingAction.h" />
     <ClInclude Include="ExceptionCodes.h" />
     <ClInclude Include="BadMatchException.h" />

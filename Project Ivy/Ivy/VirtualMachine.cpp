@@ -96,6 +96,7 @@ void VirtualMachine::executeAction(AssignCompilerToken* compilerToken, SymbolTab
 		val = boost::any_cast<double>(val)-boost::any_cast<double>(newVal);
 		break;
 	case TokenType::DivideThenAssignOperator:
+		if (boost::any_cast<double>(newVal) == 0) throw DivideByZeroException();
 		val = boost::any_cast<double>(val) / boost::any_cast<double>(newVal);
 		break;
 	case TokenType::MultiplyThenAssignOperator:
@@ -277,6 +278,7 @@ bool VirtualMachine::exNumber(boost::any left, boost::any right, TokenType::Toke
 		resultStack.push(lDouble * rDouble);
 		break;
 	case TokenType::DivideOperator:
+		if (rDouble == 0) throw DivideByZeroException();
 		resultStack.push(lDouble / rDouble);
 		break;
 	case TokenType::ModuloOperator:

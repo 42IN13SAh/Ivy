@@ -10,6 +10,7 @@
 
 // Exceptions
 #include "TypeMismatchException.h"
+#include "DivideByZeroException.h"
 
 class VirtualMachine
 {
