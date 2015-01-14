@@ -24,6 +24,7 @@ Compiler::~Compiler()
 			delete onFalseActionPtr;
 		}
 		currentActionPtr = nextActionPtr;
+
 	}
 	SymbolTableItemsToBeDeleted *items = currentSymbolTable->getItemsToDelete();
 	for each (Symbol *symbol in items->getSymbols())
