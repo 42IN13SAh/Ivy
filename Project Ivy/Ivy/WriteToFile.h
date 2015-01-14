@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "IInternalFunction.h"
 class WriteToFile : public IInternalFunction
 {
