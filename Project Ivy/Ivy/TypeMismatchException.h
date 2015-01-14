@@ -6,7 +6,7 @@
 
 class TypeMismatchException : public BaseException {
 public:
-	TypeMismatchException() : BaseException("The given types did not match and could therefor not be handled properly") {}
+	TypeMismatchException(const std::string& op, const std::string& type1, const std::string& type2) : BaseException("The given types did not match and could therefor not be handled properly\nTypes and operator: " + type1 + " " + op + " " + type2) {}
 };
 
 #endif

@@ -16,6 +16,11 @@ SymbolTable::~SymbolTable()
 {
 }
 
+void SymbolTable::clearSymbolTable(){
+	for (int i = 0; i < symbols.size(); i++){
+		symbols[i]->setValue(NULL);
+	}
+}
 
 bool SymbolTable::addSymbolToTable(std::string name)
 {

@@ -11,6 +11,9 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+	QIcon icon(":/Images/Images/Icon.ico");
+	setWindowIcon(icon);
+
 	setupFileMenu();
 	setupHelpMenu();
 	setupEditor();
@@ -21,9 +24,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	hasBuild = true;
 
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+	QSplitter *splitter = new QSplitter();
+	splitter->setOrientation(Qt::Vertical);
 	layout->addWidget(buttonBar);
-	layout->addWidget(editor);
-	layout->addWidget(bottomBar);
+	splitter->addWidget(editor);
+	splitter->addWidget(bottomBar);
+
+	layout->addWidget(splitter);
 
 	layout->setSpacing(0);
 
@@ -35,26 +42,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	setAndSaveWindowTitle("New File - " + this->getDefaultWindowTitle()); //Default is always a new file (for now)
 
+	//splitter->setStyleSheet("background-color: black;");
+	setStyleSheet("QSplitter::handle { background-color: grey; } QMenuBar { background-color: #323232; border-bottom: 1px solid black; } QMenuBar::item { background-color: #323232; color: white; } QMenuBar::item:selected { background-color: #1E1E1F; } QMenuItem { background-color: #323232; color: white; } QMenu::item { background-color: #323232; color: white; } QMenu::item:selected { background-color: #1E1E1F; } QMenu { background-color: #323232; }");
+
 	//make sure to always conenct both controllers to the same slot!
 	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
+	connect(keyInputController, SIGNAL(finishedBuilding(bool)), this, SLOT(onFinishedBuilding(bool)));
 	connect(keyInputController, SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
 	connect(keyInputController, SIGNAL(setCompleterModel(QList<QString>)), this, SLOT(onSetCompleterModel(QList<QString>)));
 	connect(buttonBar->getButtonController(), SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
+	connect(buttonBar->getButtonController(), SIGNAL(finishedBuilding()), this, SLOT(onFinishedBuilding()));
 	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
 	bool connected = connect(buttonBar->getButtonController(), SIGNAL(setCompleterModel(QList<QString>)), this, SLOT(onSetCompleterModel(QList<QString>)));
 
-	/*std::async(std::launch::async, [&]() {
+	std::async(std::launch::async, [&]() {
 		while (true)
 		{
-		if (!hasBuild)
-		{
-		hasBuild = true;
-		keyInputController->startBuilding(true, false);
-		}
+			if (!hasBuild)
+			{
+				hasBuild = true;
+				keyInputController->startBuilding(true, false);
+			}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
-		});*/
+	});
 }
 
 void MainWindow::onSetCompleterModel(QList<QString> list)
@@ -67,6 +79,21 @@ void MainWindow::onClearBeforeBuilding()
 	bottomBar->clearConsole();
 	bottomBar->clearErrorList();
 	editor->clearUnderlines();
+}
+
+void MainWindow::onFinishedBuilding(bool buildSucces)
+{
+	if (buildSucces)
+	{
+		bottomBar->showConsole();
+	}
+
+	setFocusOnEditor();
+}
+
+void MainWindow::setFocusOnEditor()
+{
+	editor->setFocus();
 }
 
 void MainWindow::onAddError(int lineNumber, int linePosition, QString text)
@@ -88,6 +115,9 @@ void MainWindow::setupButtonBar()
 void MainWindow::setupBottomBar()
 {
 	bottomBar = new BottomBar(this);
+	QSizePolicy policy = bottomBar->sizePolicy();
+	policy.setVerticalStretch(1);
+	bottomBar->setSizePolicy(policy);
 }
 
 void MainWindow::newFile()
@@ -173,10 +203,9 @@ void MainWindow::setupEditor()
 	editor->setPalette(p);
 	highlighter = new Highlighter(editor->document());
 
-	//TODO testen of open file werkt.
-	//QFile file("mainwindow.h");
-	//if (file.open(QFile::ReadOnly | QFile::Text))
-	//editor->setPlainText(file.readAll());
+	QSizePolicy policy = editor->sizePolicy();
+	policy.setVerticalStretch(4);
+	editor->setSizePolicy(policy);
 }
 
 void MainWindow::setupFileMenu()
@@ -189,8 +218,6 @@ void MainWindow::setupFileMenu()
 	fileMenu->addAction(tr("&Save"), this, SLOT(saveFile()), QKeySequence::Save);
 	fileMenu->addAction(tr("&Save As..."), this, SLOT(saveFileAs()), QKeySequence::SaveAs);
 	fileMenu->addAction(tr("E&xit"), qApp, SLOT(quit()), QKeySequence::Quit);
-
-	setStyleSheet("QMenuBar { background-color: #323232; border-bottom: 1px solid black; } QMenuBar::item { background-color: #323232; color: white; } QMenuBar::item:selected { background-color: #1E1E1F; } QMenuItem { background-color: #323232; color: white; } QMenu::item { background-color: #323232; color: white; } QMenu::item:selected { background-color: #1E1E1F; } QMenu { background-color: #323232; }");
 }
 
 void MainWindow::setupHelpMenu()

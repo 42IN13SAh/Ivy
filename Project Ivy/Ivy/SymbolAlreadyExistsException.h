@@ -7,7 +7,7 @@
 class SymbolAlreadyExistsException : public BaseException
 {
 public:
-	SymbolAlreadyExistsException(int lnr, int lps, std::string symbol, std::string type) : BaseException(lnr, lps) {
+	SymbolAlreadyExistsException(int lnr, int lps, const std::string& symbol, const std::string& type) : BaseException(lnr, lps) {
 		exceptionMessage = type + " '" + symbol + "' is already defined on line "+ std::to_string(lnr) + " and position " + std::to_string(lps);
 	}
 	virtual ~SymbolAlreadyExistsException() {}

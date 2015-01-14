@@ -5,21 +5,21 @@ InternalFunctionFactory::InternalFunctionFactory()
 	//Date
 	//I/O
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("readFile", new ReadFile(), 1);
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction("readFileLines", new ReadFileLines(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("saveFile", new SaveFile(), 2);
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction("writeToEndOfFile", new WriteToEndOfFile(), 2);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("writeToEndOfFile", new WriteToFile(), 2);
 	//Math
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("cos", new Cos(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("invert", new Invert(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("log", new Log(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("pow", new Pow(), 2);
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction("random", new Random(), 2);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("random", new Random(), 0);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("random_t", new RandomWithPara(), 1);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("random_b", new RandomWithRange(), 2);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("sin", new Sin(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("sqrt", new SquareRoot(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("tan", new Tan(), 1);
 	//System
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("consoleInput", new ConsoleInput(), 0);
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction("formatString", new FormatString(), 100);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("print", new Print(), 1);
 	//Easteregg
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("summonSupremeLord", new SummonSupremeLord(), 0);

@@ -5,9 +5,7 @@
 #include "IInternalFunction.h"
 
 #include "ReadFile.h"
-#include "ReadFileLines.h"
 #include "SaveFile.h"
-#include "WriteToEndOfFile.h"
 
 #include "Cos.h"
 #include "Log.h"
@@ -17,11 +15,11 @@
 #include "Tan.h"
 #include "Invert.h"
 #include "Random.h"
-
+#include "RandomWithPara.h"
+#include "RandomWithRange.h"
 #include "ConsoleInput.h"
-#include "FormatString.h"
 #include "Print.h"
-
+#include "WriteToFile.h"
 #include "SummonSupremeLord.h"
 #include "SummonSupremeCommander.h"
 

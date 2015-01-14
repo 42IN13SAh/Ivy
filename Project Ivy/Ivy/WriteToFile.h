@@ -1,10 +1,10 @@
 #pragma once
-#include "IInternalFunction.h" 
-
-class FormatString : public IInternalFunction
+#include <vector>
+#include "IInternalFunction.h"
+class WriteToFile : public IInternalFunction
 {
 public:
-	~FormatString();
+	~WriteToFile();
 	virtual void Execute(std::vector<boost::any> arglist);
 	virtual boost::any GetResult();
 private:

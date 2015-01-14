@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="AssignCompilerToken.h" />
+    <ClInclude Include="BadCastException.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BaseException.h" />
     <ClInclude Include="Compiler.h" />
@@ -80,10 +81,11 @@
     <ClInclude Include="ConditionCompilerToken.h" />
     <ClInclude Include="ConsoleInput.h" />
     <ClInclude Include="Cos.h" />
+    <ClInclude Include="DivideByZeroException.h" />
     <ClInclude Include="DoNothingAction.h" />
+    <ClInclude Include="EmptyResultStackException.h" />
     <ClInclude Include="ExceptionCodes.h" />
     <ClInclude Include="BadMatchException.h" />
-    <ClInclude Include="FormatString.h" />
     <ClInclude Include="FunctionCompilerToken.h" />
     <ClInclude Include="FunctionSymbol.h" />
     <ClInclude Include="IinternalFunction.h" />
@@ -96,8 +98,9 @@
     <ClInclude Include="Pow.h" />
     <ClInclude Include="Print.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RandomWithPara.h" />
+    <ClInclude Include="RandomWithRange.h" />
     <ClInclude Include="ReadFile.h" />
-    <ClInclude Include="ReadFileLines.h" />
     <ClInclude Include="ReservedKeyWordException.h" />
     <ClInclude Include="ReturnCompilerToken.h" />
     <ClInclude Include="ReturnValueCompilerToken.h" />
@@ -119,10 +122,12 @@
     <ClInclude Include="TypeMismatchException.h" />
     <ClInclude Include="UndefinedSymbolException.h" />
     <ClInclude Include="UnexpectedEndOfFileException.h" />
+    <ClInclude Include="UnexpectedOperatorException.h" />
     <ClInclude Include="VarCompilerToken.h" />
+    <ClInclude Include="VariableNotFoundException.h" />
     <ClInclude Include="VectorUtils.h" />
     <ClInclude Include="VirtualMachine.h" />
-    <ClInclude Include="WriteToEndOfFile.h" />
+    <ClInclude Include="WriteToFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
@@ -133,7 +138,6 @@
     <ClCompile Include="ConsoleInput.cpp" />
     <ClCompile Include="Cos.cpp" />
     <ClCompile Include="DoNothingAction.cpp" />
-    <ClCompile Include="FormatString.cpp" />
     <ClCompile Include="FunctionCompilerToken.cpp" />
     <ClCompile Include="FunctionSymbol.cpp" />
     <ClCompile Include="InternalFunctionFactory.cpp" />
@@ -143,8 +147,9 @@
     <ClCompile Include="Pow.cpp" />
     <ClCompile Include="Print.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RandomWithPara.cpp" />
+    <ClCompile Include="RandomWithRange.cpp" />
     <ClCompile Include="ReadFile.cpp" />
-    <ClCompile Include="ReadFileLines.cpp" />
     <ClCompile Include="ReturnCompilerToken.cpp" />
     <ClCompile Include="ReturnValueCompilerToken.cpp" />
     <ClCompile Include="SaveFile.cpp" />
@@ -162,7 +167,7 @@
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="VarCompilerToken.cpp" />
     <ClCompile Include="VirtualMachine.cpp" />
-    <ClCompile Include="WriteToEndOfFile.cpp" />
+    <ClCompile Include="WriteToFile.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

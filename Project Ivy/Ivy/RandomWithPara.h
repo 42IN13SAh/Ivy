@@ -1,10 +1,11 @@
 #pragma once
-#include "IInternalFunction.h" 
-
-class WriteToEndOfFile : public IInternalFunction
+#include <vector>
+#include "IInternalFunction.h"
+#include "RandomWithPara.h"
+class RandomWithPara : public IInternalFunction
 {
 public:
-	~WriteToEndOfFile();
+	~RandomWithPara();
 	virtual void Execute(std::vector<boost::any> arglist);
 	virtual boost::any GetResult();
 private:
