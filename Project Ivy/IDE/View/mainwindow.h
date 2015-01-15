@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 #include <ctime>
 #include <QMainWindow>
-
+#include <thread>
 #include "syntaxhighlighter.h"
 #include "codeeditor.h"
 #include "buttonbar.h"
@@ -45,6 +45,7 @@ public:
 	void onFinishedBuilding(bool);
 
 private:
+	void buildWorker();
 	void setupEditor();
 	void setupButtonBar();
 	void setupBottomBar();
@@ -57,6 +58,7 @@ private:
 	ButtonBar *buttonBar;
 	BottomBar *bottomBar;
 	KeyInputController *keyInputController;
+	std::thread* workerThread;
 
 	bool hasBuild;
 
