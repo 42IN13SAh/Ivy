@@ -19,7 +19,7 @@ Compiler::~Compiler()
 	}
 }
 
-void Compiler::compile() 
+void Compiler::compile()
 {
    	currentSymbolTable = globalSymbolTable;
   	addInternalFunctions();
