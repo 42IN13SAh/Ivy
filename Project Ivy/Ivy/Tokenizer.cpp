@@ -1,4 +1,3 @@
-#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
 #include <algorithm> 
@@ -8,7 +7,6 @@
 #include <regex>
 #include <fstream>
 #include <chrono>
-#include <boost\algorithm\string\trim.hpp>
 #include "Tokenizer.h"
 #include "BadSyntaxException.h"
 #include "PartnerNotFoundException.h"

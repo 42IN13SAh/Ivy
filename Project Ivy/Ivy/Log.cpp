@@ -2,7 +2,7 @@
 
 void Log::Execute(std::vector<boost::any> arglist)
 {
-	double a = boost::any_cast<double>(arglist[0]);
+	double a = Cast::cast<double>(arglist[0]);
 	Result = std::log(a);
 }
 
