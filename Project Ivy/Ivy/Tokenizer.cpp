@@ -54,6 +54,9 @@ void Tokenizer::tokenize(std::string* input, int size)
 						res.erase(res.begin());
 						res.erase(res.end()-1);
 					}
+					if (syntax->getTokenType() == TokenType::Undefined){
+						Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, res, syntax->getTokenType(), syntax->getParentType(), nullptr);
+					}
 					Token* token = new Token(syntax->getID(), lineNumber, linePosition, level, res, syntax->getTokenType(), syntax->getParentType(), nullptr);
 					if (token->getTokenType() == TokenType::Name){
 						if (SyntaxManager::Instance()->hasKeyWord(token->getDescription())){

@@ -242,6 +242,9 @@ boost::shared_ptr<ReturnValueCompilerToken> Compiler::compileReturnValue()
 			case TokenType::BooleanTrue: case TokenType::BooleanFalse:
 				rt->addValueToVector(cToken->getDescription().compare("true") == 0);
 				break;
+			case TokenType::Undefined:
+				rt->addValueToVector(nullptr);
+				break;
 			default:
 				rt->addValueToVector(cToken->getDescription());
 			}
