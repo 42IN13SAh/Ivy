@@ -1,5 +1,5 @@
 #include "ReturnValueCompilerToken.h"
-
+#include "VarCompilerToken.h"
 
 ReturnValueCompilerToken::ReturnValueCompilerToken()
 {
@@ -8,7 +8,6 @@ ReturnValueCompilerToken::ReturnValueCompilerToken()
 
 ReturnValueCompilerToken::~ReturnValueCompilerToken()
 {
-	// TODO: delete pointers in rpnvector;
 }
 
 void ReturnValueCompilerToken::addValueToVector(boost::any value)

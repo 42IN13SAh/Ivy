@@ -78,9 +78,6 @@
     <ClInclude Include="AssignCompilerToken.h">
       <Filter>Header Files\Compiler\CompilerTokens</Filter>
     </ClInclude>
-    <ClInclude Include="CompilerToken.h">
-      <Filter>Header Files\Compiler\CompilerTokens</Filter>
-    </ClInclude>
     <ClInclude Include="ConditionCompilerToken.h">
       <Filter>Header Files\Compiler\CompilerTokens</Filter>
     </ClInclude>
@@ -109,9 +106,6 @@
       <Filter>Header Files\Compiler</Filter>
     </ClInclude>
     <ClInclude Include="SymbolTable.h">
-      <Filter>Header Files\Compiler</Filter>
-    </ClInclude>
-    <ClInclude Include="SymbolTableItemsToBeDeleted.h">
       <Filter>Header Files\Compiler</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleInput.h">
@@ -240,6 +234,12 @@
     <ClInclude Include="WriteToFile.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
+    </ClInclude>
+    <ClInclude Include="Cast.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp">
@@ -279,9 +279,6 @@
       <Filter>Source Files\Compiler</Filter>
     </ClCompile>
     <ClCompile Include="SymbolTable.cpp">
-      <Filter>Source Files\Compiler</Filter>
-    </ClCompile>
-    <ClCompile Include="SymbolTableItemsToBeDeleted.cpp">
       <Filter>Source Files\Compiler</Filter>
     </ClCompile>
     <ClCompile Include="ConsoleInput.cpp">

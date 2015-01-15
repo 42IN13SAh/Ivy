@@ -1,16 +1,16 @@
 #include "ReturnCompilerToken.h"
 
-ReturnCompilerToken::ReturnCompilerToken(ReturnValueCompilerToken* rvct)
+ReturnCompilerToken::ReturnCompilerToken(boost::shared_ptr<ReturnValueCompilerToken> rvct)
 {
 	this->rvct = rvct;
 }
 
 ReturnCompilerToken::~ReturnCompilerToken()
 {
-	delete rvct;
+
 }
 
-ReturnValueCompilerToken* ReturnCompilerToken::getReturnValueCompilerToken()
+boost::shared_ptr<ReturnValueCompilerToken> ReturnCompilerToken::getReturnValueCompilerToken()
 {
 	return rvct;
 }

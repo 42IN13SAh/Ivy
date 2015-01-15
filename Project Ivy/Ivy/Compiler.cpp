@@ -1,6 +1,6 @@
+#include <boost/shared_ptr.hpp>
 #include "Compiler.h"
 #include "InternalFunctionFactory.h"
-#include "SymbolTableItemsToBeDeleted.h"
 
 Compiler::Compiler(std::list<Token*> tokenList) {
 	hasFatalError = false;
@@ -13,38 +13,15 @@ Compiler::Compiler(std::list<Token*> tokenList) {
 
 Compiler::~Compiler() 
 {
-	Action *currentActionPtr = this->getFirstAction();
-	Action *nextActionPtr = currentActionPtr->getNextAction();
-	Action *onFalseActionPtr;
-	while (nextActionPtr != nullptr){
-		nextActionPtr = currentActionPtr->getNextAction();
-		onFalseActionPtr = currentActionPtr->getFalseAction();
-		delete currentActionPtr;
-		if (onFalseActionPtr != nullptr){
-			delete onFalseActionPtr;
-		}
-		currentActionPtr = nextActionPtr;
-
+	delete globalSymbolTable;
+	for (int i = 0; i < actions.size(); i++){
+		delete actions[i];
 	}
-	SymbolTableItemsToBeDeleted *items = currentSymbolTable->getItemsToDelete();
-	for each (Symbol *symbol in items->getSymbols())
-	{
-		delete symbol;
-	}
-	for each (FunctionSymbol *functionSymbol in items->getFunctionSymbols())
-	{
-		delete functionSymbol;
-	}
-	delete items;
-	if (currentSymbolTable != globalSymbolTable){
-		delete globalSymbolTable;
-	}
-	delete currentSymbolTable;
 }
 
 void Compiler::compile() 
 {
- 	currentSymbolTable = globalSymbolTable;
+   	currentSymbolTable = globalSymbolTable;
   	addInternalFunctions();
 	while (tokenIter != tokenList.end() && !hasFatalError) {
 		if (getCurrentToken()->getTokenType() == TokenType::Function){
@@ -76,16 +53,16 @@ void Compiler::compile()
 void Compiler::compileFunction() 
 {
 	Action* startFunction = createAction(); 
-	FunctionCompilerToken* fct = new FunctionCompilerToken(getNextToken()->getDescription());
+	boost::shared_ptr<FunctionCompilerToken> fct = boost::shared_ptr<FunctionCompilerToken>(new FunctionCompilerToken(getNextToken()->getDescription()));
 	Token* start = getNextToken();
-	if (start == nullptr) { delete fct; return; }
+	if (start == nullptr) { fct.reset(); return; }
 	while (getCurrentToken()->getPartner() != start) {
 		if (getCurrentToken()->getTokenType() == TokenType::Name) {
 			fct->addArgumentName(getCurrentToken()->getDescription());
 		}
-		if (getNextToken() == nullptr) { delete fct; return; }
+		if (getNextToken() == nullptr) { fct.reset(); return; }
 	}
-	if (getNextToken() == nullptr) { delete fct; return; }
+	if (getNextToken() == nullptr) { fct.reset(); return; }
 	startFunction->setCompilerToken(fct);
 	startFunction->setNextAction(createDoNothing());
 	lastAction = startFunction->getNextAction();
@@ -160,14 +137,14 @@ void Compiler::compileStatement()
 			break;
 		case TokenType::Return:
 			if (getNextToken() == nullptr) return;
-			statement->setCompilerToken(new ReturnCompilerToken(compileReturnValue()));
+			statement->setCompilerToken(boost::shared_ptr<ReturnCompilerToken>(new ReturnCompilerToken(compileReturnValue())));
 			if (hasFatalError) return;
 			break;
 		case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:
 			{
 				TokenType::TokenType op = getCurrentToken()->getTokenType();
 				if ((dTok = getNextToken()) == nullptr) return;
-				VarCompilerToken* v = new VarCompilerToken(dTok->getDescription());
+				boost::shared_ptr<VarCompilerToken> v = boost::shared_ptr<VarCompilerToken>(new VarCompilerToken(dTok->getDescription()));
 				v->setFrontOperator(op);
 				statement->setCompilerToken(v);
 				if (getNextToken() == nullptr) return;
@@ -238,24 +215,24 @@ Action* Compiler::compileElse()
 	return elseAction;
 }
 
-ReturnValueCompilerToken* Compiler::compileReturnValue() 
+boost::shared_ptr<ReturnValueCompilerToken> Compiler::compileReturnValue() 
 {
 	std::vector<TokenType::TokenType> endTypes = { TokenType::LineEnd, TokenType::ParameterOperator, TokenType::OpenBracket };
 	Token* cToken = getCurrentToken();
-	ReturnValueCompilerToken* rt = new ReturnValueCompilerToken();
+	boost::shared_ptr<ReturnValueCompilerToken> rt = boost::shared_ptr<ReturnValueCompilerToken>(new ReturnValueCompilerToken());
 	while (std::find(endTypes.begin(), endTypes.end(), cToken->getTokenType()) == endTypes.end() && !(getCurrentToken()->getTokenType() == TokenType::ClosingParenthesis && !rt->hasOpenParenthisOnStack())) {
 		if (cToken->getTokenType() == TokenType::Name){
 			compileReturnValueName(rt);
-			if (hasFatalError) { delete rt; return nullptr; }
+			if (hasFatalError) {  rt.reset(); return nullptr; }
 		}
 		else if (cToken->getTokenType() == TokenType::IncreaseOperator || cToken->getTokenType() == TokenType::DecreaseOperator){
 			compileReturnValueIncreaseDecrease(rt);
-			if (hasFatalError) { delete rt; return nullptr; }
+			if (hasFatalError) {  rt.reset(); return nullptr; }
 		}
 		else if (cToken->getParentType() == ParentType::MathOperator || cToken->getParentType() == ParentType::ConditionOperator || cToken->getParentType() == ParentType::SubConditionOperator
 			|| cToken->getTokenType() == TokenType::OpenParenthesis || cToken->getTokenType() == TokenType::ClosingParenthesis){
 			compileReturnValueMath(rt);
-			if (hasFatalError) { delete rt; return nullptr; }
+			if (hasFatalError) { rt.reset(); return nullptr; }
 		}
 		else{
 			switch (cToken->getTokenType()){
@@ -270,26 +247,26 @@ ReturnValueCompilerToken* Compiler::compileReturnValue()
 			}
 		}
 		cToken = getNextToken();
-		if (cToken == nullptr) { delete rt; return nullptr; }
+		if (cToken == nullptr) { rt.reset(); return nullptr; }
 	}
 	rt->completeRPNVector();
 	return rt;
 }
 
-ConditionCompilerToken* Compiler::compileCondition() 
+boost::shared_ptr<ConditionCompilerToken> Compiler::compileCondition() 
 {
 	Token* start = nullptr;
 	if (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis){
 		start = getCurrentToken();
 	}
 	if (getNextToken() == nullptr) return nullptr;
-	ConditionCompilerToken* cct = new ConditionCompilerToken(compileReturnValue());
-	if (hasFatalError) { delete cct; return nullptr; }
-	if (getNextToken() == nullptr) { delete cct; return nullptr; }
+	boost::shared_ptr<ConditionCompilerToken> cct = boost::shared_ptr<ConditionCompilerToken>(new ConditionCompilerToken(compileReturnValue()));
+	if (hasFatalError) {  cct.reset(); return nullptr; }
+	if (getNextToken() == nullptr) {  cct.reset(); return nullptr; }
 	return cct;
 }
 
-FunctionCompilerToken* Compiler::compileFunctionCall() 
+boost::shared_ptr<FunctionCompilerToken> Compiler::compileFunctionCall()
 {
 	bool hasException = false;
 	if (!globalSymbolTable->hasFunctionSymbolWithName(getCurrentToken()->getDescription())) {
@@ -297,14 +274,14 @@ FunctionCompilerToken* Compiler::compileFunctionCall()
 		hasException = true;
 	}
 	Token* fTok = getCurrentToken();
-	FunctionCompilerToken* fct = new FunctionCompilerToken(fTok->getDescription());
+	boost::shared_ptr<FunctionCompilerToken> fct(new FunctionCompilerToken(getCurrentToken()->getDescription()));
 	Token* start = getNextToken();
-	if (start == nullptr) { delete fct; return nullptr; }
+	if (start == nullptr) { fct.reset(); return nullptr; }
 	while (getCurrentToken()->getPartner() != start) {
-		if ((dTok = getNextToken()) == nullptr) { delete fct; return nullptr; }
+		if ((dTok = getNextToken()) == nullptr) { fct.reset(); return nullptr; }
 		if (dTok->getPartner() != start) {
 			fct->addArgument(compileReturnValue());
-			if (hasFatalError) { delete fct; return nullptr; }
+			if (hasFatalError) { fct.reset(); return nullptr; }
 		}
 	}
 	if (!hasException && globalSymbolTable->getFunctionSymbol(fct->getName(), fct->getArguments().size()) == nullptr) {
@@ -321,7 +298,7 @@ Action* Compiler::compileStatementVar(Action* statement)
 	if ((dTok = getNextToken()) == nullptr) return nullptr;
 	if (dTok->getTokenType() == TokenType::AssignmentOperator) {
 		if (getNextToken() == nullptr) return nullptr;
-		statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), TokenType::AssignmentOperator));
+		statement->setCompilerToken(boost::shared_ptr<AssignCompilerToken>(new AssignCompilerToken(name, compileReturnValue(), TokenType::AssignmentOperator)));
 		if (hasFatalError) return nullptr;
 	}
 	else{
@@ -350,11 +327,11 @@ Action* Compiler::compileStatementName(Action* statement)
 		if (getNextToken() == nullptr) return nullptr;
 		switch (op) {
 			case TokenType::AssignmentOperator: case TokenType::AddThenAssignOperator: case TokenType::MinusThenAssignOperator: case TokenType::DivideThenAssignOperator: case TokenType::MultiplyThenAssignOperator:
-				statement->setCompilerToken(new AssignCompilerToken(name, compileReturnValue(), op));
+				statement->setCompilerToken(boost::shared_ptr<AssignCompilerToken>(new AssignCompilerToken(name, compileReturnValue(), op)));
 				if (hasFatalError) return nullptr;
 				break;
 			case TokenType::IncreaseOperator: case TokenType::DecreaseOperator:{
-				VarCompilerToken* v = new VarCompilerToken(name);
+				boost::shared_ptr<VarCompilerToken> v = boost::shared_ptr<VarCompilerToken>(new VarCompilerToken(name));
 				v->setBackOperator(op);
 				statement->setCompilerToken(v);
 				break;
@@ -364,7 +341,7 @@ Action* Compiler::compileStatementName(Action* statement)
 	return statement;
 }
 
-void Compiler::compileReturnValueName(ReturnValueCompilerToken* rt)
+void Compiler::compileReturnValueName(boost::shared_ptr<ReturnValueCompilerToken> rt)
 {
 	if ((dTok = peekNextToken()) == nullptr) return;
 	if (dTok->getTokenType() == TokenType::OpenParenthesis){
@@ -375,25 +352,25 @@ void Compiler::compileReturnValueName(ReturnValueCompilerToken* rt)
 		if (!(currentSymbolTable->hasSymbol(getCurrentToken()->getDescription()) || globalSymbolTable->hasSymbol(getCurrentToken()->getDescription()))) {
 			errorList.push_back(UndefinedSymbolException(getCurrentToken()->getLineNumber(), getCurrentToken()->getLinePosition(), getCurrentToken()->getDescription(), "Var"));
 		}
-		VarCompilerToken* v = new VarCompilerToken(getCurrentToken()->getDescription());
+		boost::shared_ptr<VarCompilerToken> v = boost::shared_ptr<VarCompilerToken>(new VarCompilerToken(getCurrentToken()->getDescription()));
 		if (dTok->getTokenType() == TokenType::IncreaseOperator || dTok->getTokenType() == TokenType::DecreaseOperator){
-			if (getNextToken() == nullptr) { delete v; return; }
+			if (getNextToken() == nullptr) { v.reset(); return; }
 			v->setBackOperator(dTok->getTokenType());
 		}
 		rt->addValueToVector(v);
 	}
 }
 
-void Compiler::compileReturnValueIncreaseDecrease(ReturnValueCompilerToken* rt) 
+void Compiler::compileReturnValueIncreaseDecrease(boost::shared_ptr<ReturnValueCompilerToken> rt)
 {
 	if ((dTok = peekNextToken()) == nullptr) return;
-	VarCompilerToken* v = new VarCompilerToken(dTok->getDescription());
+	boost::shared_ptr<VarCompilerToken> v = boost::shared_ptr<VarCompilerToken>(new VarCompilerToken(dTok->getDescription()));
 	v->setFrontOperator(getCurrentToken()->getTokenType());
 	rt->addValueToVector(v);
 	getNextToken();
 }
 
-void Compiler::compileReturnValueMath(ReturnValueCompilerToken* rt)
+void Compiler::compileReturnValueMath(boost::shared_ptr<ReturnValueCompilerToken> rt)
 {
 	if (getCurrentToken()->getTokenType() == TokenType::OpenParenthesis){
 		rt->pushOperatorToStack(getCurrentToken()->getTokenType());

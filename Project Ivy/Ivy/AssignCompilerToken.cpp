@@ -1,7 +1,7 @@
 #include <iostream>
 #include "AssignCompilerToken.h"
 
-AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerToken* value, TokenType::TokenType assignOp)
+AssignCompilerToken::AssignCompilerToken(std::string name, boost::shared_ptr<ReturnValueCompilerToken> value, TokenType::TokenType assignOp)
 {
 	this->name = name;
 	this->value = value;
@@ -10,14 +10,14 @@ AssignCompilerToken::AssignCompilerToken(std::string name, ReturnValueCompilerTo
 
 AssignCompilerToken::~AssignCompilerToken()
 {
-	delete value;
+	
 }
 
 std::string AssignCompilerToken::getName() {
 	return name;
 }
 
-ReturnValueCompilerToken* AssignCompilerToken::getReturnValue() {
+boost::shared_ptr<ReturnValueCompilerToken> AssignCompilerToken::getReturnValue() {
 	return value;
 }
 

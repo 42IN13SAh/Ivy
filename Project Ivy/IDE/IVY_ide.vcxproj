@@ -202,7 +202,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(QTDIR)\lib\qtmaind.lib;$(QTDIR)\lib\Qt5Cored.lib;$(QTDIR)\lib\Qt5Widgetsd.lib;$(QTDIR)\lib\Qt5Guid.lib;$(QTDIR)\lib\Qt5Cored.lib;libEGLd.lib;libGLESv2d.lib;gdi32.lib;user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\boost_1_56_0\stage\lib;D:\boost\lib;D:\Program Files\Boost\stage\lib;C:\Program Files\boost_1_56_0\stage\lib;D:\C++ Boost\boost_1_56_0\stage\lib;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0\stage\lib;E:\Applications\boost_1_56_0\stage\lib;D:\local\boost_1_56_0\stage\lib;$(QTDIR)\lib;$(QTDIR)\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\boost_1_56_0\stage\lib;D:\boost\lib;D:\Program Files\Boost\stage\lib;C:\Program Files\boost_1_56_0\stage\lib;D:\C++ Boost\boost_1_56_0\stage\lib;C:\Users\Sjors van Lemmen\Documents\Boost\boost_1_56_0\stage\lib;E:\Applications\boost_1_56_0\stage\lib;D:\local\boost_1_56_0\stage\lib;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>

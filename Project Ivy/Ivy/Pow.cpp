@@ -2,8 +2,8 @@
 
 void Pow::Execute(std::vector<boost::any> arglist)
 {
-	double a = boost::any_cast<double>(arglist[0]);
-	double b = boost::any_cast<double>(arglist[1]);
+	double a = Cast::cast<double>(arglist[0]);
+	double b = Cast::cast<double>(arglist[1]);
 	Result = std::pow(a, b);
 }
 

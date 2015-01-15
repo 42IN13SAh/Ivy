@@ -7,7 +7,7 @@ RandomWithPara::~RandomWithPara()
 
 void RandomWithPara::Execute(std::vector<boost::any> arglist)
 {
-	double a = boost::any_cast<double>(arglist[0]);
+	double a = Cast::cast<double>(arglist[0]);
 	std::random_device randomDevice;
 	std::mt19937 generator(randomDevice());
 	std::uniform_int_distribution<> distribute(0, a);

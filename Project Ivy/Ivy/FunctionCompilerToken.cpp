@@ -9,16 +9,18 @@ FunctionCompilerToken::FunctionCompilerToken(std::string name)
 
 FunctionCompilerToken::~FunctionCompilerToken()
 {
-	for each(ReturnValueCompilerToken* rv in arguments) {
-		delete rv;
+	for (int i = 0; i < arguments.size(); i++){
+
 	}
+	arguments.clear();
+	argumentNames.clear();
 }
 
 void FunctionCompilerToken::setName(std::string name) {
 	this->name = name;
 }
 
-void FunctionCompilerToken::addArgument(ReturnValueCompilerToken* rvct) {
+void FunctionCompilerToken::addArgument(boost::shared_ptr<ReturnValueCompilerToken> rvct) {
 	arguments.push_back(rvct);
 }
 
@@ -30,7 +32,7 @@ std::string FunctionCompilerToken::getName() {
 	return name;
 }
 
-std::vector<ReturnValueCompilerToken*>& FunctionCompilerToken::getArguments() {
+std::vector<boost::shared_ptr<ReturnValueCompilerToken>>& FunctionCompilerToken::getArguments() {
 	return arguments;
 }
 
