@@ -78,9 +78,6 @@
     <ClInclude Include="AssignCompilerToken.h">
       <Filter>Header Files\Compiler\CompilerTokens</Filter>
     </ClInclude>
-    <ClInclude Include="CompilerToken.h">
-      <Filter>Header Files\Compiler\CompilerTokens</Filter>
-    </ClInclude>
     <ClInclude Include="ConditionCompilerToken.h">
       <Filter>Header Files\Compiler\CompilerTokens</Filter>
     </ClInclude>
@@ -236,6 +233,9 @@
     </ClInclude>
     <ClInclude Include="WriteToFile.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerToken.h">
+      <Filter>Header Files\Compiler\CompilerTokens</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
