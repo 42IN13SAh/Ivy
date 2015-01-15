@@ -22,6 +22,12 @@ CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
     highlightCurrentLine();
 }
 
+CodeEditor::~CodeEditor()
+{
+	delete lineNumberArea;
+	delete completer;
+}
+
 void CodeEditor::setCompleterModel(QList<QString> list)
 {
 	disconnect(completer, 0, this, 0);

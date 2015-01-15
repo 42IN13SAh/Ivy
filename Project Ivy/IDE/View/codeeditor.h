@@ -19,6 +19,7 @@ class CodeEditor : public QPlainTextEdit
 
 public:
 	CodeEditor(MainWindow *parent = 0);
+	virtual ~CodeEditor();
 	static QStringList defaultKeywords;
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
