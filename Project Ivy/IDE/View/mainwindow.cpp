@@ -64,7 +64,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 				hasBuild = true;
 				keyInputController->startBuilding(true, false);
 			}
-
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
 	});

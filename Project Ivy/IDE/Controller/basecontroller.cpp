@@ -59,7 +59,6 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 
 		return buildSucceeded;
 	}
-
 	compiler = new Compiler(tokenizer->getTokenList());
 	compiler->compile();
 	makeCompleterModel(compiler->getAllFunctionAndVariableNames());
@@ -89,8 +88,8 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 
 	if (onlyBuild)
 	{
-		compiler->~Compiler();
-		tokenizer->~Tokenizer();
+		delete compiler;
+		delete tokenizer;
 	}
 
 	emit finishedBuilding(buildSucceeded);
