@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/shared_ptr.hpp>
 #include "CompilerToken.h"
 class VirtualMachine;
 
@@ -11,11 +12,11 @@ public:
 	void setFalseAction(Action*);
 	Action* getNextAction();
 	Action* getFalseAction();
-	CompilerToken* getCompilerToken();
-	void setCompilerToken(CompilerToken*);
+	boost::shared_ptr<CompilerToken> getCompilerToken();
+	void setCompilerToken(boost::shared_ptr<CompilerToken>);
 private:
 	Action* nextAction;
 	Action* onFalseAction;
-	CompilerToken* compilerToken;
+	boost::shared_ptr<CompilerToken> compilerToken;
 };
 

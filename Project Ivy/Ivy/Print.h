@@ -11,7 +11,7 @@ public:
 	virtual boost::any GetResult();
 private:
 	boost::any Result;
-	std::string stringToPrint;
+	std::string* stringToPrint;
 	bool number(boost::any value);
 	bool string(boost::any value);
 	bool boolean(boost::any value);

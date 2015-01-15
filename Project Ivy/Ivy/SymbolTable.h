@@ -3,7 +3,7 @@
 #include <vector>
 #include "Symbol.h"
 #include "FunctionSymbol.h"
-#include "SymbolTableItemsToBeDeleted.h"
+
 
 class SymbolTable
 {
@@ -20,9 +20,8 @@ public:
 	bool hasSymbol(std::string);
 	void clearSymbolTable();
 	boost::any getValue(std::string);
-	std::vector<Symbol *>getAllSymbols();
+	std::vector<Symbol*>getAllSymbols();
 	std::vector<FunctionSymbol *>getAllFunctionSymbols();
-	SymbolTableItemsToBeDeleted *getItemsToDelete(std::vector<FunctionSymbol *>functionSymbolsToSkip = std::vector<FunctionSymbol *>(), std::vector<Symbol *>symbolsToSkip = std::vector<Symbol *>());
 private:
 	std::vector<Symbol*> symbols;
 	std::vector<FunctionSymbol*> fSymbols;

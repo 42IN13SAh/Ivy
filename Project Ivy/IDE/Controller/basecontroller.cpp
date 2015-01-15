@@ -90,8 +90,8 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 
 	if (onlyBuild)
 	{
-		delete compiler;
-		delete tokenizer;
+		compiler->~Compiler();
+		tokenizer->~Tokenizer();
 	}
 
 	emit finishedBuilding(buildSucceeded);
