@@ -215,6 +215,9 @@ boost::any VirtualMachine::getReturnValue(boost::shared_ptr<ReturnValueCompilerT
 			if (exBool(left, right, op, resultStack)){
 				continue;
 			}
+			if (exNoneCheck(left, right, op, resultStack)){
+				continue;
+			}
 			throw TypeMismatchException(TokenType::TokenTypeNames[op], left.type().name(), right.type().name()); // Invalid value type
 		}
 		else{
@@ -382,6 +385,22 @@ bool VirtualMachine::exNumberString(boost::any left, boost::any right, TokenType
 	switch (op){
 	case TokenType::AddOperator:
 		resultStack.push(std::to_string(lNumber) + rString);
+		break;
+	default:
+		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "Double", "String");
+		return false;
+	}
+	return true;
+}
+
+bool VirtualMachine::exNoneCheck(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack)
+{
+	switch (op){
+	case TokenType::IsStatement:
+		resultStack.push(left.type() == right.type());
+		break;
+	case TokenType::NotStatement:
+		resultStack.push(left.type() != right.type());
 		break;
 	default:
 		throw UnexpectedOperatorException(TokenType::TokenTypeNames[op], "Double", "String");
