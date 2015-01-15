@@ -1,4 +1,6 @@
-#include <vld.h>
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 #include <fstream>
 #include <iostream>
 #include <chrono>
@@ -8,6 +10,7 @@
 #include "VirtualMachine.h"
 
 int main(){
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	Tokenizer* tok = new Tokenizer();
 	std::string line;
 	std::vector<std::string> lines;
@@ -26,6 +29,6 @@ int main(){
 	vm->run(comp->getFirstAction());
 
 	delete tok;
-	delete comp;
 	delete vm;
+	delete comp;
 }

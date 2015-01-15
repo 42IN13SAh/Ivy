@@ -7,4 +7,5 @@ class IInternalFunction
 public:
 	virtual void Execute(std::vector<boost::any> arglist) = 0;
 	virtual boost::any GetResult() = 0;
+	virtual ~IInternalFunction(){}
 };

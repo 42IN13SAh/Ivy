@@ -4,17 +4,11 @@ var x = 5;
 function z(){
 	while(++y < 100 and ++x < 100){
 		if(y is 10 or x is 10){
-			pow(y,4);
+			print(y + x);
 		}else{
 			if(y is 20 or x is 30){
-				pow(y,7);
-			}else{
-				if(y is 50 or x is 70){
-					pow(y,2);
-				}
+				print(y + x);
 			}
-		}if(y is 80 or x is 90){
-			pow(y,3);
 		}
 	}
 }
