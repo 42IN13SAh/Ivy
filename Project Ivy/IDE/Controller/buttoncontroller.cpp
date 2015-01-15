@@ -6,11 +6,16 @@ ButtonController::ButtonController(MainWindow * source) : BaseController(source)
 {
 }
 
+ButtonController::~ButtonController()
+{
+
+}
+
 void ButtonController::runButtonClicked()
 {
-	std::async(std::launch::async, [&]() {
+	//std::async(std::launch::async, [&]() {
 		startRunning();
-	});
+	//});
 }
 
 void ButtonController::buildButtonClicked()

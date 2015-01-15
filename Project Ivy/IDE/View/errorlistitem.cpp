@@ -8,6 +8,11 @@ ErrorListItem::ErrorListItem(int lineNumber, int linePosition, QString text, QLi
 	this->linePosition = linePosition;
 }
 
+ErrorListItem::~ErrorListItem()
+{
+
+}
+
 int ErrorListItem::getLineNumber()
 {
 	return this->lineNumber;
