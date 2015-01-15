@@ -7,6 +7,7 @@ class ButtonController : public BaseController
 {
 public:
     ButtonController(MainWindow * source);
+	virtual ~ButtonController();
     void runButtonClicked();
     void buildButtonClicked();
 };

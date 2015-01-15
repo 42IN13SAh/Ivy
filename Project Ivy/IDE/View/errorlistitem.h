@@ -8,6 +8,7 @@ class ErrorListItem : public QListWidgetItem
 {
 public:
     explicit ErrorListItem(int lineNumber, int linePosition, QString text, QListWidget *parent = 0);
+	virtual ~ErrorListItem();
 
 	int getLineNumber();
 	int getLinePosition();
