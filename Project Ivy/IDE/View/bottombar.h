@@ -15,6 +15,7 @@ class BottomBar : public QTabWidget
     Q_OBJECT
 public:
     explicit BottomBar(QWidget *parent = 0);
+	virtual ~BottomBar();
 	void addError(int lineNumber, int linePosition, QString text);
 	void clearErrorList();
 	void clearConsole();

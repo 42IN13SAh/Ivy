@@ -10,6 +10,11 @@ KeyInputController::KeyInputController(MainWindow *mainWindow) : BaseController(
 {
 }
 
+KeyInputController::~KeyInputController()
+{
+
+}
+
 /**
  *  Supproted Keystrokes:
  *      - F6 -			Start tokenizing & compiling

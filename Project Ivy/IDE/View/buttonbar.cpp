@@ -45,6 +45,13 @@ ButtonBar::ButtonBar(QWidget *parent) : QWidget(parent)
     setStyleSheet("QPushButton { color: white; background-color: #2D2D2F; border: none; border-color: black; } QPushButton:hover { background-color: #1E1E1F; } QPushButton:pressed { border-left: 2px solid grey; border-top: 2px solid grey; border-right: 2px solid black; border-bottom: 2px solid black; }");
 }
 
+ButtonBar::~ButtonBar()
+{
+	delete runButton;
+	delete buildButton;
+	delete controller;
+}
+
 void ButtonBar::runButtonClicked(){
     controller->runButtonClicked();
 }

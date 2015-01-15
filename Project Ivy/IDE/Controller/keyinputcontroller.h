@@ -11,6 +11,7 @@ class KeyInputController : public BaseController
 {
 public:
 	KeyInputController(MainWindow *mainWindow);
+	virtual ~KeyInputController();
 
 	void handleKeyPressEvent(QKeyEvent* event, MainWindow *mainWindow, CodeEditor *editor);
 

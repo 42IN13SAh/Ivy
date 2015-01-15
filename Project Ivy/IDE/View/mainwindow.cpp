@@ -69,6 +69,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	});
 }
 
+MainWindow::~MainWindow()
+{
+	delete highlighter;
+	delete editor;
+	delete buttonBar;
+	delete bottomBar;
+	delete keyInputController;
+}
+
 void MainWindow::onSetCompleterModel(QList<QString> list)
 {
 	editor->setCompleterModel(list);

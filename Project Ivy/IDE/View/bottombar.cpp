@@ -20,6 +20,7 @@ BottomBar::BottomBar(QWidget *parent) :
 	font.setFixedPitch(true);
 	font.setPointSize(10);
 	textArea->setFont(font);
+	textArea->setReadOnly(true);
     this->addTab(textArea, "Console");
 
     //errorlist
@@ -38,6 +39,13 @@ BottomBar::BottomBar(QWidget *parent) :
 	connect(this, SIGNAL(stdOut(QString)), this, SLOT(onStdOut(QString)));
 
 	createRedirector();
+}
+
+BottomBar::~BottomBar()
+{
+	delete textArea;
+	delete errorList;
+	delete stdRedirector;
 }
 
 void BottomBar::errorListItemDoubleClicked(QListWidgetItem* listItem)

@@ -71,6 +71,11 @@ Highlighter::Highlighter(QTextDocument *parent)
     commentEndExpression = QRegExp("#");
 }
 
+Highlighter::~Highlighter()
+{
+
+}
+
 void Highlighter::highlightBlock(const QString &text)
 {
     foreach (const HighlightingRule &rule, highlightingRules) {

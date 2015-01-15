@@ -12,6 +12,7 @@ class Highlighter : public QSyntaxHighlighter
 
 public:
     Highlighter(QTextDocument *parent = 0);
+	virtual ~Highlighter();
 
 protected:
     void highlightBlock(const QString &text);
