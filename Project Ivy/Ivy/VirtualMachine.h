@@ -42,14 +42,5 @@ private:
 	bool exNumberString(boost::any left, boost::any right, TokenType::TokenType op, std::stack<boost::any>& resultStack);
 	boost::any getReturnValue(boost::shared_ptr<ReturnValueCompilerToken> compilerToken, SymbolTable& symbolTable);
 	boost::any getVarValue(boost::shared_ptr<VarCompilerToken> compilerToken, SymbolTable& symbolTable);
-
-	template<class T>
-	T cast(boost::any val) {
-		try {
-			return boost::any_cast<T>(val);
-		} catch (std::exception& e) {
-			throw BadCastException(typeid(T).name(), val.type().name());
-		}
-	}
 };
 

@@ -2,6 +2,7 @@
 #include "InternalFunctionFactory.h"
 #include "ExceptionCodes.h"
 #include "VirtualMachine.h"
+#include "Cast.h"
 VirtualMachine::VirtualMachine()
 {
 }
@@ -84,22 +85,22 @@ void VirtualMachine::executeAction(boost::shared_ptr<AssignCompilerToken> compil
 	case TokenType::AddThenAssignOperator:
 	{
 											 if (val.type() == typeid(std::string)){
-												 val = cast<std::string>(val)+cast<std::string>(newVal);
+												 val = Cast::cast<std::string>(val)+Cast::cast<std::string>(newVal);
 											 }
 											 else{
-												 val = cast<double>(val)+cast<double>(newVal);
+												 val = Cast::cast<double>(val)+Cast::cast<double>(newVal);
 											 }
 											 break;
 	}
 	case TokenType::MinusThenAssignOperator:
-		val = cast<double>(val)-cast<double>(newVal);
+		val = Cast::cast<double>(val)-Cast::cast<double>(newVal);
 		break;
 	case TokenType::DivideThenAssignOperator:
-		if (cast<double>(newVal) == 0) throw DivideByZeroException();
-		val = cast<double>(val) / cast<double>(newVal);
+		if (Cast::cast<double>(newVal) == 0) throw DivideByZeroException();
+		val = Cast::cast<double>(val) / Cast::cast<double>(newVal);
 		break;
 	case TokenType::MultiplyThenAssignOperator:
-		val = cast<double>(val)* cast<double>(newVal);
+		val = Cast::cast<double>(val)* Cast::cast<double>(newVal);
 		break;
 	}
 	updateVariable(compilerToken->getName(), val, symbolTable);
@@ -151,7 +152,7 @@ boost::any VirtualMachine::executeInternalFunction(std::string name, boost::shar
 
 bool VirtualMachine::executeAction(boost::shared_ptr<ConditionCompilerToken> compilerToken, SymbolTable& symbolTable)
 {
-	return (cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable)));
+	return (Cast::cast<bool>(getReturnValue(compilerToken->getReturnValueCompilerToken(), symbolTable)));
 }
 
 void VirtualMachine::executeAction(boost::shared_ptr<VarCompilerToken> compilerToken, SymbolTable& symbolTable)
@@ -172,7 +173,7 @@ boost::any VirtualMachine::getVarValue(boost::shared_ptr<VarCompilerToken> compi
 	}
 	TokenType::TokenType op = (compilerToken->getFrontOperator() != TokenType::Null) ? compilerToken->getFrontOperator() : compilerToken->getBackOperator();
 	if (op != TokenType::Null) {
-		double val = cast<double>(value);
+		double val = Cast::cast<double>(value);
 		bool isFrontOp = (compilerToken->getFrontOperator() != TokenType::Null);
 		if (isFrontOp) {
 			updateVariable(compilerToken->getName(), (op == TokenType::IncreaseOperator) ? ++val : --val, symbolTable);
@@ -194,7 +195,7 @@ boost::any VirtualMachine::getReturnValue(boost::shared_ptr<ReturnValueCompilerT
 		boost::any value = rpn.front();
 		rpn.pop();
 		if (value.type() == typeid(TokenType::TokenType)){
-			TokenType::TokenType op = cast<TokenType::TokenType>(value);
+			TokenType::TokenType op = Cast::cast<TokenType::TokenType>(value);
 			boost::any right = resultStack.top();
 			resultStack.pop();
 			boost::any left = resultStack.top();
@@ -317,8 +318,8 @@ bool VirtualMachine::exBool(boost::any left, boost::any right, TokenType::TokenT
 	bool lBool;
 	bool rBool;
 	try{
-		lBool = boost::any_cast<bool>(left);
-		rBool = boost::any_cast<bool>(right);
+		lBool = Cast::cast<bool>(left);
+		rBool = Cast::cast<bool>(right);
 	}
 	catch (std::exception& e){
 		return false;
@@ -351,8 +352,8 @@ bool VirtualMachine::exStringNumber(boost::any left, boost::any right, TokenType
 	std::string lString;
 	double rNumber;
 	try{
-		lString = boost::any_cast<std::string>(left);
-		rNumber = boost::any_cast<double>(right);
+		lString = Cast::cast<std::string>(left);
+		rNumber = Cast::cast<double>(right);
 	}
 	catch (std::exception& e){
 		return false;
@@ -372,8 +373,8 @@ bool VirtualMachine::exNumberString(boost::any left, boost::any right, TokenType
 	double lNumber;
 	std::string rString;
 	try{
-		lNumber = boost::any_cast<double>(left);
-		rString = boost::any_cast<std::string>(right);
+		lNumber = Cast::cast<double>(left);
+		rString = Cast::cast<std::string>(right);
 	}
 	catch (std::exception& e){
 		return false;

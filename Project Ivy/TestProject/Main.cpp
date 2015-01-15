@@ -27,7 +27,7 @@ int main(){
 
 	VirtualMachine* vm = new VirtualMachine(comp->getSymbolTable());
 	vm->run(comp->getFirstAction());
-
+	std::cin;
 	delete tok;
 	delete vm;
 	delete comp;

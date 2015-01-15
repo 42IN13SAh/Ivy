@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <boost\any.hpp>
+#include "Cast.h"
 
 class IInternalFunction
 {

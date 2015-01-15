@@ -1,16 +1,8 @@
-var y = 1;
-var x = 5;
-
+var x = 0;
 function z(){
-	while(++y < 100 and ++x < 100){
-		if(y is 10 or x is 10){
-			print(y + x);
-		}else{
-			if(y is 20 or x is 30){
-				print(y + x);
-			}
-		}
+	var y = 0;
+	while(x++ < 100000){
+		y = random();
 	}
 }
-
 z();

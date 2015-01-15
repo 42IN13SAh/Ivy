@@ -76,6 +76,7 @@
     <ClInclude Include="BadCastException.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BaseException.h" />
+    <ClInclude Include="Cast.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerToken.h" />
     <ClInclude Include="ConditionCompilerToken.h" />

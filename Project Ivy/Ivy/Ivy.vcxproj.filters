@@ -237,6 +237,9 @@
     <ClInclude Include="CompilerToken.h">
       <Filter>Header Files\Compiler\CompilerTokens</Filter>
     </ClInclude>
+    <ClInclude Include="Cast.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp">
