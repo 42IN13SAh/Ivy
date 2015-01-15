@@ -56,18 +56,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	bool connected = connect(buttonBar->getButtonController(), SIGNAL(setCompleterModel(QList<QString>)), this, SLOT(onSetCompleterModel(QList<QString>)));
 
 	//Op 15-01-2015 samen met Bart Gelens tot de conclusie gekomen dat deze async 5 false positive memory leaks geven.
-	//std::async(std::launch::async, [&]() {
-	//	while (true)
-	//	{
-	//		if (!hasBuild)
-	//		{
-	//			hasBuild = true;
-	//			keyInputController->startBuilding(true, false);
-	//		}
+	std::async(std::launch::async, [&]() {
+		while (true)
+		{
+			if (!hasBuild)
+			{
+				hasBuild = true;
+				keyInputController->startBuilding(true, false);
+			}
 
-	//		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	//	}
-	//});
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		}
+	});
 }
 
 MainWindow::~MainWindow()
