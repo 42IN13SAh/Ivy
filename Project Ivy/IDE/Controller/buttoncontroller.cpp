@@ -20,7 +20,7 @@ void ButtonController::runButtonClicked()
 
 void ButtonController::buildButtonClicked()
 {
-	std::async(std::launch::async, [&]() {
-		startBuilding(true, true);
-	});
+	//std::async(std::launch::async, [&]() {
+	//	startBuilding(true, true);
+	//});
 }
