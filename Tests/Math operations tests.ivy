@@ -1,0 +1,317 @@
+function addition_binary(param, x) {
+    var y = param + x;
+    return y;
+}
+
+function addition_unary_after(param) {
+    var x = param;
+    return x++; #result should be the value of param at the start, since ++ after a variable name means to execute the addition AFTER the current line#
+}
+
+function addition_unary_before(param) {
+    var x = param;
+    return ++x; #result should be the value of param + 1, since ++ before a variable name means to execute the addition BEFORE the current line#
+}
+
+function addition_in_nested_calculation(param, x, y) {
+    var z = ((x * y) + param) + (x + param);
+    return z;
+}
+
+function subtraction_binary(param, x) {
+    var y = param - x;
+    return y;
+}
+
+function subtraction_unary_after(param) {
+    var x = param;
+    return x--; #result should be the value of param at the start, since -- after a variable name means to execute the addition AFTER the current line#
+}
+
+function subtraction_unary_before(param) {
+    var x = param;
+    return --x; #result should be the value of param - 1, since -- before a variable name means to execute the addition BEFORE the current line#
+}
+
+function subtraction_in_nested_calculation(param, x, y) {
+    var z = ((x * y) - param) - (x - param);
+    return z;
+}
+
+function multiply_binary(param, x) {
+    var y = param * x;
+    return y;
+}
+
+function multiply_in_nested_calculation(param, x, y) {
+    var z = ((x + y) * param) * (x * param);
+    return z;
+}
+
+function divide_binary(param, x) {
+    var y = param / x;
+    return y;
+}
+
+function divide_in_nested_calculation(param, x, y) {
+    var z = ((x + y) / param) / (x / param);
+    return z;
+}
+
+function modulo_binary(param, x) {
+    var y = param % x;
+    return y;
+}
+
+function modulo_in_nested_calculation(param, x, y) {
+    var z = ((x + y) % param) % (x % param);
+    return z;
+}
+
+var line_separator = "=============================================";
+
+function print_success(function_name) {
+	print (" ");
+	print("  " + function_name + " gave the expected output.");
+	print("  TEST SUCCESSFULL!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function print_failed(function_name, expected_output, actual_result) {
+	print(" ");
+	print("  " + function_name + " gave unexpected output --> expected:");
+	print(expected_output);
+	print ("  but instead we received:");
+	print(actual_result);
+	print("  ... TEST FAILED!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function test_addition() {
+    var function_name1 = "addition_binary";
+    #Use some random numbers#
+    var x = 10;
+    var y = 5;
+    var z = 24;
+
+    var result = addition_binary(z, x); #24 + 10 = 34#
+    var expected_output = 34;
+
+    if (result is expected_output) {
+        print_success(function_name1);
+    } else {
+        print_failed(function_name1, expected_output, result);
+    }
+
+    #========================================#
+    var function_name2 = "addition_unary_after";
+    #Use some random numbers#
+    z = 24;
+
+    result = addition_unary_after(z); #24++ = 24 (it'll be 25 AFTER the return)#
+    expected_output = 24;
+
+    if (result is expected_output) {
+        print_success(function_name2);
+    } else {
+        print_failed(function_name2, expected_output, result);
+    }
+
+    #========================================#
+    var function_name3 = "addition_unary_before";
+    #Use some random numbers#
+    z = 24;
+
+    result = addition_unary_before(z); #++24 = 25 (it'll be 25 BEFORE the return)#
+    expected_output = 25;
+
+    if (result is expected_output) {
+        print_success(function_name3);
+    } else {
+        print_failed(function_name3, expected_output, result);
+    }
+
+    #========================================#
+    var function_name4 = "addition_in_nested_calculation";
+    #Use some random numbers#
+    x = 2;
+    y = 214;
+    z = 12;
+
+    result = addition_in_nested_calculation(z, x, y); #((2 * 214) + 12) + (2 + 12) = 454#
+    expected_output = 454;
+
+    if (result is expected_output) {
+        print_success(function_name4);
+    } else {
+        print_failed(function_name4, expected_output, result);
+    }
+}
+
+function test_subtraction() {
+    var function_name1 = "subtraction_binary";
+    #Use some random numbers#
+    var x = 10;
+    var y = 5;
+    var z = 24;
+
+    var result = subtraction_binary(z, x); #24 - 10 = 14#
+    var expected_output = 14;
+
+    if (result is expected_output) {
+        print_success(function_name1);
+    } else {
+        print_failed(function_name1, expected_output, result);
+    }
+
+    #========================================#
+    var function_name2 = "subtraction_unary_after";
+    #Use some random numbers#
+    z = 24;
+
+    result = subtraction_unary_after(z); #24-- = 24 (it'll be 23 AFTER the return)#
+    expected_output = 24;
+
+    if (result is expected_output) {
+        print_success(function_name2);
+    } else {
+        print_failed(function_name2, expected_output, result);
+    }
+
+    #========================================#
+    var function_name3 = "subtraction_unary_before";
+    #Use some random numbers#
+    z = 24;
+
+    result = subtraction_unary_before(z); #--24 = 23 (it'll be 23 AFTER the return)#
+    expected_output = 23;
+
+    if (result is expected_output) {
+        print_success(function_name3);
+    } else {
+        print_failed(function_name3, expected_output, result);
+    }
+
+    #========================================#
+   var function_name4 = "subtraction_in_nested_calculation";
+    #Use some random numbers#
+    x = 12;
+    y = 78;
+    z = 56;
+
+    result = subtraction_in_nested_calculation(z, x, y); #((12 * 78) + 56) + (12 + 56) = 924#
+    expected_output = 924;
+
+    if (result is expected_output) {
+        print_success(function_name4);
+    } else {
+        print_failed(function_name4, expected_output, result);
+    }
+}
+
+function test_multiplication() {
+    var function_name1 = "multiply_binary";
+    #Use some random numbers#
+    var x = 10;
+    var y = 5;
+    var z = 24;
+
+    var result = multiply_binary(z, x); #24 * 10 = 240#
+    var expected_output = 240;
+
+    if (result is expected_output) {
+        print_success(function_name1);
+    } else {
+        print_failed(function_name1, expected_output, result);
+    }
+
+    #========================================#
+    var function_name2 = "multiply_in_nested_calculation";
+    #Use some random numbers#
+    x = 12;
+    y = 78;
+    z = 56;
+
+    result = multiply_in_nested_calculation(z, x, y); #((12 + 78) * 56) * (12 * 56) = 3386880#
+    expected_output = 3386880;
+
+    if (result is expected_output) {
+        print_success(function_name2);
+    } else {
+        print_failed(function_name2, expected_output, result);
+    }
+}
+
+function test_division() {
+    var function_name1 = "divide_binary";
+    #Use some random numbers#
+    var x = 4;
+    var y = 5;
+    var z = 24;
+
+    var result = divide_binary(z, x); #24 / 4 = 6#
+    var expected_output = 6;
+
+    if (result is expected_output) {
+        print_success(function_name1);
+    } else {
+        print_failed(function_name1, expected_output, result);
+    }
+
+    #========================================#
+    var function_name2 = "divide_in_nested_calculation";
+    #Use some random numbers#
+    x = 12;
+    y = 78;
+    z = 2;
+
+    result = divide_in_nested_calculation(z, x, y); #((12 + 78) / 2) / (12 / 2) = 7.5#
+    expected_output = 7.5;
+
+    if (result is expected_output) {
+        print_success(function_name2);
+    } else {
+        print_failed(function_name2, expected_output, result);
+    }
+}
+
+function test_modulo() {
+    var function_name1 = "modulo_binary";
+    #Use some random numbers#
+    var x = 5;
+    var y = 5;
+    var z = 24;
+
+    var result = modulo_binary(z, x); #24 % 5 = 4#
+    var expected_output = 4;
+
+    if (result is expected_output) {
+        print_success(function_name1);
+    } else {
+        print_failed(function_name1, expected_output, result);
+    }
+
+    #========================================#
+    var function_name2 = "modulo_in_nested_calculation";
+    #Use some random numbers#
+    x = 12;
+    y = 78;
+    z = 7;
+
+    result = modulo_in_nested_calculation(z, x, y); #((12 + 78) % 7) % (12 % 7) = (90 % 7) % 5 = 6 % 5 = 1#
+    expected_output = 1;
+
+    if (result is expected_output) {
+        print_success(function_name2);
+    } else {
+        print_failed(function_name2, expected_output, result);
+    }
+}
+
+test_addition();
+test_subtraction();
+test_multiplication();
+test_division();
+test_modulo();

@@ -1,0 +1,144 @@
+var line_separator = "=============================================";
+
+function print_success(function_name) {
+	print (" ");
+	print("  " + function_name + " gave the expected output.");
+	print("  TEST SUCCESSFULL!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function print_failed(function_name, expected_output, actual_result) {
+	print(" ");
+	print("  " + function_name + " gave unexpected output --> expected:");
+	print(expected_output);
+	print ("  but instead we received:");
+	print(actual_result);
+	print("  ... TEST FAILED!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function test_simple_function_int() {
+	return 10;
+}
+
+function test_simple_function_string() {
+	return "string";
+}
+
+function test_simple_function_bool() {
+	return true;
+}
+
+function test_function_nest() {
+	return test_function_nest2();
+}
+
+function test_function_nest2() {
+	return "ding";
+}
+
+function test_multi_return() {
+	var x = true;
+	if(x) {
+		return "true";
+	}
+	return "false";
+}
+
+function test_arguments(x,y,z,a,b,c) {
+	if(x < 10) {
+		return y + z;
+	}
+	return a+b*c;
+}
+
+function test_while_function() {
+	var x = 0;
+	while(test_while_function_return(x)) {
+		x++;
+	}
+	return x;
+}
+
+function test_while_function_return(x) {
+	return x not 10;
+	#NOTE: the following code is a known bug/missing feature and will CRASH the program:#
+	#return (x not 10);#
+	#This is due to how Ivy builds it's RPN#
+}
+
+function run() {
+	var some_function_name = "simple int";
+	var result = test_simple_function_int();
+	var expected_output = 10;
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "simple string";
+	result = test_simple_function_string();
+	expected_output = "string";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "simple bool";
+	result = test_simple_function_bool();
+	expected_output = true;
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "nest";
+	result = test_function_nest();
+	expected_output = "ding";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "multi return";
+	result = test_multi_return();
+	expected_output = "true";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "arguments";
+	result = test_arguments(11,1,"Bla","Hello",6,5);
+	expected_output = "Hello"+30;
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "while function";
+	result = test_while_function();
+	expected_output = 10;
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}	
+	
+}
+run();

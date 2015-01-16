@@ -2,6 +2,7 @@
 #include <fstream>
 #include "WriteToFile.h"
 #include "BaseException.h"
+
 void WriteToFile::Execute(std::vector<boost::any> arglist)
 {
 	std::string lineToWrite;
