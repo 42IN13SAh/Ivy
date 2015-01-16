@@ -8,7 +8,7 @@ QStringList CodeEditor::defaultKeywords;
 CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
 {
 	source = parent;
-    lineNumberArea = new LineNumberArea(this);;
+    lineNumberArea = new LineNumberArea(this);
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect, int)), this, SLOT(updateLineNumberArea(QRect, int)));
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
@@ -20,6 +20,8 @@ CodeEditor::CodeEditor(MainWindow *parent) : QPlainTextEdit(parent)
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
+
+	scrollLock = false;
 }
 
 CodeEditor::~CodeEditor()
@@ -88,7 +90,7 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 void CodeEditor::underlineError(int lineNumber, int linePosition)
 {
 	QTextCursor cursor = this->textCursor();
-	QTextCursor oldCursor = this->textCursor();
+	QTextCursor oldCursor = cursor;
 	cursor.movePosition(QTextCursor::Start);
 	cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, lineNumber - 1);
 	cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, linePosition - 1);
@@ -112,11 +114,8 @@ void CodeEditor::underlineError(int lineNumber, int linePosition)
 
 void CodeEditor::clearUnderlines()
 {
-	QTextCursor cursor = this->textCursor();
 	QTextCursor oldCursor = this->textCursor();
-	cursor.movePosition(QTextCursor::Start);
-	cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
-	setTextCursor(cursor);
+	selectAll();
 
 	QTextCharFormat defcharfmt = currentCharFormat();
 	QTextCharFormat newcharfmt = defcharfmt;

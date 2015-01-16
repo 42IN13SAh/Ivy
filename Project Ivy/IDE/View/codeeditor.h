@@ -51,6 +51,7 @@ private:
 	void autocomplete(QKeyEvent *e);
 	QString getCurrentLine(QTextCursor cursor, int extraLines = 0);
 	QString getLineToInsert(QString line);
+	bool scrollLock;
 
 };
 
