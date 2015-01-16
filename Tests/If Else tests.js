@@ -1,16 +1,16 @@
 var line_separator = "=============================================";
 
-function print_success(funcion_name) {
+function print_success(some_function_name) {
 	print (" ");
-	print("  " + funcion_name + " gave the expected output.");
+	print("  " + some_function_name + " gave the expected output.");
 	print("  TEST SUCCESSFULL!!!");
 	print(" ");
     print(line_separator);
 }
 
-function print_failed(funcion_name, expected_output, actual_result) {
+function print_failed(some_function_name, expected_output, actual_result) {
 	print(" ");
-	print("  " + funcion_name + " gave unexpected output --> expected:");
+	print("  " + some_function_name + " gave unexpected output --> expected:");
 	print(expected_output);
 	print ("  but instead we received:");
 	print(actual_result);
@@ -30,28 +30,31 @@ function test_if_else() {
 }
 #========================================#
 #========================================#
-var funcion_name = "if_else: if";
-var result = test_if_else();
-var expected_output = "if_else: if";
+# y = 1#
+function test_if_else_stub(){
+	var some_function_name = "if_else: if";
+	var result = test_if_else();
+	var expected_output = "if_else: if";
 
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else: else";
+	y++; # y is 2#
+	result = test_if_else();
+	expected_output = "if_else: else";
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-funcion_name = "if_else: else";
-result = test_if_else();
-expected_output = "if_else: else";
-y++;
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
-
+test_if_else_stub();
 
 var x = 1;
 #========================================#
@@ -68,39 +71,43 @@ function test_if_else_nested_if_else_in_if() {
 }
 #========================================#
 #========================================#
-funcion_name = "if_else_nested_if_else_in_if: if, if";
-result = test_if_else_nested_if_else_in_if();
-expected_output = "if_else_nested_if_else_in_if: if, if";
+#y = 2, x = 1#
+function test_if_else_nested_if_else_in_if_stub(){
+	var some_function_name = "if_else_nested_if_else_in_if: if, if";
+	var result = test_if_else_nested_if_else_in_if();
+	var expected_output = "if_else_nested_if_else_in_if: if, if";
 
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_else_in_if: if, else";
+	x++;
+	result = test_if_else_nested_if_else_in_if();
+	expected_output = "if_else_nested_if_else_in_if: if, else";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_else_in_if: else";
+	y++;
+	result = test_if_else_nested_if_else_in_if();
+	expected_output = "if_else_nested_if_else_in_if: else";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-funcion_name = "if_else_nested_if_else_in_if: if, else";
-x++;
-result = test_if_else_nested_if_else_in_if();
-expected_output = "if_else_nested_if_else_in_if: if, else";
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
-
-#========================================#
-funcion_name = "if_else_nested_if_else_in_if: else";
-y++;
-result = test_if_else_nested_if_else_in_if();
-expected_output = "if_else_nested_if_else_in_if: else";
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
+test_if_else_nested_if_else_in_if_stub();
 
 #========================================#
 function test_if_else_nested_if_else_in_else() {
@@ -116,39 +123,43 @@ function test_if_else_nested_if_else_in_else() {
 }
 #========================================#
 #========================================#
-funcion_name = "if_else_nested_if_else_in_else: if ";
-result = test_if_else_nested_if_else_in_else();
-expected_output = "if_else_nested_if_else_in_else: if ";
+#y = 3, x = 2#
+function test_if_else_nested_if_else_in_else_stub(){
+	var some_function_name = "if_else_nested_if_else_in_else: if ";
+	var result = test_if_else_nested_if_else_in_else();
+	var expected_output = "if_else_nested_if_else_in_else: if ";
 
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_else_in_else: else, if";
+	y++;
+	result = test_if_else_nested_if_else_in_else();
+	expected_output = "if_else_nested_if_else_in_else: else, if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name =  "if_else_nested_if_else_in_else: else, else";
+	x++;
+	result = test_if_else_nested_if_else_in_else();
+	expected_output =  "if_else_nested_if_else_in_else: else, else";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-funcion_name = "if_else_nested_if_else_in_else: else, if";
-y++;
-result = test_if_else_nested_if_else_in_else();
-expected_output = "if_else_nested_if_else_in_else: else, if";
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
-
-#========================================#
-funcion_name =  "if_else_nested_if_else_in_else: else, else";
-x++;
-result = test_if_else_nested_if_else_in_else();
-expected_output =  "if_else_nested_if_else_in_else: else, else";
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
+test_if_else_nested_if_else_in_else_stub();
 
 #========================================#
 function test_if_else_nested_if_in_if() {
@@ -162,39 +173,43 @@ function test_if_else_nested_if_in_if() {
 }
 #========================================#
 #========================================#
-funcion_name = "if_else_nested_if_else_in_if: if, if";
-result = test_if_else_nested_if_in_if();
-expected_output = "if_else_nested_if_else_in_if: if, if";
+#y = 4, x = 3#
+function test_if_else_nested_if_in_if_stub(){
+	var some_function_name = "if_else_nested_if_else_in_if: if, if";
+	var result = test_if_else_nested_if_in_if();
+	var expected_output = "if_else_nested_if_else_in_if: if, if";
 
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_else_in_if: if, else";
+	x++;
+	result = test_if_else_nested_if_in_if();
+	expected_output = 1; #this should return none, se we give something that is NOT none to compare it too#
+
+	if (result not expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_else_in_if: else";
+	y++;
+	result = test_if_else_nested_if_in_if();
+	expected_output = "if_else_nested_if_else_in_if: else";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-funcion_name = "if_else_nested_if_else_in_if: if, else";
-x++;
-result = test_if_else_nested_if_in_if();
-expected_output = "none"; #result should be none, se we give something that is NOT none to compare it too#
-
-if (result not expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
-
-#========================================#
-funcion_name = "if_else_nested_if_else_in_if: else";
-y++;
-result = test_if_else_nested_if_in_if();
-expected_output = "if_else_nested_if_else_in_if: else";
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
+test_if_else_nested_if_in_if_stub();
 
 #========================================#
 function test_if_else_nested_if_in_else() {
@@ -208,181 +223,213 @@ function test_if_else_nested_if_in_else() {
 }
 #========================================#
 #========================================#
-funcion_name = "if_else_nested_if_in_else: if ";
-result = test_if_else_nested_if_in_else();
-expected_output = "if_else_nested_if_in_else: if ";
+#y = 5, x = 4#
+function test_if_else_nested_if_in_else_stub(){
+	#========================================#
+	var some_function_name = "if_else_nested_if_in_else: if ";
+	var result = test_if_else_nested_if_in_else();
+	var expected_output = "if_else_nested_if_in_else: if ";
 
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_in_else: else, if";
+	y++;
+	result = test_if_else_nested_if_in_else();
+	expected_output =  "if_else_nested_if_in_else: else, if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_nested_if_in_else: else, else";
+	x++;
+	result = test_if_else_nested_if_in_else();
+	expected_output = "none"; #result should be none, se we give something that is NOT none to compare it too#
+
+	if (result not expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-funcion_name= "if_else_nested_if_in_else: else, if";
-y++;
-result = test_if_else_nested_if_in_else();
-expected_output = "if_else_nested_if_in_else: else, if";
-
-if (result is expected_output) {
-	print_success(funcion_name);
-} else {
-	print_failed(funcion_name, expected_output, result);
-}
-
-#========================================#
-function_name = "if_else_nested_if_in_else: else, else";
-x++;
-result = test_if_else_nested_if_in_else();
-expected_output = "none"; #result should be none, se we give something that not none to compare it too#
-
-if (result not expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
+test_if_else_nested_if_in_else_stub();
 
 #========================================#
 function test_if() {
-    if (y is 6) {
-        return "if: if";
-    }
+	if (y is 6) {
+		return "if: if";
+	}
 }
 #========================================#
 #========================================#
-function_name = "if: if ";
-result = test_if();
-expected_output = "if: if";
+#y = 6, x = 5#
+function test_if_stub(){
+	var some_function_name = "if: if ";
+	var result = test_if();
+	var expected_output = "if: if";
 
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if: else";
+	y++;
+	result = test_if();
+	expected_output = "none"; #result should be none, se we give something that is NOT none to compare it too#
+
+	if (result not expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-function_name = "if: else";
-y++;
-result = test_if();
-expected_output = "none"; #result should be none, se we give something that is NOT none to compare it too#
-
-if (result not expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
+test_if_stub();
 
 #========================================#
 function test_if_else_after_if_else() {
-	var result = "";
+var result = "";
     if (y is 7) {
-        result += " if_else_after_if_else: first if ";
+        result += " if_else_after_if_else: first if";
     } else {
         result += " if_else_after_if_else: first else";
     }
     if (x is 5) {
-        result += " if_else_after_if_else: second if ";
+        result += " if_else_after_if_else: second if";
     } else {
         result += " if_else_after_if_else: second else";
     }
 	return result;
 }
-#========================================#
-#========================================#
-function_name = " if_else_after_if_else: first if  + second if";
-result = test_if_else_after_if_else();
-expected_output = " if_else_after_if_else: first if  if_else_after_if_else: second if ";
 
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
+#========================================#
+#========================================#
+#y = 7, x = 5#
+function test_if_else_after_if_else_stub(){
+	var some_function_name = "if_else_after_if_else: first if + second if ";
+	var result = test_if_else_after_if_else();
+	var expected_output = "if_else_after_if_else: first if if_else_after_if_else: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_after_if_else: first else + second if ";
+	y++;
+	result = test_if_else_after_if_else();
+	expected_output = " if_else_after_if_else: first else if_else_after_if_else: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name =  "if_else_after_if_else: first else + second else";
+	x++;
+	result = test_if_else_after_if_else();
+	expected_output =  "if_else_after_if_else: first else if_else_after_if_else: second else";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name ="if_else_after_if_else: first if + second else";
+	y--;
+	result = test_if_else_after_if_else();
+	expected_output = "if_else_after_if_else: first if if_else_after_if_else: second else";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-function_name = " if_else_after_if_else: first else + second if";
-y++;
-result = test_if_else_after_if_else();
-expected_output = " if_else_after_if_else: first else if_else_after_if_else: second if ";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_else_after_if_else: first else + second else";
-x++;
-result = test_if_else_after_if_else();
-expected_output = " if_else_after_if_else: first else if_else_after_if_else: second else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_else_after_if_else: first if + second else";
-y--;
-result = test_if_else_after_if_else();
-expected_output = " if_else_after_if_else: first if  if_else_after_if_else: second else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
+test_if_else_after_if_else_stub();
 
 #========================================#
 function test_if_after_if_else() {
 	var result = "";
     if (y is 7) {
-        result += " if_after_if_else: first if";
+		result += " if_after_if_else: first if";
     } else {
-        result +=" if_after_if_else: first else";
+        result += " if_after_if_else: first else";
     }
     if (x is 6) {
         result += " if_after_if_else: second if";
     }
 	return result;
 }
-#========================================#
-#========================================#
-function_name = " if_after_if_else: first if + second if";
-result = test_if_after_if_else();
-expected_output = " if_after_if_else: first if if_after_if_else: second if";
 
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
+#========================================#
+#========================================#
+#y = 7, x = 6#
+function test_if_after_if_else_stub(){
+	var some_function_name = "if_else_after_if_else: first if  + second if";
+	y++; #y is now 7#
+	var result = test_if_after_if_else();
+	var expected_output = " if_after_if_else: first if if_after_if_else: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_else_after_if_else: first else + second if";
+	y++;  #y is now 8#
+	result = test_if_after_if_else();
+	expected_output = " if_after_if_else: first else if_after_if_else: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name =  "if_else_after_if_else:first else + second else";
+	x++;  #x is now 7#
+	result = test_if_after_if_else();
+	expected_output = " if_after_if_else: first else"; #second else returns none#
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name ="if_else_after_if_else: first if + second else";
+	y--; #y is now 7#
+	result = test_if_after_if_else();
+	expected_output = " if_after_if_else: first if"; #second else returns none#
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-function_name = " if_after_if_else: first else + second if";
-y++;
-result = test_if_after_if_else();
-expected_output = " if_after_if_else: first else if_after_if_else: second if";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_after_if_else: first else";
-x++;
-result = test_if_after_if_else();
-expected_output = " if_after_if_else: first else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
+test_if_after_if_else_stub();
 
 #========================================#
 function test_if_else_after_if() {
@@ -399,107 +446,116 @@ function test_if_else_after_if() {
 }
 #========================================#
 #========================================#
-function_name = " if_else_after_if: first if + second if";
-result = test_if_else_after_if();
-expected_output = " if_else_after_if: first if if_else_after_if: second if";
+# y = 7, x = 7#
+function test_if_else_after_if_stub(){
+	var some_function_name =" if_else_after_if: first if  + second if";
+	y++; #y is now 8#
+	var result = test_if_else_after_if();
+	var expected_output = " if_else_after_if: first if if_else_after_if: second if";
 
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = " if_else_after_if: first else  + second if";
+	y++;  #y is now 9#
+	result = test_if_else_after_if();
+	expected_output = " if_else_after_if: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name =  "if_else_after_if_else:first else + second else";
+	x++;  #x is now 8#
+	result = test_if_else_after_if();
+	expected_output = " if_else_after_if: second else"; #first else returns none#
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name ="if_else_after_if_else: first if + second else";
+	y--; #y is now 8#
+	result = test_if_else_after_if();
+	expected_output = " if_else_after_if: first if if_else_after_if: second else"; #second else returns none#
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-function_name = " if_else_after_if: first else + second if";
-y++;
-result = test_if_else_after_if();
-expected_output = " if_else_after_if: second if";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_else_after_if: first if + second else";
-x++;
-y--;
-result = test_if_else_after_if();
-expected_output = " if_else_after_if: first if  if_else_after_if: second else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_else_after_if: first else + second else";
-y++;
-result = test_if_else_after_if();
-expected_output = " if_else_after_if: second else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
+test_if_else_after_if_stub();
 
 #========================================#
 function test_if_after_if() {
+	var result = "";
     if (y is 9) {
-        return "if_after_if: first if";
+        result += " if_after_if: first if";
     }
     if (x is 9) {
-        return "if_after_if: second if";
+        result += " if_after_if: second if";
     }
+	return result;
 }
 #========================================#
 #========================================#
-function_name = " if_after_if: first if + second if";
-result = test_if_after_if();
-expected_output = " if_after_if: first if if_after_if: second if";
+# y = 8, x = 8#
+function test_if_after_if_stub(){
+	var some_function_name = " if_after_if: first else + second else";
+	var result = test_if_after_if();
+	var expected_output = ""; #both are false, so an empty string is returned#
 
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = " if_else_after_if: first if  + second else";
+	y++;  #y is now 9#
+	result = test_if_after_if();
+	expected_output = " if_after_if: first if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name = "if_after_if: first if + second if";
+	x++;  #x is now 9#
+	result = test_if_after_if();
+	expected_output = " if_after_if: first if if_after_if: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+	#========================================#
+	some_function_name ="if_after_if: first else + second if";
+	y--; #y is now 8#
+	result = test_if_after_if();
+	expected_output = " if_after_if: second if";
+
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
-
-#========================================#
-function_name = " if_after_if: first else + second if";
-y++;
-result = test_if_after_if();
-expected_output = " if_after_if: second if";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_after_if: first if + second else";
-x++;
-y--;
-result = test_if_after_if();
-expected_output = " if_after_if: first if  if_after_if: second else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
-
-#========================================#
-function_name = " if_after_if: first else + second else";
-y++;
-result = test_if_after_if();
-expected_output = " if_after_if: second else";
-
-if (result is expected_output) {
-	print_success(function_name);
-} else {
-	print_failed(function_name, expected_output, result);
-}
+test_if_after_if_stub();

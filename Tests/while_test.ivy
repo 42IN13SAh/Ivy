@@ -1,0 +1,73 @@
+var line_separator = "=============================================";
+
+function print_success(function_name) {
+	print (" ");
+	print("  " + function_name + " gave the expected output.");
+	print("  TEST SUCCESSFULL!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function print_failed(function_name, expected_output, actual_result) {
+	print(" ");
+	print("  " + function_name + " gave unexpected output --> expected:");
+	print(expected_output);
+	print ("  but instead we received:");
+	print(actual_result);
+	print("  ... TEST FAILED!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function test_simple_while() {
+	var x = 0;
+	while(++x < 10) {}
+	return x;
+}
+
+function test_long_while() {
+	var x = 0;
+	while(++x < 1000000) {}
+	return x;
+}
+
+function test_nested_while() {
+	var x = 0;
+	var y = 0;
+	var z = 0;
+	while(++x < 10) {
+		while(++y < 10) {
+			z++;
+		}
+		y=0;
+	}
+	return z;
+}
+
+function run() {
+	var some_function_name = "simple_while";
+	var result = test_simple_while();
+	var expected_output = 9;
+
+	if (result is expected_output1) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "long_while";
+	result = test_long_while();
+	expected_output = 999999;
+	
+	if(result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "nested_while";
+	result = test_nested_while();
+	expected_output = 81;
+	
+}
+run();

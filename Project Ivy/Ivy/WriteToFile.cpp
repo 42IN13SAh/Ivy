@@ -10,9 +10,10 @@ void WriteToFile::Execute(std::vector<boost::any> arglist)
 		try{
 			lineToWrite = boost::any_cast<std::string>(arglist[1]);
 		}
-		catch (std::exception& e){
+		catch (std::exception& e) {
 			lineToWrite = std::to_string(boost::any_cast<double>(arglist[1]));
 		}
+
 		std::ofstream out;
 		out.open(path, std::ios::app);
 		out << lineToWrite << std::endl;
