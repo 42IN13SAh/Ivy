@@ -35,8 +35,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setCentralWidget(window);
 	centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
 	setAndSaveWindowTitle("New File - " + this->getDefaultWindowTitle()); //Default is always a new file (for now)
-	//splitter->setStyleSheet("background-color: black;");
+
 	setStyleSheet("QSplitter::handle { background-color: grey; } QMenuBar { background-color: #323232; border-bottom: 1px solid black; } QMenuBar::item { background-color: #323232; color: white; } QMenuBar::item:selected { background-color: #1E1E1F; } QMenuItem { background-color: #323232; color: white; } QMenu::item { background-color: #323232; color: white; } QMenu::item:selected { background-color: #1E1E1F; } QMenu { background-color: #323232; }");
+	
 	//make sure to always conenct both controllers to the same slot!
 	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
 	connect(keyInputController, SIGNAL(finishedBuilding(bool)), this, SLOT(onFinishedBuilding(bool)));
@@ -46,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	connect(buttonBar->getButtonController(), SIGNAL(finishedBuilding()), this, SLOT(onFinishedBuilding()));
 	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
 	bool connected = connect(buttonBar->getButtonController(), SIGNAL(setCompleterModel(QList<QString>)), this, SLOT(onSetCompleterModel(QList<QString>)));
+	
 	//create background buildworker(proces)
 	workerThread = new std::thread(&MainWindow::buildWorker, this);
 	workerThread->detach();
