@@ -1,5 +1,6 @@
 #include "WriteToFile.h"
 #include <fstream>
+#include <string>
 #include "BaseException.h"
 void WriteToFile::Execute(std::vector<boost::any> arglist)
 {
