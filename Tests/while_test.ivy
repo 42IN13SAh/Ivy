@@ -21,13 +21,17 @@ function print_failed(function_name, expected_output, actual_result) {
 
 function test_simple_while() {
 	var x = 0;
-	while(++x < 10) {}
+	while(++x < 10) {
+		#do nothing#
+	}
 	return x;
 }
 
 function test_long_while() {
 	var x = 0;
-	while(++x < 1000000) {}
+	while(++x < 1000000) {
+		#do nothing#
+	}
 	return x;
 }
 
@@ -47,19 +51,9 @@ function test_nested_while() {
 function run() {
 	var some_function_name = "simple_while";
 	var result = test_simple_while();
-	var expected_output = 9;
+	var expected_output = 10;
 
-	if (result is expected_output1) {
-		print_success(some_function_name);
-	} else {
-		print_failed(some_function_name, expected_output, result);
-	}
-	
-	some_function_name = "long_while";
-	result = test_long_while();
-	expected_output = 999999;
-	
-	if(result is expected_output) {
+	if (result is expected_output) {
 		print_success(some_function_name);
 	} else {
 		print_failed(some_function_name, expected_output, result);
@@ -69,5 +63,22 @@ function run() {
 	result = test_nested_while();
 	expected_output = 81;
 	
+	if(result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+	some_function_name = "long_while";
+	#since this might take a while, print a message for the tester#
+	print("Testing a while for 1000000 loops, this might take a while (aprox. 1 min); please wait....");
+	result = test_long_while();
+	expected_output = 1000000;
+	
+	if(result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
 }
 run();

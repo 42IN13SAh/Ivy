@@ -1,0 +1,303 @@
+#==========IMPORTANT!!!!==========#
+# IN ORDER FOR READFILE TO WORK,  #
+# WE NEED TO KNOW WHERE THE       #
+# TESTFILES ARE LOCATED ON YOUR   #
+# PC. REPLACE THE CONTENTS OF     #
+# THE VARIABLE BELOW WITH THE     #
+# FULL DESTINATION PATH OF THE 	  #
+# TEST DATA FILE!                 #
+#                                 #
+# Also, don't forget to clear     #
+#the test data file!              #
+#=================================#
+
+var test_for_reading_data_file_path = "E:\GitHub repository\Ivy\Tests\read_file_test_data.txt";
+var test_for_writing_data_file_path = "E:\GitHub repository\Ivy\Tests\write_file_test_data.txt";
+
+var line_separator = "=============================================";
+
+function print_success(function_name) {
+	print (" ");
+	print("  " + function_name + " gave the expected output.");
+	print("  TEST SUCCESSFULL!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function print_failed(function_name, expected_output, actual_result) {
+	print(" ");
+	print("  " + function_name + " gave unexpected output --> expected:");
+	print(expected_output);
+	print ("  but instead we received:");
+	print(actual_result);
+	print("  ... TEST FAILED!!!");
+	print(" ");
+    print(line_separator);
+}
+
+function test_print() {
+	print("");
+	print(line_separator);
+	print("Testing the print function! If no errors are thrown then all the different types can be printed correctly!");
+	print(100);
+	print(false);
+	
+	var bla = "Bla";
+	print(bla);
+	bla = 50;
+	print(bla);
+	
+	print(test_print_return_value("string"));
+	print(test_print_return_value("number"));
+	print(test_print_return_value("bool"));
+}
+
+function test_print_return_value(type) {
+	if(type is "string" ) {
+		return "een string";
+	} else {
+		if(type is "number" ) {
+			return 200;
+		} else {
+			if(type is "bool" ) {
+				return true;
+			}
+		}
+	}
+}
+
+function test_cos() {
+	return cos(10);
+}
+
+function test_sin() {
+	return sin(10);
+}
+
+function test_tan() {
+	return tan(10);
+}
+
+function test_sqrt() {
+	return sqrt(9);
+}
+
+function test_log() {
+	return log(10);
+}
+
+function test_pow() {
+	return pow(2,5);
+}
+
+function test_random() {
+	return random();
+}
+
+function test_random_t() {
+	return random_t(20);
+}
+
+function test_random_b() {
+	return random_b(20, 40);
+}
+
+function test_read_file(file_path) {
+	return readFile(file_path);
+}
+
+function test_write_to_file(file_path) {
+	var res = "Testing the writing to a file; this test should be in the file after the function call!";
+	writeToFile(file_path, res);
+	return res; # to compare in the test#
+}
+
+function test_invert(x) {
+	return invert(x);
+}
+
+function run() {
+	var some_function_name = "print";
+	test_print();
+	var expected_output = "Begin print\n100\nfalse\nBla\n50\neen string\n200\ntrue";
+
+	print("Expected output:\n" + expected_output);
+	print_success(some_function_name); # as long as no errors are thrown, this test is a success.#
+	
+    #========================================#
+	some_function_name = "cos(10)";
+	var result = test_cos();
+	expected_output = -0.839072;
+	var offset = 0.001;
+	var expected_ouput_min_offset = expected_output - offset;
+	var expected_output_plus_offset = expected_output + offset;
+	
+	if (result > expected_ouput_min_offset and result < expected_output_plus_offset) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+    #========================================#	
+	some_function_name = "sin(10)";
+	result = test_sin();
+	expected_output = -0.544021;
+	expected_ouput_min_offset = expected_output - offset;
+	expected_output_plus_offset = expected_output + offset;
+	
+	if (result > expected_ouput_min_offset and result < expected_output_plus_offset) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#	
+	some_function_name = "tan(10)";
+	result = test_tan();
+	expected_output = 0.648361;
+	expected_ouput_min_offset = expected_output - offset;
+	expected_output_plus_offset = expected_output + offset;
+	
+	if (result > expected_ouput_min_offset and result < expected_output_plus_offset) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "sqrt(9)";
+	result = test_sqrt();
+	expected_output = 3;
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "log(10)";
+	result = test_log();	
+	expected_output = 2.302585;
+	expected_ouput_min_offset = expected_output - offset;
+	expected_output_plus_offset = expected_output + offset;
+	
+	if (result > expected_ouput_min_offset and result < expected_output_plus_offset) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "pow(2,5)";
+	result = test_pow();	
+	expected_output = 32;
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "random()";
+	result = test_random();	
+	expected_output = 5;
+	
+	while(result is expected_output) {
+		result = test_random();
+	}
+	
+	if (result not expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "random_t(20)";
+	result = test_random_t();	
+	expected_output = 5;
+	
+	while(result is expected_output) {
+		result = test_random_t();
+	}
+	
+	if (result not expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "random_b(20, 40)";
+	result = test_random_b();	
+	expected_output = 30;
+	
+	while(result is expected_output) {
+		result = test_random_b();
+	}
+	
+	if (result not expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "readFile(" + test_for_reading_data_file_path + ")";
+	result = test_read_file(test_for_reading_data_file_path);	
+	expected_output = "This is the file that is to be read by the test function."; #note that it's just one line; Ivy does not support newlines in strings (yet)#
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "writeToFile(" + test_for_writing_data_file_path + ")";
+	result = test_write_to_file(test_for_writing_data_file_path);
+	expected_output = readFile(test_for_writing_data_file_path);
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "invert(10)";
+	result = test_invert(10);
+	expected_output = -10;
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+    #========================================#
+	some_function_name = "invert(true)";
+	result = test_invert(true);
+	expected_output = false;
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+
+    #========================================#
+	some_function_name = "invert(Hello world!)";
+	result = test_invert("Hello world!");
+	expected_output = "!dlrow olleH";
+	
+	if (result is expected_output) {
+		print_success(some_function_name);
+	} else {
+		print_failed(some_function_name, expected_output, result);
+	}
+	
+}
+run();

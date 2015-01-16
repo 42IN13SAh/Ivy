@@ -318,7 +318,7 @@ var result = "";
 function test_if_else_after_if_else_stub(){
 	var some_function_name = "if_else_after_if_else: first if + second if ";
 	var result = test_if_else_after_if_else();
-	var expected_output = "if_else_after_if_else: first if if_else_after_if_else: second if";
+	var expected_output = " if_else_after_if_else: first if if_else_after_if_else: second if";
 
 	if (result is expected_output) {
 		print_success(some_function_name);
@@ -339,10 +339,11 @@ function test_if_else_after_if_else_stub(){
 	}
 
 	#========================================#
+
 	some_function_name =  "if_else_after_if_else: first else + second else";
 	x++;
 	result = test_if_else_after_if_else();
-	expected_output =  "if_else_after_if_else: first else if_else_after_if_else: second else";
+	expected_output =  " if_else_after_if_else: first else if_else_after_if_else: second else";
 
 	if (result is expected_output) {
 		print_success(some_function_name);
@@ -354,7 +355,7 @@ function test_if_else_after_if_else_stub(){
 	some_function_name ="if_else_after_if_else: first if + second else";
 	y--;
 	result = test_if_else_after_if_else();
-	expected_output = "if_else_after_if_else: first if if_else_after_if_else: second else";
+	expected_output = " if_else_after_if_else: first if if_else_after_if_else: second else";
 
 	if (result is expected_output) {
 		print_success(some_function_name);
@@ -382,8 +383,7 @@ function test_if_after_if_else() {
 #========================================#
 #y = 7, x = 6#
 function test_if_after_if_else_stub(){
-	var some_function_name = "if_else_after_if_else: first if  + second if";
-	y++; #y is now 7#
+	var some_function_name = "if_after_if_else: first if  + second if";
 	var result = test_if_after_if_else();
 	var expected_output = " if_after_if_else: first if if_after_if_else: second if";
 
@@ -394,7 +394,7 @@ function test_if_after_if_else_stub(){
 	}
 
 	#========================================#
-	some_function_name = "if_else_after_if_else: first else + second if";
+	some_function_name = "if_after_if_else: first else + second if";
 	y++;  #y is now 8#
 	result = test_if_after_if_else();
 	expected_output = " if_after_if_else: first else if_after_if_else: second if";
@@ -406,7 +406,7 @@ function test_if_after_if_else_stub(){
 	}
 
 	#========================================#
-	some_function_name =  "if_else_after_if_else:first else + second else";
+	some_function_name =  "if_after_if_else: first else + second else";
 	x++;  #x is now 7#
 	result = test_if_after_if_else();
 	expected_output = " if_after_if_else: first else"; #second else returns none#
@@ -418,7 +418,7 @@ function test_if_after_if_else_stub(){
 	}
 
 	#========================================#
-	some_function_name ="if_else_after_if_else: first if + second else";
+	some_function_name ="if_after_if_else: first if + second else";
 	y--; #y is now 7#
 	result = test_if_after_if_else();
 	expected_output = " if_after_if_else: first if"; #second else returns none#
