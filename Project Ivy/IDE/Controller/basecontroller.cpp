@@ -224,6 +224,8 @@ void BaseController::saveFile(std::string filePath){
 	}
 
 	file.close();
+
+	mainWindow->setAndSaveWindowTitle(QString::fromStdString(filePath) + " - " + mainWindow->getDefaultWindowTitle());
 }
 
 QString BaseController::makeDefaultIvyFolder(){
