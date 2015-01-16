@@ -25,7 +25,7 @@ Invert::~Invert()
 bool Invert::number(boost::any value)
 {
 	try{
-		double a = boost::any_cast<double>(value);
+		double a = Cast::cast<double>(value);
 		Result = -a;
 		return true;
 	}
@@ -37,7 +37,7 @@ bool Invert::number(boost::any value)
 bool Invert::boolean(boost::any value)
 {
 	try{
-		bool a = boost::any_cast<bool>(value);
+		bool a = Cast::cast<bool>(value);
 		Result = !a;
 		return true;
 	}
@@ -49,7 +49,7 @@ bool Invert::boolean(boost::any value)
 bool Invert::string(boost::any value)
 {
 	try{
-		std::string a = boost::any_cast<std::string>(value);
+		std::string a = Cast::cast<std::string>(value);
 		std::reverse(a.begin(), a.end());
 		Result = a;
 		return true;

@@ -12,6 +12,7 @@ Symbol::Symbol(std::string name)
 
 Symbol::~Symbol()
 {
+
 }
 
 std::string Symbol::getName()

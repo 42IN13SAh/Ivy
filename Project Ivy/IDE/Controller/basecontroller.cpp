@@ -23,9 +23,7 @@ BaseController::BaseController(MainWindow * mainWindow) : QObject()
 
 BaseController::~BaseController()
 {
-	delete virtualMachine;
-	delete compiler;
-	delete tokenizer;
+
 }
 
 bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
@@ -61,7 +59,6 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 
 		return buildSucceeded;
 	}
-
 	compiler = new Compiler(tokenizer->getTokenList());
 	compiler->compile();
 	makeCompleterModel(compiler->getAllFunctionAndVariableNames());
@@ -77,6 +74,7 @@ bool BaseController::startBuilding(bool onlyBuild, bool showConsoleOutput)
 			emit addError(e.getLineNumber(), e.getLinePosition(), e.what());
 		}
 
+		delete tokenizer;
 		delete compiler;
 
 		emit finishedBuilding(buildSucceeded);
@@ -122,7 +120,12 @@ void BaseController::startRunning()
 				std::cout << "\nA runtime error has occurred.";
 				std::cout << "Program has unexpectedly finished.";
 			}
+
+			delete tokenizer;
+			delete compiler;
 		}
+
+		delete virtualMachine;
 	}
 }
 
@@ -221,6 +224,8 @@ void BaseController::saveFile(std::string filePath){
 	}
 
 	file.close();
+
+	mainWindow->setAndSaveWindowTitle(QString::fromStdString(filePath) + " - " + mainWindow->getDefaultWindowTitle());
 }
 
 QString BaseController::makeDefaultIvyFolder(){

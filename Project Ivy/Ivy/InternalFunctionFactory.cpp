@@ -6,7 +6,7 @@ InternalFunctionFactory::InternalFunctionFactory()
 	//I/O
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("readFile", new ReadFile(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("saveFile", new SaveFile(), 2);
-	InternalFunctionFactory::Instance()->RegisterFactoryFunction("writeToEndOfFile", new WriteToFile(), 2);
+	InternalFunctionFactory::Instance()->RegisterFactoryFunction("writeToFile", new WriteToFile(), 2);
 	//Math
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("cos", new Cos(), 1);
 	InternalFunctionFactory::Instance()->RegisterFactoryFunction("invert", new Invert(), 1);

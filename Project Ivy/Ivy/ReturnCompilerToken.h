@@ -1,14 +1,15 @@
 #pragma once
+#include <boost/shared_ptr.hpp>
 #include "CompilerToken.h"
 #include "ReturnValueCompilerToken.h"
 class ReturnCompilerToken :
 	public CompilerToken
 {
 public:
-	ReturnCompilerToken(ReturnValueCompilerToken*);
+	ReturnCompilerToken(boost::shared_ptr<ReturnValueCompilerToken>);
 	virtual ~ReturnCompilerToken();
-	ReturnValueCompilerToken* getReturnValueCompilerToken();
+	boost::shared_ptr<ReturnValueCompilerToken> getReturnValueCompilerToken();
 private:
-	ReturnValueCompilerToken* rvct;
+	boost::shared_ptr<ReturnValueCompilerToken> rvct;
 };
 

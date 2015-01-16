@@ -1,13 +1,17 @@
 #include <QLibrary>
 #include <future>
 #include <qapplication.h>
-
 #include "keyinputcontroller.h"
 #include "mainwindow.h"
 #include "codeeditor.h"
 
 KeyInputController::KeyInputController(MainWindow *mainWindow) : BaseController(mainWindow)
 {
+}
+
+KeyInputController::~KeyInputController()
+{
+
 }
 
 /**
@@ -24,9 +28,7 @@ KeyInputController::KeyInputController(MainWindow *mainWindow) : BaseController(
 void KeyInputController::handleKeyPressEvent(QKeyEvent *event, MainWindow *mainWindow, CodeEditor *editor){
     switch(event->key()){
     case Qt::Key_F6:
-		std::async(std::launch::async, [&]() {
-			startBuilding(true, true);
-		});
+		std::async(std::launch::async, [&]() {startBuilding(true,true);});
 		break;
 	case Qt::Key_F5:
 		std::async(std::launch::async, [&]() {

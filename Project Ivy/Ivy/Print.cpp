@@ -19,7 +19,7 @@ Print::~Print()
 bool Print::number(boost::any value)
 {
 	try{
-		double a = boost::any_cast<double>(value);
+		double a = Cast::cast<double>(value);
 		stringToPrint = std::to_string(a);
 		return true;
 	}
@@ -31,7 +31,7 @@ bool Print::number(boost::any value)
 bool Print::boolean(boost::any value)
 {
 	try{
-		bool a = boost::any_cast<bool>(value);
+		bool a = Cast::cast<bool>(value);
 		if (a){
 			stringToPrint = "true";
 		}
@@ -48,8 +48,7 @@ bool Print::boolean(boost::any value)
 bool Print::string(boost::any value)
 {
 	try{
-		std::string a = boost::any_cast<std::string>(value);
-		stringToPrint = a;
+		stringToPrint = Cast::cast<std::string>(value);
 		return true;
 	}
 	catch (std::exception& e){

@@ -23,22 +23,16 @@ Action* Action::getFalseAction()
 	return onFalseAction; 
 }
 
-CompilerToken* Action::getCompilerToken() 
+boost::shared_ptr<CompilerToken> Action::getCompilerToken()
 { 
 	return compilerToken; 
 }
 
-void Action::setCompilerToken(CompilerToken* ct) 
+void Action::setCompilerToken(boost::shared_ptr<CompilerToken> ct)
 {
 	compilerToken = ct; 
 }
 
 Action::~Action()
 {
-	/*if (nextAction != nullptr) delete nextAction;
-	if (onFalseAction != nullptr) delete onFalseAction;*/
-	
-	if (compilerToken != nullptr){
-		delete compilerToken;
-	}
 }

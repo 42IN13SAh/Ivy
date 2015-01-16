@@ -1,13 +1,9 @@
 #include <QtWidgets>
 #include <QBoxLayout>
-
+#include <chrono>
 #include "mainwindow.h"
 #include "keyinputcontroller.h"
 #include "basecontroller.h"
-
-#include <chrono>
-#include <thread>
-#include <future>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -36,15 +32,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	QWidget *window = new QWidget();
 	window->setLayout(layout);
-
 	setCentralWidget(window);
 	centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
-
 	setAndSaveWindowTitle("New File - " + this->getDefaultWindowTitle()); //Default is always a new file (for now)
 
-	//splitter->setStyleSheet("background-color: black;");
 	setStyleSheet("QSplitter::handle { background-color: grey; } QMenuBar { background-color: #323232; border-bottom: 1px solid black; } QMenuBar::item { background-color: #323232; color: white; } QMenuBar::item:selected { background-color: #1E1E1F; } QMenuItem { background-color: #323232; color: white; } QMenu::item { background-color: #323232; color: white; } QMenu::item:selected { background-color: #1E1E1F; } QMenu { background-color: #323232; }");
-
+	
 	//make sure to always conenct both controllers to the same slot!
 	connect(keyInputController, SIGNAL(clearBeforeBuilding()), this, SLOT(onClearBeforeBuilding()));
 	connect(keyInputController, SIGNAL(finishedBuilding(bool)), this, SLOT(onFinishedBuilding(bool)));
@@ -54,19 +47,33 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	connect(buttonBar->getButtonController(), SIGNAL(finishedBuilding()), this, SLOT(onFinishedBuilding()));
 	connect(buttonBar->getButtonController(), SIGNAL(addError(int, int, QString)), this, SLOT(onAddError(int, int, QString)));
 	bool connected = connect(buttonBar->getButtonController(), SIGNAL(setCompleterModel(QList<QString>)), this, SLOT(onSetCompleterModel(QList<QString>)));
+	
+	//create background buildworker(proces)
+	workerThread = new std::thread(&MainWindow::buildWorker, this);
+	workerThread->detach();
+}
 
-	std::async(std::launch::async, [&]() {
-		while (true)
+MainWindow::~MainWindow()
+{
+	delete workerThread;
+	delete highlighter;
+	delete editor;
+	delete buttonBar;
+	delete bottomBar;
+	delete keyInputController;
+}
+
+void MainWindow::buildWorker()
+{
+	while (true)
+	{
+		if (!hasBuild)
 		{
-			if (!hasBuild)
-			{
-				hasBuild = true;
-				keyInputController->startBuilding(true, false);
-			}
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			hasBuild = true;
+			keyInputController->startBuilding(true, false);
 		}
-	});
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
 }
 
 void MainWindow::onSetCompleterModel(QList<QString> list)

@@ -19,6 +19,7 @@ class CodeEditor : public QPlainTextEdit
 
 public:
 	CodeEditor(MainWindow *parent = 0);
+	virtual ~CodeEditor();
 	static QStringList defaultKeywords;
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
@@ -50,6 +51,7 @@ private:
 	void autocomplete(QKeyEvent *e);
 	QString getCurrentLine(QTextCursor cursor, int extraLines = 0);
 	QString getLineToInsert(QString line);
+	bool scrollLock;
 
 };
 

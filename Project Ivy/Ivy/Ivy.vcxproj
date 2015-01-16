@@ -76,6 +76,7 @@
     <ClInclude Include="BadCastException.h" />
     <ClInclude Include="BadSyntaxException.h" />
     <ClInclude Include="BaseException.h" />
+    <ClInclude Include="Cast.h" />
     <ClInclude Include="Compiler.h" />
     <ClInclude Include="CompilerToken.h" />
     <ClInclude Include="ConditionCompilerToken.h" />
@@ -112,7 +113,6 @@
     <ClInclude Include="Symbol.h" />
     <ClInclude Include="SymbolAlreadyExistsException.h" />
     <ClInclude Include="SymbolTable.h" />
-    <ClInclude Include="SymbolTableItemsToBeDeleted.h" />
     <ClInclude Include="Syntax.h" />
     <ClInclude Include="SyntaxManager.h" />
     <ClInclude Include="Tan.h" />
@@ -159,7 +159,6 @@
     <ClCompile Include="SummonSupremeLord.cpp" />
     <ClCompile Include="Symbol.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
-    <ClCompile Include="SymbolTableItemsToBeDeleted.cpp" />
     <ClCompile Include="Syntax.cpp" />
     <ClCompile Include="SyntaxManager.cpp" />
     <ClCompile Include="Tan.cpp" />
