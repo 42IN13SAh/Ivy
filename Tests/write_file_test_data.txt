@@ -1,1 +1,3 @@
 Testing the writing to a file; this test should be in the file after the function call!
+Testing the writing to a file; this test should be in the file after the function call!
+Testing the writing to a file; this test should be in the file after the function call!
