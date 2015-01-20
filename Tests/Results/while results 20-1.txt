@@ -1,0 +1,22 @@
+Build started.
+Build succeeded.
+Running.
+
+ 
+  simple_while gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  nested_while gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+Testing a while for 1000000 loops, this might take a while (aprox. 1 min); please wait....
+ 
+  long_while gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+
+Program has finished successfully.

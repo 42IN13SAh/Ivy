@@ -1,0 +1,96 @@
+Build started.
+Build succeeded.
+Running.
+
+
+=============================================
+Testing the print function! If no errors are thrown then all the different types can be printed correctly!
+100.000000
+false
+Bla
+50.000000
+een string
+200.000000
+true
+Expected output:\nBegin print\n100\nfalse\nBla\n50\neen string\n200\ntrue
+ 
+  print gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  cos(10) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  sin(10) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  tan(10) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  sqrt(9) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  log(10) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  pow(2,5) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  random() gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  random_t(20) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  random_b(20, 40) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  readFile(C:\Users\Sjors van Lemmen\Documents\GitHub\Ivy\Tests\read_file_test_data.txt) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  writeToFile(C:\Users\Sjors van Lemmen\Documents\GitHub\Ivy\Tests\write_file_test_data.txt) gave unexpected output --> expected:
+Testing the writing to a file; this test should be in the file after the function call!
+
+  but instead we received:
+Testing the writing to a file; this test should be in the file after the function call!
+  ... TEST FAILED!!!
+ 
+=============================================
+ 
+  invert(10) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  invert(true) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  invert(Hello world!) gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+
+Program has finished successfully.
