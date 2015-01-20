@@ -1,0 +1,76 @@
+Build started.
+Build succeeded.
+Running.
+
+ 
+  addition_binary gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  addition_unary_after gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  addition_unary_before gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  addition_in_nested_calculation gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  subtraction_binary gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  subtraction_unary_after gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  subtraction_unary_before gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  subtraction_in_nested_calculation gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  multiply_binary gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  multiply_in_nested_calculation gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  divide_binary gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  divide_in_nested_calculation gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  modulo_binary gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  modulo_in_nested_calculation gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+
+Program has finished successfully.

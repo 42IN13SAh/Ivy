@@ -1,0 +1,41 @@
+Build started.
+Build succeeded.
+Running.
+
+ 
+  simple int gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  simple string gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  simple bool gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  nest gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  multi return gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  arguments gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  while function gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+
+Program has finished successfully.

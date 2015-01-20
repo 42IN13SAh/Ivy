@@ -1,0 +1,166 @@
+Build started.
+Build succeeded.
+Running.
+
+ 
+  if_else: if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else: else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_if: if, if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_if: if, else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_if: else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_else: if  gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_else: else, if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_else: else, else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_if: if, if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_if: if, else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_else_in_if: else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_in_else: if  gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_in_else: else, if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_nested_if_in_else: else, else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if: if  gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if: else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_after_if_else: first if + second if  gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_after_if_else: first else + second if  gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_after_if_else: first else + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_after_if_else: first if + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_after_if_else: first if  + second if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_after_if_else: first else + second if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_after_if_else: first else + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_after_if_else: first if + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+   if_else_after_if: first if  + second if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+   if_else_after_if: first else  + second if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_after_if_else:first else + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_else_after_if_else: first if + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+   if_after_if: first else + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+   if_else_after_if: first if  + second else gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_after_if: first if + second if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+ 
+  if_after_if: first else + second if gave the expected output.
+  TEST SUCCESSFULL!!!
+ 
+=============================================
+
+Program has finished successfully.
